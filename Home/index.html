@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Options & Company - Expertise em Derivativos</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Ficheiro de Estilo CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabeçalho -->
+        <header class="header">
+            <div class="header-content">
+                <!-- Botão Menu -->
+                <button class="menu-btn">
+                    Menu
+                </button>
+
+                <!-- Títulos Centrais (Desktop) -->
+                <div class="header-titles-desktop">
+                    <h1 class="font-playfair">Options<br>& Company</h1>
+                </div>
+
+                <!-- Ferramentas do Google com Dropdown -->
+               <div class="google-tools">
+                    <!-- O botão que aciona o dropdown -->
+                    <button id="google-button">Google</button>
+                    
+                    <!-- O menu dropdown, inicialmente escondido -->
+                    <div id="google-dropdown" class="dropdown-content">
+                        <!-- Link para o Google Home -->
+                        <a href="https://www.google.com" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            Home
+                        </a>
+                        <!-- Link para o Google Agenda -->
+                        <a href="https://calendar.google.com" target="_blank">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Google Agenda
+                        </a>
+                        <!-- Link para o Gmail -->
+                        <a href="https://mail.google.com" target="_blank">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                           </svg>
+                            Gmail
+                        </a>
+                    </div>
+                </div>
+            </div>
+             <!-- Títulos para ecrãs menores -->
+            <div class="header-titles-mobile">
+                <h1 class="font-playfair">Options & Company</h1>
+            </div>
+        </header>
+
+        <!-- Conteúdo Principal -->
+        <main class="main-content">
+            <div class="card">
+                <!-- Mensagem de Boas-vindas -->
+                <p class="card-welcome">Leitura do Dia</p>
+                
+                <!-- Conteúdo da Leitura -->
+                <div class="reading-content">
+                    <h3 class="font-playfair">Ações Comuns Lucros Extraordinários</h3>
+
+                    <h4 class="font-playfair">Capítulo do Dia:</h4>
+                    <div class="reading-text">
+                        <p>
+                            Capítulo 4: O que comprar aplicando os princípios às suas prórpias necessidades
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Ficheiro JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
