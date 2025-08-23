@@ -68,5 +68,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Link "Chamado TI" ---
     // Troque o href abaixo para o link real do Apps Script (exec):
-    document.getElementById('link-chamado-ti')?.setAttribute('href', 'https://chamadoti.netlify.app/');
+    document.getElementById('link-chamado-ti')?.setAttribute('href', 'https://chamadoadm.netlify.app');
 });
