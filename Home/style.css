@@ -22,7 +22,9 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px), linear-gradient(225deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-image:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(225deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 30px 30px;
     z-index: 0;
 }
@@ -93,11 +95,13 @@ body::before {
 }
 
 .header-titles-desktop {
-    display: none; /* Escondido por defeito */
+    display: none;
+    /* Escondido por defeito */
 }
 
 .google-tools {
-    position: relative; /* Necessário para posicionar o dropdown */
+    position: relative;
+    /* Necessário para posicionar o dropdown */
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -151,9 +155,12 @@ body::before {
 .card {
     background-color: #1c4a48;
     border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    box-shadow:
+        0 10px 15px -3px rgba(0, 0, 0, 0.1),
+        0 4px 6px -2px rgba(0, 0, 0, 0.05);
     width: 100%;
-    max-width: 56rem; /* 896px */
+    max-width: 56rem;
+    /* 896px */
     padding: 1.5rem;
 }
 
@@ -193,14 +200,15 @@ body::before {
 
 /* --- Estilos do Dropdown do Google --- */
 .dropdown-content {
-    display: none; /* Escondido por padrão */
+    display: none;
+    /* Escondido por padrão */
     position: absolute;
     right: 0;
     top: 100%;
     margin-top: 8px;
     background-color: white;
     min-width: 180px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 10;
     border-radius: 6px;
     padding: 4px 0;
@@ -208,7 +216,8 @@ body::before {
     transform: translateY(-10px);
     transition: opacity 0.2s ease, transform 0.2s ease;
     pointer-events: none;
-    overflow: hidden; /* Garante que os cantos arredondados sejam aplicados aos filhos */
+    overflow: hidden;
+    /* Garante que os cantos arredondados sejam aplicados aos filhos */
 }
 
 .dropdown-content.show {
@@ -229,12 +238,15 @@ body::before {
 }
 
 .dropdown-content a:hover {
-    background-color: #1c4a48; /* Cor verde do site */
-    color: white; /* Texto branco para contraste */
+    background-color: #1c4a48;
+    /* Cor verde do site */
+    color: white;
+    /* Texto branco para contraste */
 }
 
 .dropdown-content a:hover svg {
-    color: white; /* Ícone branco no hover */
+    color: white;
+    /* Ícone branco no hover */
 }
 
 .dropdown-content a svg {
@@ -245,6 +257,93 @@ body::before {
     transition: color 0.2s;
 }
 
+/* --- MENU LATERAL (Sidebar) --- */
+.sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    /* encostado à esquerda */
+    width: min(82vw, 360px);
+    /* “anda” um pouco para o meio da tela */
+    transform: translateX(-100%);
+    /* começa fora da tela */
+    background: #0f2a29;
+    color: #fff;
+    padding: 16px;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, .35);
+    transition: transform .30s ease;
+    z-index: 1000;
+    border-right: 1px solid rgba(255, 255, 255, .1);
+    backdrop-filter: saturate(120%);
+}
+
+.sidebar.is-open {
+    transform: translateX(0);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .12);
+    padding-bottom: .5rem;
+    margin-bottom: .75rem;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.close-btn {
+    background: transparent;
+    color: #fff;
+    border: none;
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: .2rem .4rem;
+}
+
+.close-btn:hover {
+    background: rgba(255, 255, 255, .08);
+}
+
+.sidebar-links {
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.sidebar-links a {
+    color: #fff;
+    text-decoration: none;
+    padding: .65rem .6rem;
+    border-radius: 8px;
+}
+
+.sidebar-links a:hover {
+    background: #123c38;
+    color: #d1fae5;
+}
+
+/* --- Overlay para escurecer fundo quando sidebar abre --- */
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .45);
+    opacity: 0;
+    visibility: hidden;
+    transition: .25s ease;
+    z-index: 999;
+}
+
+.overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
 /* --- Media Queries para Responsividade --- */
 @media (min-width: 768px) {
     .header-titles-desktop {
@@ -253,10 +352,12 @@ body::before {
         gap: 2.5rem;
         text-align: center;
     }
+
     .header-titles-desktop h1 {
         font-size: 2.25rem;
         line-height: 1.1;
     }
+
     .header-titles-mobile {
         display: none;
     }
