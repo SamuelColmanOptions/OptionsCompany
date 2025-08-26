@@ -66,7 +66,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // --- Link "Chamado TI" ---
-    // Troque o href abaixo para o link real do Apps Script (exec):
+    // --- Links fixos no Menu ---
     document.getElementById('link-chamado-ti')?.setAttribute('href', 'https://chamadoadm.netlify.app');
+    document.getElementById('link-live')?.setAttribute('href', 'https://liveoptions.netlify.app/');
+    document.getElementById('link-biblioteca')?.setAttribute('href', 'https://bibliotecaco.netlify.app/');
 });

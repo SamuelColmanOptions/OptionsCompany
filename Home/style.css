@@ -14,6 +14,13 @@ body {
     min-height: 100vh;
 }
 
+.font-logo{
+    font-family: serif;
+}
+.e-comercial{
+    color: #4EA788;
+}
+
 /* --- Efeito de Fundo --- */
 body::before {
     content: '';
