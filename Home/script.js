@@ -68,6 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Links fixos no Menu ---
     document.getElementById('link-chamado-ti')?.setAttribute('href', 'https://chamadoadm.netlify.app');
-    document.getElementById('link-live')?.setAttribute('href', 'https://liveoptions.netlify.app/');
+    document.getElementById('link-live')?.setAttribute('href', 'https://callmatinal.netlify.app');
     document.getElementById('link-biblioteca')?.setAttribute('href', 'https://bibliotecaco.netlify.app/');
 });
