@@ -2,18 +2,15 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Options & Company</title>
 
   <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-
-  <!-- Ficheiro de Estilo CSS -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="shortcut icon" href="images/logo.png" type="image/x-icon"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
 
   <style>
     /* ===== Scrollbar personalizada (Chrome/Edge/Safari) ===== */
@@ -21,73 +18,105 @@
     ::-webkit-scrollbar-track { background: #1a1a1a; }
     ::-webkit-scrollbar-thumb { background: #418D75; border-radius: 6px; }
     ::-webkit-scrollbar-thumb:hover { background: #2e6b56; }
-
     /* ===== Firefox ===== */
     * { scrollbar-width: thin; scrollbar-color: #418D75 #1a1a1a; }
 
-    /* ===== TOPO: layout do cabeçalho (AGORA EM FLEX) ===== */
-    .header{
+    /* --- Reset Básico e Configurações Globais --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0f2a29;
+      color: #ffffff;
       position: relative;
-      margin-bottom: 20px;          /* respiro para não “pegar” a linha do conteúdo */
+      overflow-x: hidden;
+      min-height: 100vh;
     }
+    .font-logo{ font-family: serif; }
+    .e-comercial{ color: #4EA788; }
+
+    /* --- Efeito de Fundo --- */
+    body::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(135deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(225deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      z-index: 0;
+    }
+    .background-text {
+      position: absolute; top: 0; right: 0;
+      margin-top: -2rem; margin-right: -3rem;
+      user-select: none; z-index: 0;
+    }
+    .background-text span {
+      font-family: 'Playfair Display', serif;
+      font-size: 20vw; font-weight: 700;
+      color: rgba(255,255,255,0.05);
+      transform: rotate(-12deg); display: inline-block;
+    }
+
+    /* --- Estrutura Principal --- */
+    .container {
+      position: relative; z-index: 1; min-height: 100vh;
+      display: flex; flex-direction: column;
+      max-width: 1280px; margin: 0 auto; padding: 0 1rem;
+    }
+
+    /* ===== TOPO ===== */
+    .header { width: 100%; padding-top: 1rem; position: relative; margin-bottom: 20px; }
     .header-content {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 10px 20px;
-      flex-wrap: nowrap;
-      min-height: 72px;
-      position: relative; /* necessário para a logo absoluta se basear aqui */
+      position: relative; /* base do centrado absoluto */
+      display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 10px 20px 16px; gap: 16px; min-height: 72px; flex-wrap: nowrap;
     }
 
-    /* Esquerda: Menu + Ferramentas lado a lado */
-    .top-left{
-      display: flex; 
-      gap: 12px; 
-      align-items: center;
-      flex: 0 0 auto;
-      z-index: 5;
-    }
+    /* Esquerda: Menu + Ferramentas */
+    .top-left { display: flex; gap: 12px; align-items: center; flex: 0 0 auto; z-index: 5; }
 
-    /* Centro: logo */
-    .header-titles-desktop {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%); 
-      text-align: center;
-      pointer-events: none;
+    .menu-btn {
+      border: 1px solid rgba(255,255,255,0.5);
+      background: transparent; color: white;
+      border-radius: 0.375rem; padding: 0.375rem 1rem;
+      font-size: 0.875rem; cursor: pointer; transition: background-color .2s;
     }
-    .header-titles-desktop h1 {
-      pointer-events: auto;
-    }
-    /* Tamanho/line-height da logo para caber melhor no topo */
-    .font-logo{
-      margin: 0;
-      line-height: 1.08;
-      font-size: clamp(28px, 4vw, 50px);
-    }
+    .menu-btn:hover { background-color: rgba(255,255,255,0.1); }
 
-    /* Mantém o dropdown funcionando normalmente */
-    .google-tools{ position: relative; }
+    /* Ferramentas (dropdown) */
+    .google-tools { position: relative; display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; }
+    .google-tools > button {
+      background: white; color: black; font-weight: 700; border: none; border-radius: .375rem;
+      padding: .375rem .75rem; cursor: pointer; transition: background-color .2s;
+    }
+    .google-tools > button:hover { background: #e5e5e5; }
 
-    /* Direita: busca */
-    .site-search { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-      flex: 0 0 auto; 
+    .dropdown-content {
+      display: none; position: absolute; right: 0; top: 100%; margin-top: 8px;
+      background: #122D32; min-width: 180px; box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 10; border-radius: 6px; padding: 4px 0; opacity: 0; transform: translateY(-10px);
+      transition: opacity .2s ease, transform .2s ease; pointer-events: none; overflow: hidden;
+    }
+    .dropdown-content.show { display: block; opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .dropdown-content a {
+      color: #fff; padding: 10px 16px; text-decoration: none; display: flex; align-items: center;
+      font-size: 14px; transition: background-color .2s, color .2s;
+    }
+    .dropdown-content a:hover { background: #1c4a48; color: #fff; }
+    .dropdown-content img { width: 16px; height: 16px; margin-right: 10px; }
+
+    /* CENTRO: busca (agora no centro absoluto) */
+    .site-search {
+      position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      display: flex; align-items: center; gap: 8px; z-index: 4; flex: 0 0 auto;
     }
     .search-wrap { position: relative; }
     .site-search input[type="search"]{
-      width: clamp(180px, 26vw, 320px);  /* caixa menor e responsiva */
+      width: clamp(220px, 30vw, 520px);
       padding: 10px 12px;
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.06);
-      color: #fff;
-      border-radius: 10px;
-      outline: none;
+      color: #fff; border-radius: 10px; outline: none;
     }
     .site-search input[type="search"]::placeholder { color: rgba(255,255,255,0.7); }
     .site-search button[type="submit"]{
@@ -95,7 +124,7 @@
       background: #418D75; color: #fff; font-weight: 600; cursor: pointer;
     }
 
-    /* ===== Dropdown customizado ===== */
+    /* SUGESTÕES (autocomplete) */
     .suggest-panel{
       position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50;
       background: #232323; border: 1px solid rgba(255,255,255,0.12);
@@ -116,25 +145,61 @@
     .suggest-remove{ font-size: 16px; line-height: 1; padding: 2px 6px; color: rgba(255,255,255,0.65); cursor: pointer; user-select: none; }
     .suggest-remove:hover{ color: #ff6b6b; }
 
+    /* DIREITA: logo */
+    .header-titles-desktop {
+      flex: 0 0 auto; text-align: right; z-index: 3;
+    }
+    .header-titles-desktop h1 {
+      margin: 0; line-height: 1.08; font-size: clamp(28px, 4vw, 5px);
+    }
+
+    /* Mobile header secundário (não usado aqui) */
+    .header-titles-mobile { display: none; }
+
+    /* --- Conteúdo Principal --- */
+    .main-content { flex-grow: 1; display: flex; align-items: stretch; justify-content: center; padding: 0; }
+
+    /* --- MENU LATERAL (Sidebar) --- */
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0;
+      width: min(82vw, 360px); transform: translateX(-100%);
+      background: #0f2a29; color: #fff; padding: 16px;
+      box-shadow: 2px 0 8px rgba(0,0,0,.35); transition: transform .30s ease;
+      z-index: 1000; border-right: 1px solid rgba(255,255,255,.1); backdrop-filter: saturate(120%);
+    }
+    .sidebar.is-open { transform: translateX(0); }
+    .sidebar-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.12); padding-bottom: .5rem; margin-bottom: .75rem;
+    }
+    .sidebar-header h2 { margin: 0; font-size: 1.2rem; }
+    .close-btn { background: transparent; color: #fff; border: none; font-size: 1.8rem; line-height: 1; cursor: pointer; border-radius: 8px; padding: .2rem .4rem; }
+    .close-btn:hover { background: rgba(255,255,255,.08); }
+    .sidebar-links { display: flex; flex-direction: column; gap: .25rem; }
+    .sidebar-links a { color: #fff; text-decoration: none; padding: .65rem .6rem; border-radius: 8px; }
+    .sidebar-links a:hover { background: #123c38; color: #d1fae5; }
+    .overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.45);
+      opacity: 0; visibility: hidden; transition: .25s ease; z-index: 999;
+    }
+    .overlay.is-open { opacity: 1; visibility: visible; }
+
     /* ===== Responsivo ===== */
     @media (max-width: 640px){
-      .header-content{ 
-        flex-wrap: wrap; 
-        gap: 8px 12px; 
-        padding: 8px 12px;
-      }
+      .header-content{ flex-wrap: wrap; gap: 8px 12px; padding: 8px 12px; }
       .top-left{ order: 1; }
-      .header-titles-desktop{ 
-        order: 2; 
-        flex-basis: 100%;            /* ocupa a largura toda */
-      }
-      .font-logo{ font-size: clamp(24px, 8.5vw, 40px); }
-      .site-search{ 
-        order: 3; 
-        width: 100%; 
-        margin-top: 4px;
+      .site-search{
+        position: static; transform: none; order: 2; width: 100%; margin-top: 4px;
+        justify-content: center;
       }
       .site-search input[type="search"]{ width: 100%; max-width: 100%; }
+      .header-titles-desktop{
+        order: 3; width: 100%; text-align: center; margin-top: 6px;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .header-titles-desktop { display: block; }
     }
   </style>
 </head>
@@ -154,52 +219,48 @@
 
             <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
               <a href="https://www.google.com" target="_blank" role="menuitem">
-                <img src="images/favicon_google.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Home
+                <img src="images/favicon_google.ico" alt="">Home
               </a>
               <a href="https://calendar.google.com" target="_blank" role="menuitem">
-                <img src="images/favicon_calendar.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Agenda
+                <img src="images/favicon_calendar.ico" alt="">Agenda
               </a>
               <a href="https://mail.google.com" target="_blank" role="menuitem">
-                <img src="images/favicon_gmail.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Gmail
+                <img src="images/favicon_gmail.ico" alt="">Gmail
               </a>
               <a href="https://docs.google.com/spreadsheets/" target="_blank" role="menuitem">
-                <img src="images/favicon_sheets.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Planilha
+                <img src="images/favicon_sheets.ico" alt="">Planilha
               </a>
               <a href="https://meet.google.com" target="_blank" role="menuitem">
-                <img src="images/favicon_meet.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Google Meet
+                <img src="images/favicon_meet.ico" alt="">Google Meet
               </a>
               <a href="https://chatgpt.com/" target="_blank" role="menuitem">
-                <img src="images/favicon_chagpt.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">ChatGPT
+                <img src="images/favicon_chagpt.ico" alt="">ChatGPT
               </a>
             </div>
           </div>
         </div>
 
-        <!-- Centro: Logo -->
-        <div class="header-titles-desktop">
-          <h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>
-        </div>
-
-        <!-- Direita: Busca -->
+        <!-- Centro: Busca -->
         <form class="site-search" role="search" aria-label="Pesquisar na web"
               action="https://www.google.com/search" method="GET" target="_self" id="search-form">
           <div class="search-wrap">
-            <input id="q" name="q" type="search" placeholder="Pesquisar no Google…"
+            <input id="q" name="q" type="search" placeholder="Pesquisar no Google"
                    autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions" />
             <div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div>
           </div>
           <button type="submit" aria-label="Pesquisar">Buscar</button>
         </form>
 
-      </div>
+        <!-- Direita: Logo -->
+        <div class="header-titles-desktop" aria-hidden="false">
+          <h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>
+        </div>
 
-      <div class="header-titles-mobile">
-        <h1 class="font-playfair">Options & Company</h1>
       </div>
     </header>
 
     <!-- Conteúdo Principal -->
-    <main class="main-content" style="margin:0; padding:0;">
+    <main class="main-content">
       <iframe title="Dashboard Looker Studio"
         src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd"
         style="width:100%; height:100vh; border:0; display:block;" allowfullscreen
@@ -219,14 +280,51 @@
       <a href="https://bibliotecaco.netlify.app/" id="link-biblioteca" target="_blank">Biblioteca</a>
     </nav>
   </aside>
-
   <div class="overlay" id="overlay" hidden></div>
 
-  <!-- Script principal do site -->
-  <script src="script.js"></script>
-
-  <!-- ===== Script: foco + autocomplete + sites padrão + RELEVÂNCIA ===== -->
+  <!-- ===== Scripts (menu, dropdown, foco, autocomplete, recentes, etc.) ===== -->
   <script>
+    /* ---------- Dropdown Ferramentas ---------- */
+    (function () {
+      const btn = document.getElementById('google-button');
+      const dd  = document.getElementById('google-dropdown');
+
+      if (btn && dd) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          dd.classList.toggle('show');
+          btn.setAttribute('aria-expanded', dd.classList.contains('show') ? 'true' : 'false');
+          dd.setAttribute('aria-hidden', dd.classList.contains('show') ? 'false' : 'true');
+        });
+        document.addEventListener('click', (e) => {
+          if (!dd.classList.contains('show')) return;
+          if (!dd.contains(e.target) && e.target !== btn) {
+            dd.classList.remove('show');
+            btn.setAttribute('aria-expanded', 'false');
+            dd.setAttribute('aria-hidden', 'true');
+          }
+        });
+      }
+    })();
+
+    /* ---------- Sidebar (Menu) ---------- */
+    (function () {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const openBtn = document.getElementById('menu-toggle');
+      const closeBtn = document.getElementById('close-sidebar');
+      const setOpen = (v) => {
+        sidebar.classList.toggle('is-open', v);
+        overlay.classList.toggle('is-open', v);
+        overlay.hidden = !v;
+      };
+      if (openBtn) openBtn.addEventListener('click', () => setOpen(true));
+      if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
+      if (overlay) overlay.addEventListener('click', () => setOpen(false));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+    })();
+
+    /* ===== Autocomplete + recentes ===== */
     (function () {
       const INPUT_SEL = "#q";
       const PANEL_SEL = "#suggestions";
@@ -351,7 +449,7 @@
         return (s || "")
           .toString()
           .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .lowerCase?.() || (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          .toLowerCase();
       }
       function tokensFrom(q) {
         return normalize(q).split(/\s+/).filter(t => t.length >= 2);
@@ -512,7 +610,7 @@
         const cand = models.find(m => (m.fillValue || m.label).toLowerCase().startsWith(typed.toLowerCase()));
         if (!cand) return;
 
-        const toShow = cand.fillValue || m.label;
+        const toShow = cand.fillValue || cand.label;
         input.value = toShow;
         try { input.setSelectionRange(typed.length, toShow.length); } catch {}
       }
@@ -566,12 +664,8 @@
         const panel = document.querySelector(PANEL_SEL);
         const input = document.querySelector(INPUT_SEL);
 
-        if (e.key === "Backspace" || e.key === "Delete") {
-          suppressInlineNext = true;
-        }
-        if (e.ctrlKey || e.metaKey || e.altKey) {
-          suppressInlineNext = true;
-        }
+        if (e.key === "Backspace" || e.key === "Delete") { suppressInlineNext = true; }
+        if (e.ctrlKey || e.metaKey || e.altKey) { suppressInlineNext = true; }
 
         if (!panel || panel.hidden) return;
 
@@ -675,6 +769,6 @@
       });
     })();
   </script>
-  <!-- ===== Fim do script ===== -->
+  <!-- ===== Fim dos scripts ===== -->
 </body>
 </html>
