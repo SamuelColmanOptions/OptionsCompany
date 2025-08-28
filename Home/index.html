@@ -10,98 +10,189 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap"
-    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
   <!-- Ficheiro de Estilo CSS -->
   <link rel="stylesheet" href="style.css">
 
   <style>
     /* ===== Scrollbar personalizada (Chrome/Edge/Safari) ===== */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #1a1a1a; /* cor do fundo da barra */
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #418D75; /* cor do “polegar” */
-      border-radius: 6px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #2e6b56; /* cor ao passar o mouse */
-    }
+    ::-webkit-scrollbar { width: 10px; height: 10px; }
+    ::-webkit-scrollbar-track { background: #1a1a1a; }
+    ::-webkit-scrollbar-thumb { background: #418D75; border-radius: 6px; }
+    ::-webkit-scrollbar-thumb:hover { background: #2e6b56; }
 
     /* ===== Firefox ===== */
-    * {
-      scrollbar-width: thin;
-      scrollbar-color: #418D75 #1a1a1a;
+    * { scrollbar-width: thin; scrollbar-color: #418D75 #1a1a1a; }
+
+    /* ===== TOPO: layout do cabeçalho (AGORA EM FLEX) ===== */
+    .header{
+      position: relative;
+      margin-bottom: 20px;          /* respiro para não “pegar” a linha do conteúdo */
+    }
+    .header-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px 20px;
+      flex-wrap: nowrap;
+      min-height: 72px;
+      position: relative; /* necessário para a logo absoluta se basear aqui */
+    }
+
+    /* Esquerda: Menu + Ferramentas lado a lado */
+    .top-left{
+      display: flex; 
+      gap: 12px; 
+      align-items: center;
+      flex: 0 0 auto;
+      z-index: 5;
+    }
+
+    /* Centro: logo */
+    .header-titles-desktop {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%); 
+      text-align: center;
+      pointer-events: none;
+    }
+    .header-titles-desktop h1 {
+      pointer-events: auto;
+    }
+    /* Tamanho/line-height da logo para caber melhor no topo */
+    .font-logo{
+      margin: 0;
+      line-height: 1.08;
+      font-size: clamp(28px, 4vw, 50px);
+    }
+
+    /* Mantém o dropdown funcionando normalmente */
+    .google-tools{ position: relative; }
+
+    /* Direita: busca */
+    .site-search { 
+      display: flex; 
+      align-items: center; 
+      gap: 8px; 
+      flex: 0 0 auto; 
+    }
+    .search-wrap { position: relative; }
+    .site-search input[type="search"]{
+      width: clamp(180px, 26vw, 320px);  /* caixa menor e responsiva */
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+      border-radius: 10px;
+      outline: none;
+    }
+    .site-search input[type="search"]::placeholder { color: rgba(255,255,255,0.7); }
+    .site-search button[type="submit"]{
+      padding: 10px 14px; border-radius: 10px; border: 0;
+      background: #418D75; color: #fff; font-weight: 600; cursor: pointer;
+    }
+
+    /* ===== Dropdown customizado ===== */
+    .suggest-panel{
+      position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 50;
+      background: #232323; border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px; box-shadow: 0 18px 40px rgba(0,0,0,.28);
+      padding: 6px; max-height: min(50vh, 420px); overflow: auto;
+    }
+    .suggest-empty{ padding: 10px 12px; color: rgba(255,255,255,0.7); font-size: 14px; }
+    .suggest-item{
+      display: grid; grid-template-columns: 28px 1fr auto auto; align-items: center;
+      gap: 10px; padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    }
+    .suggest-item:hover, .suggest-item[aria-selected="true"]{ background: rgba(255,255,255,0.08); }
+    .suggest-icon{ width: 18px; height: 18px; border-radius: 4px; display: inline-block; background: rgba(255,255,255,0.12); }
+    .suggest-text{ display: flex; flex-direction: column; min-width: 0; }
+    .suggest-primary{ color: #fff; font-size: 14px; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .suggest-secondary{ color: rgba(255,255,255,0.65); font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+    .suggest-badge{ font-size: 11px; padding: 3px 6px; border-radius: 999px; background: rgba(65,141,117,0.18); color: #a6e0cf; border: 1px solid rgba(65,141,117,0.35); margin-left: 8px; }
+    .suggest-remove{ font-size: 16px; line-height: 1; padding: 2px 6px; color: rgba(255,255,255,0.65); cursor: pointer; user-select: none; }
+    .suggest-remove:hover{ color: #ff6b6b; }
+
+    /* ===== Responsivo ===== */
+    @media (max-width: 640px){
+      .header-content{ 
+        flex-wrap: wrap; 
+        gap: 8px 12px; 
+        padding: 8px 12px;
+      }
+      .top-left{ order: 1; }
+      .header-titles-desktop{ 
+        order: 2; 
+        flex-basis: 100%;            /* ocupa a largura toda */
+      }
+      .font-logo{ font-size: clamp(24px, 8.5vw, 40px); }
+      .site-search{ 
+        order: 3; 
+        width: 100%; 
+        margin-top: 4px;
+      }
+      .site-search input[type="search"]{ width: 100%; max-width: 100%; }
     }
   </style>
 </head>
 
 <body>
-
   <div class="container">
     <!-- Cabeçalho -->
     <header class="header">
       <div class="header-content">
-        <!-- Botão Menu -->
-        <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="sidebar">
-          Menu
-        </button>
 
-        <!-- Títulos Centrais (Desktop) -->
+        <!-- Esquerda: Menu + Ferramentas -->
+        <div class="top-left">
+          <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="sidebar">Menu</button>
+
+          <div class="google-tools">
+            <button id="google-button" aria-controls="google-dropdown" aria-expanded="false">Ferramentas</button>
+
+            <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
+              <a href="https://www.google.com" target="_blank" role="menuitem">
+                <img src="images/favicon_google.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Home
+              </a>
+              <a href="https://calendar.google.com" target="_blank" role="menuitem">
+                <img src="images/favicon_calendar.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Agenda
+              </a>
+              <a href="https://mail.google.com" target="_blank" role="menuitem">
+                <img src="images/favicon_gmail.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Gmail
+              </a>
+              <a href="https://docs.google.com/spreadsheets/" target="_blank" role="menuitem">
+                <img src="images/favicon_sheets.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Planilha
+              </a>
+              <a href="https://meet.google.com" target="_blank" role="menuitem">
+                <img src="images/favicon_meet.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">Google Meet
+              </a>
+              <a href="https://chatgpt.com/" target="_blank" role="menuitem">
+                <img src="images/favicon_chagpt.ico" width="16" height="16" style="vertical-align: middle; margin-right: 6px;">ChatGPT
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Centro: Logo -->
         <div class="header-titles-desktop">
           <h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>
         </div>
 
-        <!-- Ferramentas do Google com Dropdown -->
-        <div class="google-tools">
-          <button id="google-button" aria-controls="google-dropdown" aria-expanded="false">Ferramentas</button>
-
-          <!-- Dropdown -->
-          <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
-            <a href="https://www.google.com" target="_blank" role="menuitem">
-              <img src="images/favicon_google.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              Home
-            </a>
-            <a href="https://calendar.google.com" target="_blank" role="menuitem">
-              <img src="images/favicon_calendar.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              Agenda
-            </a>
-            <a href="https://mail.google.com" target="_blank" role="menuitem">
-              <img src="images/favicon_gmail.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              Gmail
-            </a>
-            <a href="https://docs.google.com/spreadsheets/" target="_blank" role="menuitem">
-              <img src="images/favicon_sheets.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              Planilha
-            </a>
-            <a href="https://meet.google.com" target="_blank" role="menuitem">
-              <img src="images/favicon_meet.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              Google Meet
-            </a>
-            <a href="https://chatgpt.com/" target="_blank" role="menuitem">
-              <img src="images/favicon_chagpt.ico" width="16" height="16"
-                style="vertical-align: middle; margin-right: 6px;">
-              ChatGPT
-            </a>
+        <!-- Direita: Busca -->
+        <form class="site-search" role="search" aria-label="Pesquisar na web"
+              action="https://www.google.com/search" method="GET" target="_self" id="search-form">
+          <div class="search-wrap">
+            <input id="q" name="q" type="search" placeholder="Pesquisar no Google…"
+                   autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions" />
+            <div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div>
           </div>
-        </div>
+          <button type="submit" aria-label="Pesquisar">Buscar</button>
+        </form>
+
       </div>
 
-      <!-- Títulos Mobile -->
       <div class="header-titles-mobile">
         <h1 class="font-playfair">Options & Company</h1>
       </div>
@@ -117,7 +208,7 @@
     </main>
   </div>
 
-  <!-- ===== MENU LATERAL (Sidebar) ===== -->
+  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar" aria-hidden="true">
     <div class="sidebar-header">
       <h2>Menu</h2>
@@ -125,16 +216,465 @@
     </div>
     <nav class="sidebar-links">
       <a href="https://chamadoadm.netlify.app" id="link-chamado-ti" target="_blank">Suporte</a>
-      <!-- <a href="https://callmatinal.netlify.app" id="link-live" target="_blank">Live</a> -->
       <a href="https://bibliotecaco.netlify.app/" id="link-biblioteca" target="_blank">Biblioteca</a>
     </nav>
   </aside>
 
-  <!-- Overlay -->
   <div class="overlay" id="overlay" hidden></div>
 
-  <!-- Script -->
+  <!-- Script principal do site -->
   <script src="script.js"></script>
-</body>
 
+  <!-- ===== Script: foco + autocomplete + sites padrão + RELEVÂNCIA ===== -->
+  <script>
+    (function () {
+      const INPUT_SEL = "#q";
+      const PANEL_SEL = "#suggestions";
+      const FORM_SEL = "#search-form";
+
+      const RECENTS_KEY = "recentSearches_v1";
+      const MAX_RECENTS = 10;
+      const SUGGEST_LIMIT = 10;
+
+      /* ===== SITES PADRÃO ===== */
+      const STANDARD_SITES = [
+        { name: "Google",       domain: "google.com",        category: "Busca" },
+        { name: "YouTube",      domain: "youtube.com",       category: "Vídeos" },
+        { name: "Facebook",     domain: "facebook.com",      category: "Rede social" },
+        { name: "Instagram",    domain: "instagram.com",     category: "Rede social" },
+        { name: "ChatGPT",      domain: "chatgpt.com",       category: "Inteligência artificial" },
+        { name: "X (Twitter)",  domain: "x.com",             category: "Rede social" },
+        { name: "WhatsApp",     domain: "whatsapp.com",      category: "Mensagens" },
+        { name: "Amazon",       domain: "amazon.com",        category: "Comércio eletrônico" },
+        { name: "LinkedIn",     domain: "linkedin.com",      category: "Rede social profissional" },
+        { name: "Netflix",      domain: "netflix.com",       category: "Streaming de filmes e séries" },
+        { name: "Gemini",       domain: "gemini.google.com", category: "IA do Google" },
+        { name: "InfoMoney",    domain: "infomoney.com.br",  category: "Finanças" },
+        { name: "CNN", domain: "cnn.com", category: "Notícias gerais e economia" },
+        { name: "Looker Studio",   domain: "lookerstudio.google.com", category: "Análise de dados" },
+        { name: "Google Sheets",   domain: "sheets.google.com",       category: "Planilhas" },
+        { name: "WhatsApp Web",    domain: "web.whatsapp.com",        category: "Mensagens" },
+        { name: "Formulários Google", domain: "forms.google.com",     category: "Formulários" },
+        { name: "Canva",           domain: "canva.com",               category: "Design gráfico" },
+      ];
+
+      /* ===== Atalhos existentes ===== */
+      const SHORTCUTS = [
+        { re: /^y(t|o|outube)?$/i, items: ["YouTube", "youtube.com"] },
+        { re: /^g(mail)?$/i, items: ["Gmail", "gmail.com", "mail.google.com"] },
+        { re: /^c(al|alendar)?$/i, items: ["Google Calendar", "calendar.google.com"] },
+        { re: /^m(eet)?$/i, items: ["Google Meet", "meet.google.com"] },
+        { re: /^(d|drive)$/i, items: ["Google Drive", "drive.google.com"] },
+        { re: /^(s|sheets?)$/i, items: ["Google Sheets", "docs.google.com/spreadsheets/"] },
+      ];
+
+      /* ---------- Foco inicial ---------- */
+      function focusInput() {
+        const el = document.querySelector(INPUT_SEL);
+        if (!el) return;
+        if (document.visibilityState !== "visible") {
+          document.addEventListener("visibilitychange", focusInput, { once: true });
+          return;
+        }
+        el.focus({ preventScroll: true });
+        try { el.select(); } catch (_) {}
+      }
+      function focusWithRetries(retries = 24, delay = 50) {
+        focusInput();
+        let i = 1;
+        const id = setInterval(() => {
+          const ok = document.activeElement?.matches?.(INPUT_SEL);
+          if (ok || i++ >= retries) clearInterval(id);
+          else focusInput();
+        }, delay);
+      }
+
+      /* ---------------- Recentes ---------------- */
+      function getRecents() {
+        try { return JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]"); }
+        catch { return []; }
+      }
+      function saveRecent(q) {
+        const t = q.trim();
+        if (!t) return;
+        let arr = getRecents().filter(v => v.toLowerCase() !== t.toLowerCase());
+        arr.unshift(t);
+        if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
+        localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
+      }
+      function removeRecent(label) {
+        const tgt = (label || "").trim().toLowerCase();
+        const arr = getRecents().filter(v => v.toLowerCase() !== tgt);
+        localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
+      }
+
+      /* ------------- Sugestões do Google ------------- */
+      async function fetchGoogleSuggest(q) {
+        if (!q) return [];
+        const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`;
+        try {
+          const res = await fetch(url, { mode: "cors" });
+          if (!res.ok) return [];
+          const data = await res.json();
+          return Array.isArray(data?.[1]) ? data[1] : [];
+        } catch { return []; }
+      }
+
+      /* ---------------- Helpers ---------------- */
+      function looksLikeUrl(text) {
+        const t = text.trim();
+        return /\./.test(t) && !/\s/.test(t);
+      }
+      function domainFrom(text) {
+        try {
+          const url = text.match(/^https?:\/\//i) ? text : "https://" + text;
+          return new URL(url).hostname;
+        } catch { return null; }
+      }
+      function faviconFor(value) {
+        const host = domainFrom(value);
+        return host ? `https://www.google.com/s2/favicons?domain=${host}&sz=32` : null;
+      }
+      function uniqBy(arr, keyFn) {
+        const seen = new Set(); const out = [];
+        for (const v of arr) {
+          const k = keyFn(v);
+          if (!seen.has(k)) { seen.add(k); out.push(v); }
+        }
+        return out;
+      }
+      function applyShortcuts(q) {
+        const m = SHORTCUTS.find(s => s.re.test(q));
+        return m ? m.items : [];
+      }
+      function normalize(s) {
+        return (s || "")
+          .toString()
+          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+          .lowerCase?.() || (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      }
+      function tokensFrom(q) {
+        return normalize(q).split(/\s+/).filter(t => t.length >= 2);
+      }
+
+      /* ===== Modelador de item ===== */
+      function itemModel(label, type = "sugestao", opts = {}) {
+        const isUrl = opts.fillValue ? looksLikeUrl(opts.fillValue) : looksLikeUrl(label);
+        return {
+          label,
+          subtitle: opts.subtitleOverride ??
+            (isUrl ? (opts.fillValue || label).replace(/^https?:\/\//i, "")
+                   : (type === "atalho" ? "Atalho" : type === "recente" ? "Recente" : "Sugestão")),
+          badge: type === "atalho" ? "Atalho" : type === "recente" ? "Recente" : "Sugestão",
+          icon: opts.iconOverride ?? (isUrl ? (faviconFor(opts.fillValue || label) || "") : "images/favicon_google.ico"),
+          type,
+          isUrl,
+          fillValue: opts.fillValue || label,
+        };
+      }
+
+      /* ===== Sites padrão como modelos ===== */
+      function standardSiteModels(q) {
+        if (!q) return [];
+        const s = normalize(q);
+        return STANDARD_SITES
+          .filter(site => {
+            const n = normalize(site.name);
+            const d = normalize(site.domain);
+            if (s.length === 1) return n.startsWith(s);
+            const toks = tokensFrom(q);
+            const hay = n + " " + d;
+            return toks.every(t => hay.includes(t));
+          })
+          .map(site =>
+            itemModel(
+              site.name,
+              "atalho",
+              {
+                subtitleOverride: `${site.domain}`,
+                iconOverride: faviconFor(site.domain),
+                fillValue: site.domain
+              }
+            )
+          );
+      }
+
+      /* ===== Checagem de relevância ===== */
+      function modelMatchesQuery(m, q) {
+        const s = (q || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        if (!s) return false;
+        const base = (m.fillValue || m.label + " " + (m.subtitle || ""))
+          .toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        if (s.length === 1) {
+          const dom = ((m.subtitle || "").split(" — ")[0] || "")
+            .toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+          return base.startsWith(s) || dom.startsWith(s);
+        }
+        const toks = s.split(/\s+/).filter(Boolean);
+        return toks.every(t => base.includes(t));
+      }
+
+      function renderPanel(models, activeIndex = -1) {
+        const panel = document.querySelector(PANEL_SEL);
+        if (!panel) return;
+        panel.innerHTML = "";
+        if (!models.length) {
+          panel.hidden = false;
+          const div = document.createElement("div");
+          div.className = "suggest-empty";
+          div.textContent = "Sem sugestões";
+          panel.appendChild(div);
+          return;
+        }
+        models.slice(0, SUGGEST_LIMIT).forEach((m, idx) => {
+          const el = document.createElement("div");
+          el.className = "suggest-item";
+          el.setAttribute("role", "option");
+          el.setAttribute("data-index", String(idx));
+          if (idx === activeIndex) el.setAttribute("aria-selected", "true");
+
+          const icon = document.createElement("img");
+          icon.className = "suggest-icon"; icon.alt = ""; icon.referrerPolicy = "no-referrer";
+          if (m.icon) icon.src = m.icon; else icon.style.visibility = "hidden";
+
+          const textWrap = document.createElement("div");
+          textWrap.className = "suggest-text";
+          const primary = document.createElement("div");
+          primary.className = "suggest-primary";
+          primary.textContent = m.label;
+          const secondary = document.createElement("div");
+          secondary.className = "suggest-secondary";
+          secondary.textContent = m.subtitle;
+          textWrap.appendChild(primary); textWrap.appendChild(secondary);
+
+          const badge = document.createElement("div");
+          badge.className = "suggest-badge"; badge.textContent = m.badge;
+
+          el.appendChild(icon);
+          el.appendChild(textWrap);
+          el.appendChild(badge);
+
+          if (m.type === "recente") {
+            const removeBtn = document.createElement("div");
+            removeBtn.className = "suggest-remove";
+            removeBtn.textContent = "×";
+            removeBtn.addEventListener("mousedown", (e) => { e.preventDefault(); });
+            removeBtn.addEventListener("click", (e) => {
+              e.stopPropagation();
+              removeRecent(m.fillValue || m.label);
+              el.remove();
+              if (!panel.querySelector(".suggest-item")) {
+                panel.innerHTML = "";
+                const empty = document.createElement("div");
+                empty.className = "suggest-empty";
+                empty.textContent = "Sem sugestões";
+                panel.appendChild(empty);
+              }
+            });
+            el.appendChild(removeBtn);
+          }
+
+          el.addEventListener("mousedown", (e) => { e.preventDefault(); });
+          el.addEventListener("click", () => applySuggestion(m));
+
+          panel.appendChild(el);
+        });
+        panel.hidden = false;
+      }
+
+      function hidePanel() {
+        const panel = document.querySelector(PANEL_SEL);
+        if (panel) panel.hidden = true;
+      }
+
+      function applySuggestion(m) {
+        const input = document.querySelector(INPUT_SEL);
+        if (!input) return;
+        input.value = m.fillValue || m.label;
+        input.setSelectionRange(input.value.length, input.value.length);
+        hidePanel();
+      }
+
+      /* ---------------- Auto-complete inline ---------------- */
+      let suppressInlineNext = false;
+
+      function shouldSuppressInline(inputEl) {
+        if (inputEl.selectionStart !== inputEl.selectionEnd) return true;
+        if (inputEl.selectionStart !== inputEl.value.length) return true;
+        return false;
+      }
+
+      function inlineComplete(typed, models, byKeyboard = false) {
+        const input = document.querySelector(INPUT_SEL);
+        if (!input || !typed) return;
+        if (byKeyboard || suppressInlineNext || shouldSuppressInline(input)) return;
+
+        const cand = models.find(m => (m.fillValue || m.label).toLowerCase().startsWith(typed.toLowerCase()));
+        if (!cand) return;
+
+        const toShow = cand.fillValue || m.label;
+        input.value = toShow;
+        try { input.setSelectionRange(typed.length, toShow.length); } catch {}
+      }
+
+      /* ---------------- Busca/atualização das sugestões ---------------- */
+      let activeIndex = -1;
+      let currentModels = [];
+      let allowFocusRecents = false;
+
+      async function refreshSuggestions(byKeyboard = false, inputEvent = null) {
+        const input = document.querySelector(INPUT_SEL);
+        const q = (input.value || "").trim();
+
+        if (inputEvent && typeof inputEvent.inputType === "string" && inputEvent.inputType.startsWith("delete")) {
+          suppressInlineNext = true;
+        }
+
+        const stdModels = standardSiteModels(q);
+
+        const rec = getRecents();
+        const short = applyShortcuts(q);
+        const remote = await fetchGoogleSuggest(q);
+        const stringPool = q ? Array.from(new Set([...short, ...remote, ...rec])) : [];
+
+        let otherModels = stringPool.map((s) =>
+          itemModel(s, short.includes(s) ? "atalho" : rec.includes(s) ? "recente" : "sugestao")
+        );
+
+        otherModels = otherModels.filter(m => modelMatchesQuery(m, q));
+
+        if (q && looksLikeUrl(q) &&
+            !otherModels.concat(stdModels).some(m => (m.fillValue || m.label).toLowerCase() === q.toLowerCase())) {
+          otherModels.unshift(itemModel(q, "sugestao"));
+        }
+
+        currentModels = uniqBy([...stdModels, ...otherModels], (m) => (m.fillValue || m.label).toLowerCase());
+
+        activeIndex = -1;
+        if (q) {
+          renderPanel(currentModels, activeIndex);
+          inlineComplete(q, currentModels, byKeyboard);
+        } else {
+          hidePanel();
+        }
+
+        suppressInlineNext = false;
+      }
+
+      /* ---------------- Navegação de teclado ---------------- */
+      function handleKeyDown(e) {
+        const panel = document.querySelector(PANEL_SEL);
+        const input = document.querySelector(INPUT_SEL);
+
+        if (e.key === "Backspace" || e.key === "Delete") {
+          suppressInlineNext = true;
+        }
+        if (e.ctrlKey || e.metaKey || e.altKey) {
+          suppressInlineNext = true;
+        }
+
+        if (!panel || panel.hidden) return;
+
+        const max = Math.min(SUGGEST_LIMIT, currentModels.length) - 1;
+
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          activeIndex = activeIndex < max ? activeIndex + 1 : 0;
+          renderPanel(currentModels, activeIndex);
+          const m = currentModels[activeIndex];
+          if (m) {
+            const v = m.fillValue || m.label;
+            input.value = v;
+            input.setSelectionRange(v.length, v.length);
+          }
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          activeIndex = activeIndex > 0 ? activeIndex - 1 : max;
+          renderPanel(currentModels, activeIndex);
+          const m = currentModels[activeIndex];
+          if (m) {
+            const v = m.fillValue || m.label;
+            input.value = v;
+            input.setSelectionRange(v.length, v.length);
+          }
+        } else if (e.key === "Tab") {
+          const hasSelection = input.selectionStart !== input.selectionEnd;
+          if (hasSelection && currentModels.length) {
+            e.preventDefault();
+            input.setSelectionRange(input.value.length, input.value.length);
+            hidePanel();
+          }
+        } else if (e.key === "Enter") {
+          hidePanel();
+        } else if (e.key === "Escape") {
+          hidePanel();
+        }
+      }
+
+      /* ---------------- Submit inteligente ---------------- */
+      function handleSubmit(e) {
+        const input = document.querySelector(INPUT_SEL);
+        const q = input.value.trim();
+        if (!q) { e.preventDefault(); return; }
+        saveRecent(q);
+        if (looksLikeUrl(q)) {
+          e.preventDefault();
+          const url = q.match(/^https?:\/\//i) ? q : "https://" + q;
+          window.location.assign(url);
+        }
+      }
+
+      /* ---------------- Atalhos globais de foco ---------------- */
+      function bindGlobalShortcuts() {
+        window.addEventListener("keydown", (e) => {
+          const typing = /input|textarea|select/i.test(e.target.tagName);
+          if (typing) return;
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+            e.preventDefault(); focusWithRetries(1, 0);
+          } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key === "/") {
+            e.preventDefault(); focusWithRetries(1, 0);
+          }
+        });
+      }
+
+      /* ---------------- Click fora fecha painel ---------------- */
+      function bindOutsideClick() {
+        document.addEventListener("click", (e) => {
+          const panel = document.querySelector(PANEL_SEL);
+          const input = document.querySelector(INPUT_SEL);
+          if (!panel || panel.hidden) return;
+          if (!panel.contains(e.target) && e.target !== input) hidePanel();
+        });
+      }
+
+      /* ---------------- Init ---------------- */
+      document.addEventListener("DOMContentLoaded", () => {
+        const input = document.querySelector(INPUT_SEL);
+        const form = document.querySelector(FORM_SEL);
+
+        focusWithRetries();
+
+        // Recentes só ao clicar
+        let allowFocusRecents = false;
+        input.addEventListener("pointerdown", () => { allowFocusRecents = true; });
+        input.addEventListener("focus", () => {
+          if (allowFocusRecents && !input.value.trim()) {
+            const rec = getRecents().map((s) => itemModel(s, "recente"));
+            if (rec.length) renderPanel(rec);
+          }
+        });
+
+        input.addEventListener("input", (ev) => refreshSuggestions(false, ev));
+        input.addEventListener("keydown", handleKeyDown);
+
+        input.addEventListener("blur", () => setTimeout(hidePanel, 100));
+
+        form.addEventListener("submit", handleSubmit);
+        bindGlobalShortcuts();
+        bindOutsideClick();
+      });
+    })();
+  </script>
+  <!-- ===== Fim do script ===== -->
+</body>
 </html>
