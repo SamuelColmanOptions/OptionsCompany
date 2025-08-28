@@ -111,9 +111,24 @@
       display: flex; align-items: center; gap: 8px; z-index: 4; flex: 0 0 auto;
     }
     .search-wrap { position: relative; }
+
+    /* Ícone DENTRO do input */
+    .search-wrap .search-icon{
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      opacity: .9;
+      pointer-events: none; /* não intercepta cliques */
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0)); /* evita borda clara no dark */
+    }
+
     .site-search input[type="search"]{
       width: clamp(220px, 30vw, 520px);
       padding: 10px 12px;
+      padding-left: 36px; /* espaço para a logo */
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.06);
       color: #fff; border-radius: 10px; outline: none;
@@ -196,6 +211,7 @@
       .header-titles-desktop{
         order: 3; width: 100%; text-align: center; margin-top: 6px;
       }
+      .search-wrap .search-icon{ left: 12px; }
     }
 
     @media (min-width: 768px) {
@@ -244,6 +260,8 @@
         <form class="site-search" role="search" aria-label="Pesquisar na web"
               action="https://www.google.com/search" method="GET" target="_self" id="search-form">
           <div class="search-wrap">
+            <!-- Ícone da Google DENTRO do input -->
+            <img src="images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true">
             <input id="q" name="q" type="search" placeholder="Pesquisar no Google…"
                    autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions" />
             <div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div>
@@ -341,7 +359,7 @@
         { name: "Facebook",     domain: "facebook.com",      category: "Rede social" },
         { name: "Instagram",    domain: "instagram.com",     category: "Rede social" },
         { name: "ChatGPT",      domain: "chatgpt.com",       category: "Inteligência artificial" },
-        { name: "X (Twitter)",  domain: "x.com",             category: "Rede social" },
+        { name: "X ",  domain: "x.com",             category: "Rede social" },
         { name: "WhatsApp",     domain: "whatsapp.com",      category: "Mensagens" },
         { name: "Amazon",       domain: "amazon.com",        category: "Comércio eletrônico" },
         { name: "LinkedIn",     domain: "linkedin.com",      category: "Rede social profissional" },
@@ -354,6 +372,15 @@
         { name: "WhatsApp Web",    domain: "web.whatsapp.com",        category: "Mensagens" },
         { name: "Formulários Google", domain: "forms.google.com",     category: "Formulários" },
         { name: "Canva",           domain: "canva.com",               category: "Design gráfico" },
+        { name: "Wikipedia",      domain: "wikipedia.org",      category: "Enciclopédia" },
+        { name: "Pinterest",      domain: "pinterest.com",       category: "Rede social" },
+        { name: "Globo",          domain: "globo.com",           category: "Portal / Notícias" },
+        { name: "Telegram",       domain: "t.me",                category: "Mensagens" },
+        { name: "The New York Times", domain: "nytimes.com",     category: "Portal / Notícias" },
+        { name: "AliExpress",     domain: "aliexpress.com",       category: "Comércio eletrônico" },
+        { name: "Discord",        domain: "discord.com",         category: "Comunicação / Voz e texto" },
+        { name: "BBC",             domain: "bbc.com",             category: "Notícias internacionais" },
+        { name: "Speedtest by Ookla", domain: "speedtest.net", category: "Teste de velocidade de internet" },
       ];
 
       /* ===== Atalhos existentes ===== */
@@ -449,7 +476,7 @@
         return (s || "")
           .toString()
           .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase();
+          .lowerCase?.() || (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
       }
       function tokensFrom(q) {
         return normalize(q).split(/\s+/).filter(t => t.length >= 2);
