@@ -371,313 +371,642 @@ html, body { overflow-x: hidden; }
   <div class="overlay" id="overlay" hidden></div>
 
   <!-- ===== Scripts ===== -->
-  <script>
-    /* ---------- Dropdown Ferramentas ---------- */
-    (function () {
-      const btn = document.getElementById('google-button');
-      const dd  = document.getElementById('google-dropdown');
+<script>
+/* ===================== Dropdown Ferramentas ===================== */
+(() => {
+  const btn = document.getElementById('google-button');
+  const dd  = document.getElementById('google-dropdown');
 
-      if (btn && dd) {
-        btn.addEventListener('click', (e) => {
+  if (!btn || !dd) return;
+
+  const close = () => {
+    dd.classList.remove('show');
+    btn.setAttribute('aria-expanded', 'false');
+    dd.setAttribute('aria-hidden', 'true');
+  };
+
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    dd.classList.toggle('show');
+    const open = dd.classList.contains('show');
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    dd.setAttribute('aria-hidden', open ? 'false' : 'true');
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!dd.classList.contains('show')) return;
+    if (!dd.contains(e.target) && e.target !== btn) close();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') close();
+  });
+})();
+
+/* ===================== Sidebar (Menu) ===================== */
+(() => {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const openBtn = document.getElementById('menu-toggle');
+  const closeBtn = document.getElementById('close-sidebar');
+
+  if (!sidebar || !overlay) return;
+
+  const setOpen = (v) => {
+    sidebar.classList.toggle('is-open', v);
+    overlay.classList.toggle('is-open', v);
+    overlay.hidden = !v;
+    sidebar.setAttribute('aria-hidden', v ? 'false' : 'true');
+    openBtn?.setAttribute('aria-expanded', v ? 'true' : 'false');
+  };
+
+  openBtn?.addEventListener('click', () => setOpen(true));
+  closeBtn?.addEventListener('click', () => setOpen(false));
+  overlay?.addEventListener('click', () => setOpen(false));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+
+  // expõe para outros módulos (ex.: fechar ao trocar de aba)
+  window.__closeSidebar = () => setOpen(false);
+})();
+
+/* ===================== Sistema de Abas (menu) ===================== */
+(() => {
+  const TAB_STORAGE_KEY = 'lastTab_v1';
+  const panels = {
+    home:        document.getElementById('tab-home'),
+    indicadores: document.getElementById('tab-indicadores'),
+  };
+
+  function activate(tab) {
+    Object.keys(panels).forEach(k => {
+      panels[k]?.classList.toggle('active', k === tab);
+      if (panels[k]) {
+        const labelledby = panels[k].getAttribute('aria-labelledby');
+        if (labelledby) {
+          const link = document.getElementById(labelledby);
+          if (link) link.setAttribute('aria-current', k === tab ? 'page' : 'false');
+        }
+      }
+    });
+    try { localStorage.setItem(TAB_STORAGE_KEY, tab); } catch {}
+    window.__closeSidebar?.();
+    if (tab === 'home')        history.replaceState(null, '', '#home');
+    if (tab === 'indicadores') history.replaceState(null, '', '#indicadores');
+  }
+
+  // Clique em links do menu com data-tab-target="home|indicadores"
+  document.querySelectorAll('[data-tab-target]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      const tab = a.getAttribute('data-tab-target');
+      if (tab && panels[tab]) activate(tab);
+    });
+  });
+
+  // Inicial pelo hash ou storage
+  function initFromHashOrStorage() {
+    const hash = (location.hash || '').replace('#','').toLowerCase();
+    if (hash && panels[hash]) { activate(hash); return; }
+    try {
+      const saved = localStorage.getItem(TAB_STORAGE_KEY);
+      if (saved && panels[saved]) { activate(saved); return; }
+    } catch {}
+    activate('home');
+  }
+
+  window.addEventListener('hashchange', () => {
+    const hash = (location.hash || '').replace('#','').toLowerCase();
+    if (hash && panels[hash]) activate(hash);
+  });
+
+  initFromHashOrStorage();
+  window.openTab = activate; // opcional: abrir via JS
+})();
+
+/* ===================== Autocomplete + recentes ===================== */
+(() => {
+  const INPUT_SEL = "#q";
+  const PANEL_SEL = "#suggestions";
+  const FORM_SEL  = "#search-form";
+
+  const RECENTS_KEY   = "recentSearches_v1";
+  const MAX_RECENTS   = 10;
+  const SUGGEST_LIMIT = 10;
+
+  // Catálogo de sites (removi duplicado do Flex Scan)
+  const STANDARD_SITES = [
+    { name: "Google",       domain: "google.com",        category: "Busca" },
+    { name: "YouTube",      domain: "youtube.com",       category: "Vídeos" },
+    { name: "Facebook",     domain: "facebook.com",      category: "Rede social" },
+    { name: "Instagram",    domain: "instagram.com",     category: "Rede social" },
+    { name: "ChatGPT",      domain: "chatgpt.com",       category: "Inteligência artificial" },
+    { name: "X",            domain: "x.com",             category: "Rede social" },
+    { name: "Amazon",       domain: "amazon.com",        category: "Comércio eletrônico" },
+    { name: "LinkedIn",     domain: "linkedin.com",      category: "Rede social profissional" },
+    { name: "Netflix",      domain: "netflix.com",       category: "Streaming de filmes e séries" },
+    { name: "Gemini",       domain: "gemini.google.com", category: "IA do Google" },
+    { name: "InfoMoney",    domain: "infomoney.com.br",  category: "Finanças" },
+    { name: "CNN",          domain: "cnn.com",           category: "Notícias gerais e economia" },
+    { name: "Looker Studio",domain: "lookerstudio.google.com", category: "Análise de dados" },
+    { name: "Google Sheets",domain: "sheets.google.com",       category: "Planilhas" },
+    { name: "WhatsApp Web", domain: "web.whatsapp.com",        category: "Mensagens" },
+    { name: "Formulários Google", domain: "forms.google.com",  category: "Formulários" },
+    { name: "Canva",        domain: "canva.com",               category: "Design gráfico" },
+    { name: "Wikipedia",    domain: "wikipedia.org",           category: "Enciclopédia" },
+    { name: "Pinterest",    domain: "pinterest.com",           category: "Rede social" },
+    { name: "Globo",        domain: "globo.com",               category: "Portal / Notícias" },
+    { name: "Telegram",     domain: "t.me",                    category: "Mensagens" },
+    { name: "The New York Times", domain: "nytimes.com",       category: "Portal / Notícias" },
+    { name: "AliExpress",   domain: "aliexpress.com",          category: "Comércio eletrônico" },
+    { name: "Discord",      domain: "discord.com",             category: "Comunicação / Voz e texto" },
+    { name: "BBC",          domain: "bbc.com",                 category: "Notícias internacionais" },
+    { name: "Speedtest by Ookla", domain: "speedtest.net",     category: "Teste de velocidade" },
+    { name: "Gmail",        domain: "mail.google.com",         category: "E-mail" },
+    { name: "Google Drive", domain: "drive.google.com",        category: "Armazenamento em nuvem" },
+    { name: "Google Docs",  domain: "docs.google.com",         category: "Documentos" },
+    { name: "Google Slides",domain: "slides.google.com",       category: "Apresentações" },
+    { name: "Google Keep",  domain: "keep.google.com",         category: "Anotações" },
+    { name: "Google Calendar", domain: "calendar.google.com",  category: "Agenda" },
+    { name: "Google Meet",  domain: "meet.google.com",         category: "Videoconferência" },
+    { name: "Google Chat",  domain: "chat.google.com",         category: "Mensagens" },
+    { name: "Google Maps",  domain: "maps.google.com",         category: "Mapas e navegação" },
+    { name: "Google Earth", domain: "earth.google.com",        category: "Mapas e visualização 3D" },
+    { name: "Google Translate", domain: "translate.google.com",category: "Tradução" },
+    { name: "Google Photos",domain: "photos.google.com",       category: "Fotos e álbuns" },
+    { name: "Google News",  domain: "news.google.com",         category: "Notícias" },
+    { name: "Google Finance", domain: "google.com/finance",    category: "Finanças" },
+    { name: "Google Flights", domain: "google.com/flights",    category: "Viagens" },
+    { name: "Google Books", domain: "books.google.com",        category: "Livros" },
+    { name: "Google Play",  domain: "play.google.com",         category: "Loja de apps e mídia" },
+    { name: "Google Podcasts", domain: "podcasts.google.com",  category: "Podcasts" },
+    { name: "Google Scholar",  domain: "scholar.google.com",   category: "Artigos acadêmicos" },
+    { name: "Google Classroom",domain:"classroom.google.com",  category: "Educação" },
+    { name: "Google Arts & Culture",domain:"artsandculture.google.com", category:"Arte e cultura" },
+    { name: "Google Ads",   domain: "ads.google.com",          category: "Publicidade" },
+    { name: "Google Analytics", domain:"analytics.google.com", category: "Métricas e estatísticas" },
+    { name: "Google Tag Manager", domain:"tagmanager.google.com", category:"Gerenciamento de tags" },
+    { name: "Google Cloud", domain: "cloud.google.com",        category: "Serviços em nuvem" },
+    { name: "Google Colab", domain: "colab.research.google.com", category: "Notebooks de IA" },
+    { name: "Spotify",      domain: "spotify.com",             category: "Streaming de música" },
+    { name: "YouTube Music",domain: "music.youtube.com",       category: "Streaming de música" },
+    { name: "Tryd",         domain: "tryd.com.br",             category: "Tryd" },
+    { name: "Fast trade",   domain: "plataformafasttrade.com.br", category: "Fast Trade" },
+    { name: "Chat Guru",    domain: "chatguru.com.br",         category: "Chat Guru" },
+    { name: "Brasil Jornal",domain: "braziljournal.com",       category: "Notícias" },
+    { name: "Flex Scan",    domain: "login.flexscan.com.br",   category: "Flexscan" },
+    { name: "Git Hub",      domain: "github.com",              category: "Git Hub" },
+  ];
+
+  const SHORTCUTS = [
+    { re: /^y(t|o|outube)?$/i, items: ["YouTube", "youtube.com"] },
+    { re: /^g(mail)?$/i,      items: ["Gmail", "mail.google.com"] },
+    { re: /^c(al|alendar)?$/i,items: ["Google Calendar", "calendar.google.com"] },
+    { re: /^m(eet)?$/i,       items: ["Google Meet", "meet.google.com"] },
+    { re: /^(d|drive)$/i,     items: ["Google Drive", "drive.google.com"] },
+    { re: /^(s|sheets?)$/i,   items: ["Google Sheets", "docs.google.com/spreadsheets/"] },
+  ];
+
+  /* ---------- Helpers ---------- */
+  const normalize = (s) =>
+    (s || "").toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  const tokensFrom = (q) => normalize(q).split(/\s+/).filter(t => t.length >= 2);
+
+  const looksLikeUrl = (text) => {
+    const t = text.trim();
+    return /\./.test(t) && !/\s/.test(t);
+  };
+
+  const domainFrom = (text) => {
+    try {
+      const url = /^https?:\/\//i.test(text) ? text : "https://" + text;
+      return new URL(url).hostname;
+    } catch { return null; }
+  };
+
+  const faviconFor = (value) => {
+    const host = domainFrom(value);
+    return host ? `https://www.google.com/s2/favicons?domain=${host}&sz=32` : null;
+  };
+
+  const uniqBy = (arr, keyFn) => {
+    const seen = new Set(); const out = [];
+    for (const v of arr) {
+      const k = keyFn(v);
+      if (!seen.has(k)) { seen.add(k); out.push(v); }
+    }
+    return out;
+  };
+
+  const getRecents = () => {
+    try { return JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]"); }
+    catch { return []; }
+  };
+
+  const saveRecent = (q) => {
+    const t = q.trim();
+    if (!t) return;
+    let arr = getRecents().filter(v => v.toLowerCase() !== t.toLowerCase());
+    arr.unshift(t);
+    if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
+    localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
+  };
+
+  const removeRecent = (label) => {
+    const tgt = (label || "").trim().toLowerCase();
+    const arr = getRecents().filter(v => v.toLowerCase() !== tgt);
+    localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
+  };
+
+  const fetchGoogleSuggest = async (q) => {
+    if (!q) return [];
+    const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`;
+    try {
+      const res = await fetch(url, { mode: "cors" });
+      if (!res.ok) return [];
+      const data = await res.json();
+      return Array.isArray(data?.[1]) ? data[1] : [];
+    } catch { return []; }
+  };
+
+  const itemModel = (label, type = "sugestao", opts = {}) => {
+    const isUrl = opts.fillValue ? looksLikeUrl(opts.fillValue) : looksLikeUrl(label);
+    return {
+      label,
+      subtitle: opts.subtitleOverride ??
+        (isUrl ? (opts.fillValue || label).replace(/^https?:\/\//i, "")
+               : (type === "atalho" ? "Atalho" : type === "recente" ? "Recente" : "Sugestão")),
+      badge: type === "atalho" ? "Atalho" : type === "recente" ? "Recente" : "Sugestão",
+      icon: opts.iconOverride ?? (isUrl ? (faviconFor(opts.fillValue || label) || "") : "images/favicon_google.ico"),
+      type,
+      isUrl,
+      fillValue: opts.fillValue || label,
+    };
+  };
+
+  const standardSiteModels = (q) => {
+    if (!q) return [];
+    const s = normalize(q);
+    return STANDARD_SITES
+      .filter(site => {
+        const n = normalize(site.name);
+        const d = normalize(site.domain);
+        if (s.length === 1) return n.startsWith(s);
+        const toks = tokensFrom(q);
+        const hay = n + " " + d;
+        return toks.every(t => hay.includes(t));
+      })
+      .map(site => itemModel(site.name, "atalho", {
+        subtitleOverride: `${site.domain}`,
+        iconOverride: faviconFor(site.domain),
+        fillValue: site.domain
+      }));
+  };
+
+  const modelMatchesQuery = (m, q) => {
+    const s = normalize(q || "");
+    if (!s) return false;
+    const base = normalize((m.fillValue || (m.label + " " + (m.subtitle || ""))));
+    if (s.length === 1) {
+      const dom = normalize((m.subtitle || "").split(" — ")[0] || "");
+      return base.startsWith(s) || dom.startsWith(s);
+    }
+    return s.split(/\s+/).filter(Boolean).every(t => base.includes(t));
+  };
+
+  const PANEL = () => document.querySelector(PANEL_SEL);
+
+  const renderPanel = (models, activeIndex = -1) => {
+    const panel = PANEL();
+    if (!panel) return;
+    panel.innerHTML = "";
+
+    if (!models.length) {
+      panel.hidden = false;
+      const div = document.createElement("div");
+      div.className = "suggest-empty";
+      div.textContent = "Sem sugestões";
+      panel.appendChild(div);
+      return;
+    }
+
+    models.slice(0, SUGGEST_LIMIT).forEach((m, idx) => {
+      const el = document.createElement("div");
+      el.className = "suggest-item";
+      el.setAttribute("role", "option");
+      el.dataset.index = String(idx);
+      if (idx === activeIndex) el.setAttribute("aria-selected", "true");
+
+      const icon = document.createElement("img");
+      icon.className = "suggest-icon";
+      icon.alt = "";
+      icon.referrerPolicy = "no-referrer";
+      if (m.icon) icon.src = m.icon; else icon.style.visibility = "hidden";
+
+      const textWrap = document.createElement("div");
+      textWrap.className = "suggest-text";
+
+      const primary = document.createElement("div");
+      primary.className = "suggest-primary";
+      primary.textContent = m.label;
+
+      const secondary = document.createElement("div");
+      secondary.className = "suggest-secondary";
+      secondary.textContent = m.subtitle;
+
+      textWrap.append(primary, secondary);
+
+      const badge = document.createElement("div");
+      badge.className = "suggest-badge";
+      badge.textContent = m.badge;
+
+      el.append(icon, textWrap, badge);
+
+      if (m.type === "recente") {
+        const removeBtn = document.createElement("div");
+        removeBtn.className = "suggest-remove";
+        removeBtn.textContent = "×";
+        removeBtn.addEventListener("mousedown", (e) => e.preventDefault());
+        removeBtn.addEventListener("click", (e) => {
           e.stopPropagation();
-          dd.classList.toggle('show');
-          btn.setAttribute('aria-expanded', dd.classList.contains('show') ? 'true' : 'false');
-          dd.setAttribute('aria-hidden', dd.classList.contains('show') ? 'false' : 'true');
-        });
-        document.addEventListener('click', (e) => {
-          if (!dd.classList.contains('show')) return;
-          if (!dd.contains(e.target) && e.target !== btn) {
-            dd.classList.remove('show');
-            btn.setAttribute('aria-expanded', 'false');
-            dd.setAttribute('aria-hidden', 'true');
+          removeRecent(m.fillValue || m.label);
+          el.remove();
+          if (!panel.querySelector(".suggest-item")) {
+            panel.innerHTML = "";
+            const empty = document.createElement("div");
+            empty.className = "suggest-empty";
+            empty.textContent = "Sem sugestões";
+            panel.appendChild(empty);
           }
         });
-      }
-    })();
-
-    /* ---------- Sidebar (Menu) ---------- */
-    (function () {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
-      const openBtn = document.getElementById('menu-toggle');
-      const closeBtn = document.getElementById('close-sidebar');
-      const setOpen = (v) => {
-        sidebar.classList.toggle('is-open', v);
-        overlay.classList.toggle('is-open', v);
-        overlay.hidden = !v;
-        sidebar.setAttribute('aria-hidden', v ? 'false' : 'true');
-        openBtn?.setAttribute('aria-expanded', v ? 'true' : 'false');
-      };
-      if (openBtn) openBtn.addEventListener('click', () => setOpen(true));
-      if (closeBtn) closeBtn.addEventListener('click', () => setOpen(false));
-      if (overlay) overlay.addEventListener('click', () => setOpen(false));
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
-      // Exponho para outros módulos fecharem após troca de aba
-      window.__closeSidebar = () => setOpen(false);
-    })();
-
-    /* ---------- Sistema de Abas (controlado pelo Menu) ---------- */
-    (function () {
-      const TAB_STORAGE_KEY = 'lastTab_v1';
-      const panels = {
-        home: document.getElementById('tab-home'),
-        indicadores: document.getElementById('tab-indicadores'),
-      };
-
-      function activate(tab) {
-        Object.keys(panels).forEach(k => {
-          panels[k]?.classList.toggle('active', k === tab);
-          // aria
-          if (panels[k]) {
-            const labelledby = panels[k].getAttribute('aria-labelledby');
-            if (labelledby) {
-              const link = document.getElementById(labelledby);
-              if (link) link.setAttribute('aria-current', k === tab ? 'page' : 'false');
-            }
-          }
-        });
-        try { localStorage.setItem(TAB_STORAGE_KEY, tab); } catch {}
-        // Fechar o menu no mobile ao escolher
-        window.__closeSidebar?.();
-        // Ajustar hash da URL
-        if (tab === 'home') history.replaceState(null, '', '#home');
-        if (tab === 'indicadores') history.replaceState(null, '', '#indicadores');
+        el.appendChild(removeBtn);
       }
 
-      // Clique nos links do menu com data-tab-target
-      document.querySelectorAll('[data-tab-target]').forEach(a => {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          const tab = a.getAttribute('data-tab-target');
-          if (!tab) return;
-          activate(tab);
-        });
-      });
+      el.addEventListener("mousedown", (e) => e.preventDefault());
+      el.addEventListener("click", () => applySuggestion(m));
 
-      // Abrir usando o hash (ex.: #indicadores) ou última aba salva
-      function initFromHashOrStorage() {
-        const hash = (location.hash || '').replace('#','').toLowerCase();
-        if (hash && panels[hash]) { activate(hash); return; }
-        try {
-          const saved = localStorage.getItem(TAB_STORAGE_KEY);
-          if (saved && panels[saved]) { activate(saved); return; }
-        } catch {}
-        // padrão
-        activate('home');
+      panel.appendChild(el);
+    });
+
+    panel.hidden = false;
+  };
+
+  const hidePanel = () => { const p = PANEL(); if (p) p.hidden = true; };
+
+  const applySuggestion = (m) => {
+    const input = document.querySelector(INPUT_SEL);
+    if (!input) return;
+    input.value = m.fillValue || m.label;
+    input.setSelectionRange(input.value.length, input.value.length);
+    hidePanel();
+  };
+
+  let suppressInlineNext = false;
+
+  const shouldSuppressInline = (inputEl) =>
+    inputEl.selectionStart !== inputEl.selectionEnd ||
+    inputEl.selectionStart !== inputEl.value.length;
+
+  const inlineComplete = (typed, models, byKeyboard = false) => {
+    const input = document.querySelector(INPUT_SEL);
+    if (!input || !typed) return;
+    if (byKeyboard || suppressInlineNext || shouldSuppressInline(input)) return;
+
+    const cand = models.find(m =>
+      (m.fillValue || m.label).toLowerCase().startsWith(typed.toLowerCase())
+    );
+    if (!cand) return;
+
+    const toShow = cand.fillValue || cand.label;
+    input.value = toShow;
+    try { input.setSelectionRange(typed.length, toShow.length); } catch {}
+  };
+
+  let activeIndex = -1;
+  let currentModels = [];
+
+  const debounce = (fn, ms = 120) => {
+    let id;
+    return (...args) => { clearTimeout(id); id = setTimeout(() => fn(...args), ms); };
+  };
+
+  const refreshSuggestions = async (byKeyboard = false, inputEvent = null) => {
+    const input = document.querySelector(INPUT_SEL);
+    const q = (input?.value || "").trim();
+
+    if (inputEvent?.inputType?.startsWith?.("delete")) suppressInlineNext = true;
+    if (inputEvent?.ctrlKey || inputEvent?.metaKey || inputEvent?.altKey) suppressInlineNext = true;
+
+    const stdModels = standardSiteModels(q);
+
+    const rec = getRecents();
+    const short = applyShortcuts(q);
+    const remote = q ? await fetchGoogleSuggest(q) : [];
+    const stringPool = q ? Array.from(new Set([...short, ...remote, ...rec])) : [];
+
+    let otherModels = stringPool.map((s) =>
+      itemModel(s, short.includes(s) ? "atalho" : rec.includes(s) ? "recente" : "sugestao")
+    );
+
+    otherModels = otherModels.filter(m => modelMatchesQuery(m, q));
+
+    const allModels = otherModels.concat(stdModels);
+    if (q && looksLikeUrl(q) &&
+        !allModels.some(m => (m.fillValue || m.label).toLowerCase() === q.toLowerCase())) {
+      otherModels.unshift(itemModel(q, "sugestao"));
+    }
+
+    currentModels = uniqBy([...stdModels, ...otherModels], (m) => (m.fillValue || m.label).toLowerCase());
+
+    activeIndex = -1;
+    if (q) {
+      renderPanel(currentModels, activeIndex);
+      inlineComplete(q, currentModels, byKeyboard);
+    } else {
+      hidePanel();
+    }
+
+    suppressInlineNext = false;
+  };
+
+  const debouncedRefresh = debounce((...args) => { refreshSuggestions(...args); }, 120);
+
+  const handleKeyDown = (e) => {
+    const panel = document.querySelector(PANEL_SEL);
+    const input = document.querySelector(INPUT_SEL);
+
+    if (e.key === "Backspace" || e.key === "Delete") suppressInlineNext = true;
+    if (e.ctrlKey || e.metaKey || e.altKey) suppressInlineNext = true;
+
+    if (!panel || panel.hidden) return;
+
+    const max = Math.min(SUGGEST_LIMIT, currentModels.length) - 1;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      activeIndex = activeIndex < max ? activeIndex + 1 : 0;
+      renderPanel(currentModels, activeIndex);
+      const m = currentModels[activeIndex];
+      if (m) {
+        const v = m.fillValue || m.label;
+        input.value = v;
+        input.setSelectionRange(v.length, v.length);
       }
-
-      // Reagir a navegação do hash (caso usuário altere manualmente)
-      window.addEventListener('hashchange', () => {
-        const hash = (location.hash || '').replace('#','').toLowerCase();
-        if (hash && panels[hash]) activate(hash);
-      });
-
-      // Inicializa
-      initFromHashOrStorage();
-      // Expor função global se precisar abrir a partir de outros lugares
-      window.openTab = activate;
-    })();
-
-    /* ===== Autocomplete + recentes ===== */
-    (function () {
-      const INPUT_SEL = "#q";
-      const PANEL_SEL = "#suggestions";
-      const FORM_SEL = "#search-form";
-
-      const RECENTS_KEY = "recentSearches_v1";
-      const MAX_RECENTS = 10;
-      const SUGGEST_LIMIT = 10;
-
-      const STANDARD_SITES = [
-        { name: "Google",       domain: "google.com",        category: "Busca" },
-        { name: "YouTube",      domain: "youtube.com",       category: "Vídeos" },
-        { name: "Facebook",     domain: "facebook.com",      category: "Rede social" },
-        { name: "Instagram",    domain: "instagram.com",     category: "Rede social" },
-        { name: "ChatGPT",      domain: "chatgpt.com",       category: "Inteligência artificial" },
-        { name: "X ",  domain: "x.com",             category: "Rede social" },
-        { name: "Amazon",       domain: "amazon.com",        category: "Comércio eletrônico" },
-        { name: "LinkedIn",     domain: "linkedin.com",      category: "Rede social profissional" },
-        { name: "Netflix",      domain: "netflix.com",       category: "Streaming de filmes e séries" },
-        { name: "Gemini",       domain: "gemini.google.com", category: "IA do Google" },
-        { name: "InfoMoney",    domain: "infomoney.com.br",  category: "Finanças" },
-        { name: "CNN", domain: "cnn.com", category: "Notícias gerais e economia" },
-        { name: "Looker Studio",   domain: "lookerstudio.google.com", category: "Análise de dados" },
-        { name: "Google Sheets",   domain: "sheets.google.com",       category: "Planilhas" },
-        { name: "WhatsApp Web",    domain: "web.whatsapp.com",        category: "Mensagens" },
-        { name: "Formulários Google", domain: "forms.google.com",     category: "Formulários" },
-        { name: "Canva",           domain: "canva.com",               category: "Design gráfico" },
-        { name: "Wikipedia",      domain: "wikipedia.org",      category: "Enciclopédia" },
-        { name: "Pinterest",      domain: "pinterest.com",       category: "Rede social" },
-        { name: "Globo",          domain: "globo.com",           category: "Portal / Notícias" },
-        { name: "Telegram",       domain: "t.me",                category: "Mensagens" },
-        { name: "The New York Times", domain: "nytimes.com",     category: "Portal / Notícias" },
-        { name: "AliExpress",     domain: "aliexpress.com",       category: "Comércio eletrônico" },
-        { name: "Discord",        domain: "discord.com",         category: "Comunicação / Voz e texto" },
-        { name: "BBC",             domain: "bbc.com",             category: "Notícias internacionais" },
-        { name: "Speedtest by Ookla", domain: "speedtest.net", category: "Teste de velocidade de internet" },
-        { name: "Gmail",            domain: "mail.google.com",        category: "E-mail" },
-        { name: "Google Drive",     domain: "drive.google.com",       category: "Armazenamento em nuvem" },
-        { name: "Google Docs",      domain: "docs.google.com",        category: "Documentos" },
-        { name: "Google Slides",    domain: "slides.google.com",      category: "Apresentações" },
-        { name: "Google Keep",      domain: "keep.google.com",        category: "Anotações" },
-        { name: "Google Calendar",  domain: "calendar.google.com",    category: "Agenda" },
-        { name: "Google Meet",      domain: "meet.google.com",        category: "Videoconferência" },
-        { name: "Google Chat",      domain: "chat.google.com",        category: "Mensagens" },
-        { name: "Google Maps",      domain: "maps.google.com",        category: "Mapas e navegação" },
-        { name: "Google Earth",     domain: "earth.google.com",       category: "Mapas e visualização 3D" },
-        { name: "Google Translate", domain: "translate.google.com",   category: "Tradução" },
-        { name: "Google Photos",    domain: "photos.google.com",      category: "Fotos e álbuns" },
-        { name: "Google News",      domain: "news.google.com",        category: "Notícias" },
-        { name: "Google Finance",   domain: "google.com/finance",     category: "Finanças" },
-        { name: "Google Flights",   domain: "google.com/flights",     category: "Viagens" },
-        { name: "Google Books",     domain: "books.google.com",       category: "Livros" },
-        { name: "Google Play",      domain: "play.google.com",        category: "Loja de aplicativos e mídia" },
-        { name: "Google Podcasts",  domain: "podcasts.google.com",    category: "Podcasts" },
-        { name: "Google Scholar",   domain: "scholar.google.com",     category: "Artigos acadêmicos" },
-        { name: "Google Classroom", domain: "classroom.google.com",   category: "Educação" },
-        { name: "Google Arts & Culture", domain: "artsandculture.google.com", category: "Arte e cultura" },
-        { name: "Google Domains",   domain: "domains.google",         category: "Registro de domínios" },
-        { name: "Google Ads",       domain: "ads.google.com",         category: "Publicidade" },
-        { name: "Google Analytics", domain: "analytics.google.com",   category: "Métricas e estatísticas" },
-        { name: "Google Tag Manager", domain: "tagmanager.google.com", category: "Gerenciamento de tags" },
-        { name: "Google Cloud",     domain: "cloud.google.com",       category: "Serviços em nuvem" },
-        { name: "Google Colab",     domain: "colab.research.google.com", category: "Notebooks de IA e ciência de dados" },
-        { name: "Spotify",       domain: "spotify.com",        category: "Streaming de música" },
-        { name: "YouTube Music", domain: "music.youtube.com",  category: "Streaming de música" },
-        { name: "Tryd", domain: "tryd.com.br",  category: "Tryd" },
-        { name: "Fast trade", domain: "plataformafasttrade.com.br",  category: "Fast Trade" },
-        { name: "Chat Guru", domain: "chatguru.com.br",  category: "Chat Guru" },
-        { name: "Brasil Jornal", domain: "braziljournal.com",  category: "Chat Guru" },
-        { name: "Flex Scan", domain: "login.flexscan.com.br",  category: "flexscan" },
-        { name: "Flex Scan", domain: "login.flexscan.com.br",  category: "flexscan" },
-        { name: "Git Hub", domain: "github.com",  category: "Git Hub" },
-      ];
-
-      const SHORTCUTS = [
-        { re: /^y(t|o|outube)?$/i, items: ["YouTube", "youtube.com"] },
-        { re: /^g(mail)?$/i, items: ["Gmail", "gmail.com", "mail.google.com"] },
-        { re: /^c(al|alendar)?$/i, items: ["Google Calendar", "calendar.google.com"] },
-        { re: /^m(eet)?$/i, items: ["Google Meet", "meet.google.com"] },
-        { re: /^(d|drive)$/i, items: ["Google Drive", "drive.google.com"] },
-        { re: /^(s|sheets?)$/i, items: ["Google Sheets", "docs.google.com/spreadsheets/"] },
-      ];
-
-      function focusInput() {
-        const el = document.querySelector(INPUT_SEL);
-        if (!el) return;
-        if (document.visibilityState !== "visible") {
-          document.addEventListener("visibilitychange", focusInput, { once: true });
-          return;
-        }
-        el.focus({ preventScroll: true });
-        try { el.select(); } catch (_) {}
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      activeIndex = activeIndex > 0 ? activeIndex - 1 : max;
+      renderPanel(currentModels, activeIndex);
+      const m = currentModels[activeIndex];
+      if (m) {
+        const v = m.fillValue || m.label;
+        input.value = v;
+        input.setSelectionRange(v.length, v.length);
       }
-      function focusWithRetries(retries = 24, delay = 50) {
-        focusInput();
-        let i = 1;
-        const id = setInterval(() => {
-          const ok = document.activeElement?.matches?.(INPUT_SEL);
-          if (ok || i++ >= retries) clearInterval(id);
-          else focusInput();
-        }, delay);
+    } else if (e.key === "Tab") {
+      const hasSelection = input.selectionStart !== input.selectionEnd;
+      if (hasSelection && currentModels.length) {
+        e.preventDefault();
+        input.setSelectionRange(input.value.length, input.value.length);
+        hidePanel();
       }
+    } else if (e.key === "Enter") {
+      hidePanel();
+    } else if (e.key === "Escape") {
+      hidePanel();
+    }
+  };
 
-      function getRecents() { try { return JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]"); } catch { return []; } }
-      function saveRecent(q) {
-        const t = q.trim();
-        if (!t) return;
-        let arr = getRecents().filter(v => v.toLowerCase() !== t.toLowerCase());
-        arr.unshift(t);
-        if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
-        localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-      }
-      function removeRecent(label) {
-        const tgt = (label || "").trim().toLowerCase();
-        const arr = getRecents().filter(v => v.toLowerCase() !== tgt);
-        localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-      }
+  const handleSubmit = (e) => {
+    const input = document.querySelector(INPUT_SEL);
+    const q = (input?.value || "").trim();
+    if (!q) { e.preventDefault(); return; }
+    saveRecent(q);
+    if (looksLikeUrl(q)) {
+      e.preventDefault();
+      const url = /^https?:\/\//i.test(q) ? q : "https://" + q;
+      window.location.assign(url);
+    }
+    // senão, o <form> envia para Google com name="q"
+  };
 
-      async function fetchGoogleSuggest(q) {
-        if (!q) return [];
-        const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`;
-        try {
-          const res = await fetch(url, { mode: "cors" });
-          if (!res.ok) return [];
-          const data = await res.json();
-          return Array.isArray(data?.[1]) ? data[1] : [];
-        } catch { return []; }
-      }
+  const focusInput = () => {
+    const el = document.querySelector(INPUT_SEL);
+    if (!el) return;
+    if (document.visibilityState !== "visible") {
+      document.addEventListener("visibilitychange", focusInput, { once: true });
+      return;
+    }
+    el.focus({ preventScroll: true });
+    try { el.select(); } catch {}
+  };
 
-      function looksLikeUrl(text) {
-        const t = text.trim();
-        return /\./.test(t) && !/\s/.test(t);
-      }
-      function domainFrom(text) {
-        try {
-          const url = text.match(/^https?:\/\//i) ? text : "https://" + text;
-          return new URL(url).hostname;
-        } catch { return null; }
-      }
-      function faviconFor(value) {
-        const host = domainFrom(value);
-        return host ? `https://www.google.com/s2/favicons?domain=${host}&sz=32` : null;
-      }
-      function uniqBy(arr, keyFn) {
-        const seen = new Set(); const out = [];
-        for (const v of arr) {
-          const k = keyFn(v);
-          if (!seen.has(k)) { seen.add(k); out.push(v); }
-        }
-        return out;
-      }
-      function applyShortcuts(q) {
-        const m = SHORTCUTS.find(s => s.re.test(q));
-        return m ? m.items : [];
-      }
-      function normalize(s) {
-        return (s || "")
-          .toString()
-          .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-          .toLowerCase();
-      }
-      function tokensFrom(q) {
-        return normalize(q).split(/\s+/).filter(t => t.length >= 2);
-      }
+  const focusWithRetries = (retries = 24, delay = 50) => {
+    focusInput();
+    let i = 1;
+    const id = setInterval(() => {
+      const ok = document.activeElement?.matches?.(INPUT_SEL);
+      if (ok || i++ >= retries) clearInterval(id);
+      else focusInput();
+    }, delay);
+  };
 
-      function itemModel(label, type = "sugestao, opts = {}"){}
-      // (para economizar espaço: o restante do autocomplete permanece igual ao seu código original)
-      // --------------------------------------------------------------------------
-      // NOTA: para manter sua base intacta, omiti aqui a duplicação de todas as
-      // funções do autocomplete. Você pode manter exatamente as que já estavam
-      // abaixo a partir daqui, sem alterações.
-      // --------------------------------------------------------------------------
+  const bindGlobalShortcuts = () => {
+    window.addEventListener("keydown", (e) => {
+      const typing = /input|textarea|select/i.test(e.target.tagName);
+      if (typing) return;
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault(); focusWithRetries(1, 0);
+      } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key === "/") {
+        e.preventDefault(); focusWithRetries(1, 0);
+      }
+    });
+  };
 
-      // ====== A partir daqui, mantenha seu código ORIGINAL do autocomplete ======
-    })();
+  const bindOutsideClick = () => {
+    document.addEventListener("click", (e) => {
+      const panel = document.querySelector(PANEL_SEL);
+      const input = document.querySelector(INPUT_SEL);
+      if (!panel || panel.hidden) return;
+      if (!panel.contains(e.target) && e.target !== input) hidePanel();
+    });
+  };
 
-  (function () {
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.querySelector(INPUT_SEL);
+    const panel = document.querySelector(PANEL_SEL);
+    const form  = document.querySelector(FORM_SEL);
+    if (!input || !panel || !form) return;
+
+    focusWithRetries();
+
+    // Mostrar "recentes" ao focar quando vazio (após pointerdown)
+    let allowFocusRecents = false;
+    input.addEventListener("pointerdown", () => { allowFocusRecents = true; });
+    input.addEventListener("focus", () => {
+      if (allowFocusRecents && !input.value.trim()) {
+        const rec = getRecents().map((s) => itemModel(s, "recente"));
+        if (rec.length) renderPanel(rec);
+      }
+    });
+
+    input.addEventListener("input", (ev) => debouncedRefresh(false, ev));
+    input.addEventListener("keydown", handleKeyDown);
+    input.addEventListener("blur", () => setTimeout(hidePanel, 100));
+
+    form.addEventListener("submit", handleSubmit);
+    bindGlobalShortcuts();
+    bindOutsideClick();
+  });
+
+  // atalhos (usa const SHORTCUTS do topo)
+  const applyShortcuts = (q) => {
+    const m = SHORTCUTS.find(s => s.re.test(q));
+    return m ? m.items : [];
+  };
+})();
+
+/* ===================== Carrossel (autoplay) ===================== */
+(() => {
   const track = document.querySelector('.carousel-track');
-  const slides = Array.from(track.children);
+  const slides = track ? Array.from(track.children) : [];
   const nextButton = document.querySelector('.carousel-btn.next');
   const prevButton = document.querySelector('.carousel-btn.prev');
+  const carousel = document.querySelector('.carousel');
 
-  const AUTOPLAY_MS = 5000;   // tempo entre slides
+  if (!track || !nextButton || !prevButton) return;
+
+  const AUTOPLAY_MS = 5000;
   let currentIndex = 0;
-  let autoplayId = null;      // guarda o setTimeout atual
-  let isPaused = false;       // para hover/visibilidade (opcional)
+  let autoplayId = null;
+  let isPaused = false;
 
   function updateSlide(index) {
     track.style.transform = `translateX(-${index * 100}%)`;
   }
 
-  function goTo(index) {
-    currentIndex = (index + slides.length) % slides.length;
-    updateSlide(currentIndex);
-    scheduleNext(); // sempre reagenda o próximo passo
+  function clamp(i) {
+    const max = slides.length - 1;
+    if (i < 0) return 0;
+    if (i > max) return max;
+    return i;
   }
 
-  function next() { goTo(currentIndex + 1); }
-  function prev() { goTo(currentIndex - 1); }
+  function updateButtons() {
+    const total = slides.length;
+    if (total <= 1) {
+      prevButton.hidden = true;
+      nextButton.hidden = true;
+      prevButton.setAttribute('aria-disabled', 'true');
+      nextButton.setAttribute('aria-disabled', 'true');
+      return;
+    }
+    const atStart = currentIndex === 0;
+    const atEnd = currentIndex === total - 1;
+    prevButton.hidden = atStart;
+    nextButton.hidden = atEnd;
+    prevButton.setAttribute('aria-disabled', atStart ? 'true' : 'false');
+    nextButton.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
+  }
 
   function clearNext() {
     if (autoplayId !== null) {
@@ -688,51 +1017,42 @@ html, body { overflow-x: hidden; }
 
   function scheduleNext() {
     clearNext();
-    if (isPaused) return; // não agenda se estiver pausado
-    autoplayId = setTimeout(() => {
-      next();
-    }, AUTOPLAY_MS);
+    const atEnd = currentIndex === slides.length - 1;
+    if (isPaused || atEnd) return;
+    autoplayId = setTimeout(() => { next(); }, AUTOPLAY_MS);
   }
 
-  // Clique manual -> navega E reinicia o timer
-  nextButton.addEventListener('click', () => {
-    next();            // goTo() já chama scheduleNext()
-  });
+  function goTo(index) {
+    currentIndex = clamp(index);
+    updateSlide(currentIndex);
+    updateButtons();
+    scheduleNext();
+  }
 
-  prevButton.addEventListener('click', () => {
-    prev();            // goTo() já chama scheduleNext()
-  });
+  function next() { goTo(currentIndex + 1); }
+  function prev() { goTo(currentIndex - 1); }
 
-  // Opcional: pausar no hover (evita trocar enquanto o cursor está em cima)
-  const carousel = document.querySelector('.carousel');
+  nextButton.addEventListener('click', next);
+  prevButton.addEventListener('click', prev);
+
   if (carousel) {
     carousel.addEventListener('mouseenter', () => { isPaused = true; clearNext(); });
     carousel.addEventListener('mouseleave', () => { isPaused = false; scheduleNext(); });
   }
 
-  // Opcional: pausar quando a aba ficar oculta (economiza recursos)
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'hidden') {
-      isPaused = true;
-      clearNext();
+      isPaused = true; clearNext();
     } else {
-      isPaused = false;
-      scheduleNext();
+      isPaused = false; scheduleNext();
     }
   });
 
-  // inicia
+  // init
   updateSlide(currentIndex);
+  updateButtons();
   scheduleNext();
 })();
-  </script>
-
-  <!-- Seu script ORIGINAL do autocomplete completo aqui (copie o bloco antigo inteiro) -->
-  <script>
-    /* ===== Autocomplete + recentes (SEU BLOCO ORIGINAL COMPLETO) ===== */
-    // Cole aqui o bloco completo que você já tinha,
-    // substituindo o mini-IIFE resumido acima.
-  </script>
-  <!-- ===== Fim dos scripts ===== -->
+</script>
 </body>
 </html>
