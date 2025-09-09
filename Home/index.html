@@ -167,79 +167,24 @@
     .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); opacity: 0; visibility: hidden; transition: .25s ease; z-index: 999; }
     .overlay.is-open { opacity: 1; visibility: visible; }
 
-      .tab-media-wrap{
-          width: 100%;
-          height: 70vh;          /* mesmo tamanho do iframe dos Indicadores */
-          border-radius: 12px;
-          overflow: hidden;
-          margin: 8px 0 16px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,.15);
-  }
-  .tab-media-wrap img{
+    /* ===== Imagem única na Home ===== */
+    .tab-media-wrap{
+      width: 100%;
+      height: 70vh;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 8px 0 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,.15);
+    }
+    .tab-media-wrap img{
       width: 100%;
       height: 100%;
-      object-fit: cover;     /* ocupa toda a área sem distorcer */
+      object-fit: cover; /* ocupa toda a área sem distorcer */
       display: block;
-  }
+    }
 
-.carousel {
-  position: relative;
-  width: 100%;
-  height: 70vh;
-  overflow: hidden;
-  border-radius: 12px;
-  margin: 8px 0 16px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,.15);
-}
-
-.carousel-track {
-  display: flex;
-  height: 100%;
-  transition: transform 0.6s ease-in-out;
-  will-change: transform;
-}
-
-.carousel-slide{
-  flex: 0 0 100%;
-  height: 100%;
-  display: flex;                 /* NOVO */
-  align-items: center;           /* NOVO */
-  justify-content: center;       /* NOVO */
-  background: rgba(255,255,255,0.03); /* opcional p/ dar contraste nas faixas */
-}
-
-/* NÃO force width/height a 100% na imagem */
-.carousel-slide img{
-  max-width: 100%;               /* NOVO */
-  max-height: 100%;              /* NOVO */
-  width: auto;                   /* NOVO */
-  height: auto;                  /* NOVO */
-  object-fit: contain;           /* TROCA cover -> contain */
-  display: block;
-}
-
-.carousel-btn {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.4);
-  color: #fff;
-  border: none;
-  padding: 12px;
-  cursor: pointer;
-  border-radius: 50%;
-  font-size: 20px;
-  transition: background 0.3s;
-  z-index: 10;
-}
-.carousel-btn:hover { background: rgba(0,0,0,0.7); }
-.carousel-btn.prev { left: 10px; }
-.carousel-btn.next { right: 10px; }
-
-html, body { overflow-x: hidden; }
-
+    html, body { overflow-x: hidden; }
 
     /* ===== Responsivo ===== */
     @media (max-width: 640px){
@@ -322,33 +267,23 @@ html, body { overflow-x: hidden; }
     <!-- Conteúdo Principal em Abas -->
     <main class="main-content" id="tab-root" role="region" aria-live="polite">
       <!-- Início (padrão) -->
-    <section id="tab-home" class="tab-panel active" role="tabpanel" aria-labelledby="tablink-home">
-<div class="carousel">
-  <div class="carousel-track">
-    <div class="carousel-slide">
-      <!-- Primeira imagem "eager" para evitar flicker -->
-      <img src="images/mesa_img.jpg" alt="Mesa de operação - Options & Company" loading="eager" fetchpriority="high">
-    </div>
-    <div class="carousel-slide">
-      <img src="images/options_jorge.jpg" alt="Options & Company - Jorge" loading="lazy">
-    </div>
-  </div>
-  <button class="carousel-btn prev" aria-label="Slide anterior">&#10094;</button>
-  <button class="carousel-btn next" aria-label="Próximo slide">&#10095;</button>
-</div>
-    </section>
+      <section id="tab-home" class="tab-panel active" role="tabpanel" aria-labelledby="tablink-home">
+        <div class="tab-media-wrap">
+          <img src="images/mesa_img.jpg" alt="Mesa de operação - Options & Company" loading="eager" fetchpriority="high">
+        </div>
+      </section>
 
       <!-- Indicadores -->
-<section id="tab-indicadores" class="tab-panel" role="tabpanel" aria-labelledby="tablink-indicadores">
-  <div class="frame-wrap">
-    <iframe
-      title="Dashboard Looker Studio"
-      src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd"
-      style="width:100%; height:70vh; border:0;"
-      sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
-    </iframe>
-  </div>
-</section>
+      <section id="tab-indicadores" class="tab-panel" role="tabpanel" aria-labelledby="tablink-indicadores">
+        <div class="frame-wrap">
+          <iframe
+            title="Dashboard Looker Studio"
+            src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd"
+            style="width:100%; height:70vh; border:0;"
+            sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox">
+          </iframe>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -502,7 +437,7 @@ html, body { overflow-x: hidden; }
     { name: "ChatGPT",      domain: "chatgpt.com",       category: "Inteligência artificial" },
     { name: "X",            domain: "x.com",             category: "Rede social" },
     { name: "Amazon",       domain: "amazon.com",        category: "Comércio eletrônico" },
-    { name: "LinkedIn",     domain: "linkedin.com",      category: "Rede social profissional" },
+    { name: "LinkedIn",     domain: "linkedin.com",       category: "Rede social profissional" },
     { name: "Netflix",      domain: "netflix.com",       category: "Streaming de filmes e séries" },
     { name: "Gemini",       domain: "gemini.google.com", category: "IA do Google" },
     { name: "InfoMoney",    domain: "infomoney.com.br",  category: "Finanças" },
@@ -539,7 +474,6 @@ html, body { overflow-x: hidden; }
     { name: "Google Books", domain: "books.google.com",        category: "Livros" },
     { name: "Google Play",  domain: "play.google.com",         category: "Loja de apps e mídia" },
     { name: "Google Podcasts", domain: "podcasts.google.com",  category: "Podcasts" },
-    { name: "Google Scholar",  domain: "scholar.google.com",   category: "Artigos acadêmicos" },
     { name: "Google Classroom",domain:"classroom.google.com",  category: "Educação" },
     { name: "Google Arts & Culture",domain:"artsandculture.google.com", category:"Arte e cultura" },
     { name: "Google Ads",   domain: "ads.google.com",          category: "Publicidade" },
@@ -963,95 +897,6 @@ html, body { overflow-x: hidden; }
     const m = SHORTCUTS.find(s => s.re.test(q));
     return m ? m.items : [];
   };
-})();
-
-/* ===================== Carrossel (autoplay) ===================== */
-(() => {
-  const track = document.querySelector('.carousel-track');
-  const slides = track ? Array.from(track.children) : [];
-  const nextButton = document.querySelector('.carousel-btn.next');
-  const prevButton = document.querySelector('.carousel-btn.prev');
-  const carousel = document.querySelector('.carousel');
-
-  if (!track || !nextButton || !prevButton) return;
-
-  const AUTOPLAY_MS = 5000;
-  let currentIndex = 0;
-  let autoplayId = null;
-  let isPaused = false;
-
-  function updateSlide(index) {
-    track.style.transform = `translateX(-${index * 100}%)`;
-  }
-
-  function clamp(i) {
-    const max = slides.length - 1;
-    if (i < 0) return 0;
-    if (i > max) return max;
-    return i;
-  }
-
-  function updateButtons() {
-    const total = slides.length;
-    if (total <= 1) {
-      prevButton.hidden = true;
-      nextButton.hidden = true;
-      prevButton.setAttribute('aria-disabled', 'true');
-      nextButton.setAttribute('aria-disabled', 'true');
-      return;
-    }
-    const atStart = currentIndex === 0;
-    const atEnd = currentIndex === total - 1;
-    prevButton.hidden = atStart;
-    nextButton.hidden = atEnd;
-    prevButton.setAttribute('aria-disabled', atStart ? 'true' : 'false');
-    nextButton.setAttribute('aria-disabled', atEnd ? 'true' : 'false');
-  }
-
-  function clearNext() {
-    if (autoplayId !== null) {
-      clearTimeout(autoplayId);
-      autoplayId = null;
-    }
-  }
-
-  function scheduleNext() {
-    clearNext();
-    const atEnd = currentIndex === slides.length - 1;
-    if (isPaused || atEnd) return;
-    autoplayId = setTimeout(() => { next(); }, AUTOPLAY_MS);
-  }
-
-  function goTo(index) {
-    currentIndex = clamp(index);
-    updateSlide(currentIndex);
-    updateButtons();
-    scheduleNext();
-  }
-
-  function next() { goTo(currentIndex + 1); }
-  function prev() { goTo(currentIndex - 1); }
-
-  nextButton.addEventListener('click', next);
-  prevButton.addEventListener('click', prev);
-
-  if (carousel) {
-    carousel.addEventListener('mouseenter', () => { isPaused = true; clearNext(); });
-    carousel.addEventListener('mouseleave', () => { isPaused = false; scheduleNext(); });
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'hidden') {
-      isPaused = true; clearNext();
-    } else {
-      isPaused = false; scheduleNext();
-    }
-  });
-
-  // init
-  updateSlide(currentIndex);
-  updateButtons();
-  scheduleNext();
 })();
 </script>
 </body>
