@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+
+        --card: #0f1f1d;
+        --card-2: #122826;
+
+        --text: #e6edf3;
+        --muted: #a4b8b3;
+        --brand: #4ade80;
+        --ring: #22c55e;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 50% -10%,
+            rgba(34, 197, 94, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg-0), var(--bg-1) 55%, var(--bg-2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        padding: 16px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 380px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          ),
+          var(--card);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(6px);
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      label {
+        font-size: 14px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: var(--card-2);
+        color: var(--text);
+        font-size: 14px;
+        margin-bottom: 16px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--ring);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+      }
+
+      button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: var(--brand);
+        color: #0f1f1d;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+        margin-top: 8px;
+      }
+      button:hover {
+        background: var(--ring);
+      }
+
+      .btn-secondary {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .btn-secondary:hover {
+        background: rgba(74, 222, 128, 0.08);
+        color: var(--text);
+      }
+
+      #login-msg {
+        margin-top: 14px;
+        font-size: 14px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      /* ===== Modal ===== */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .modal {
+        width: 100%;
+        max-width: 420px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          ),
+          var(--card);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(8px);
+        position: relative;
+      }
+      .modal h2 {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .modal p {
+        font-size: 14px;
+        color: var(--muted);
+        text-align: center;
+        margin-bottom: 14px;
+      }
+      .modal .close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        color: var(--muted);
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .modal .actions {
+        display: grid;
+        gap: 10px;
+        margin-top: 6px;
+        grid-template-columns: 1fr 1fr;
+      }
+      .modal .full {
+        grid-column: 1 / -1;
+      }
+      .show {
+        display: flex !important;
+      }
+      /* ================== */
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Acesso Restrito</h1>
+
+      <form id="login-form">
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required placeholder="seu@email.com" />
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" required placeholder="••••••••" />
+
+        <button type="submit">Entrar</button>
+
+        <!-- Abre o modal -->
+        <button
+          type="button"
+          id="btn-reset"
+          class="btn-secondary"
+          style="margin-top: 10px"
+        >
+          Esqueci minha senha
+        </button>
+      </form>
+
+      <p id="login-msg"></p>
+    </div>
+
+    <!-- ===== Modal de Redefinição de Senha ===== -->
+    <div
+      id="modalReset"
+      class="modal-backdrop"
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="modal">
+        <button class="close" id="modalClose" aria-label="Fechar">✕</button>
+        <h2>Redefinir senha</h2>
+        <p>Informe seu e-mail para enviarmos o link de redefinição.</p>
+
+        <label for="modal-email">E-mail</label>
+        <input type="email" id="modal-email" placeholder="seu@email.com" />
+
+        <div class="actions">
+          <button type="button" class="btn-secondary" id="btnCancelReset">
+            Cancelar
+          </button>
+          <button type="button" id="btnSendReset">Enviar link</button>
+          <p
+            id="modal-msg"
+            class="full"
+            style="
+              text-align: center;
+              font-size: 13px;
+              color: var(--muted);
+              margin-top: 4px;
+            "
+          ></p>
+        </div>
+      </div>
+    </div>
+    <!-- ======================================== -->
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+    <script>
+      // === SEU CONFIG DO PROJETO ===
+      const firebaseConfig = {
+        apiKey: "AIzaSyCuEODFf67xDoB-XfQVnhbWJMXq_ZffKMQ",
+        authDomain: "login-notion.firebaseapp.com",
+        projectId: "login-notion",
+        storageBucket: "login-notion.firebasestorage.app",
+        messagingSenderId: "248763654792",
+        appId: "1:248763654792:web:e986c851a2e62a81b5b53d",
+        measurementId: "G-EL1YGQEG6X",
+      };
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // (Opcional) Whitelist simples de UX
+      const ALLOWED_EMAILS = new Set([
+        // "pessoa1@empresa.com", "pessoa2@empresa.com"
+      ]);
+      const ALLOWED_DOMAINS = new Set([
+        // "empresa.com"
+      ]);
+      function isAllowed(email) {
+        if (ALLOWED_EMAILS.size && ALLOWED_EMAILS.has(email)) return true;
+        if (ALLOWED_DOMAINS.size) {
+          const d = email.split("@")[1]?.toLowerCase();
+          if (ALLOWED_DOMAINS.has(d)) return true;
+        }
+        return ALLOWED_EMAILS.size === 0 && ALLOWED_DOMAINS.size === 0;
+      }
+
+      const form = document.getElementById("login-form");
+      const msg = document.getElementById("login-msg");
+
+      // ======= Login (sem auto-cadastro) =======
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document
+          .getElementById("email")
+          .value.trim()
+          .toLowerCase();
+        const pass = document.getElementById("password").value;
+
+        if (!isAllowed(email)) {
+          msg.textContent =
+            "Este e-mail não está autorizado. Fale com o administrador.";
+          msg.style.color = "tomato";
+          return;
+        }
+
+        try {
+          await auth.signInWithEmailAndPassword(email, pass);
+          window.location.href = "notionpage.html";
+        } catch (err) {
+          const map = {
+            "auth/invalid-email": "E-mail inválido.",
+            "auth/user-not-found": "Você não tem permissão.",
+            "auth/wrong-password": "Senha incorreta.",
+            "auth/invalid-credential": "Você não tem permissão.",
+            "auth/too-many-requests":
+              "Muitas tentativas. Tente novamente em alguns minutos.",
+            "auth/operation-not-allowed":
+              "Método de login desativado no projeto.",
+          };
+          msg.textContent = map[err.code] || "Erro: " + err.message;
+          msg.style.color = "tomato";
+        }
+      });
+
+      // Se já estiver logado, pula para os links
+      auth.onAuthStateChanged((user) => {
+        if (user) window.location.href = "notionpage.html";
+      });
+
+      // ======= Modal Reset de Senha =======
+      const modal = document.getElementById("modalReset");
+      const modalMsg = document.getElementById("modal-msg");
+      const modalEmail = document.getElementById("modal-email");
+      const btnReset = document.getElementById("btn-reset");
+      const btnSend = document.getElementById("btnSendReset");
+      const btnCancel = document.getElementById("btnCancelReset");
+      const btnClose = document.getElementById("modalClose");
+
+      function openModal() {
+        const mainEmail = document.getElementById("email").value.trim();
+        if (mainEmail) modalEmail.value = mainEmail.toLowerCase();
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+        modalMsg.textContent = "";
+        setTimeout(() => modalEmail.focus(), 50);
+      }
+      function closeModal() {
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+      }
+
+      btnReset.addEventListener("click", openModal);
+      btnCancel.addEventListener("click", closeModal);
+      btnClose.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal();
+      });
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("show"))
+          closeModal();
+      });
+
+      // Envio com verificação prévia (não envia se e-mail não existir)
+      btnSend.addEventListener("click", async () => {
+        const email = modalEmail.value.trim().toLowerCase();
+        if (!email) {
+          modalMsg.textContent = "Informe seu e-mail.";
+          modalMsg.style.color = "tomato";
+          return;
+        }
+        if (!isAllowed(email)) {
+          modalMsg.textContent = "Este e-mail não está autorizado.";
+          modalMsg.style.color = "tomato";
+          return;
+        }
+
+        try {
+          btnSend.disabled = true;
+          btnSend.textContent = "Verificando...";
+
+          // Verifica se há método de login para esse e-mail
+          const methods = await auth.fetchSignInMethodsForEmail(email);
+          if (!methods || methods.length === 0) {
+            modalMsg.textContent = "Você não tem permissão.";
+            modalMsg.style.color = "tomato";
+            return; // não envia reset
+          }
+
+          btnSend.textContent = "Enviando...";
+          await auth.sendPasswordResetEmail(email);
+
+          modalMsg.innerHTML =
+            "Enviamos um link de redefinição para <strong>" +
+            email +
+            "</strong>.<br>Verifique também sua caixa de spam.";
+          modalMsg.style.color = "var(--brand)";
+        } catch (err) {
+          const map = {
+            "auth/invalid-email": "E-mail inválido.",
+            "auth/user-not-found": "Você não tem permissão.",
+            "auth/invalid-credential": "Você não tem permissão.",
+            "auth/too-many-requests":
+              "Muitas tentativas. Tente novamente em alguns minutos.",
+          };
+          modalMsg.textContent = map[err.code] || "Erro: " + err.message;
+          modalMsg.style.color = "tomato";
+        } finally {
+          btnSend.disabled = false;
+          btnSend.textContent = "Enviar link";
+        }
+      });
+      // ==============================
+    </script>
+  </body>
+</html>
