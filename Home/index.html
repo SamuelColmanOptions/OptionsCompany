@@ -147,7 +147,7 @@
         background-color: rgba(255, 255, 255, 0.1);
       }
 
-      /* Ferramentas (dropdown) */
+      /* Ferramentas (dropdown trigger) */
       .google-tools {
         position: relative;
         display: flex;
@@ -169,47 +169,76 @@
         background: #e5e5e5;
       }
 
+      /* ===================== DROPDOWN ESTILO GOOGLE ===================== */
       .dropdown-content {
         display: none;
         position: absolute;
         right: 0;
         top: 100%;
         margin-top: 8px;
-        background: #122d32;
-        min-width: 180px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        background: #dfdfdf; /* estilo Google */
+        min-width: 320px;
+        border-radius: 12px;
+        padding: 12px;
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
         z-index: 10;
-        border-radius: 6px;
-        padding: 4px 0;
         opacity: 0;
-        transform: translateY(-10px);
-        transition: opacity 0.2s ease, transform 0.2s ease;
+        transform: translateY(-8px) scale(0.98);
+        transition: opacity 0.18s ease, transform 0.18s ease;
         pointer-events: none;
         overflow: hidden;
       }
       .dropdown-content.show {
         display: block;
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
         pointer-events: auto;
       }
-      .dropdown-content a {
-        color: #fff;
-        padding: 10px 16px;
-        text-decoration: none;
+
+      .app-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        max-height: 420px;
+        overflow: auto;
+      }
+      .app {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        font-size: 14px;
-        transition: background-color 0.2s, color 0.2s;
+        gap: 8px;
+        padding: 12px 8px;
+        text-decoration: none;
+        border-radius: 12px;
+        color: #000000;
+        outline: none;
       }
-      .dropdown-content a:hover {
-        background: #1c4a48;
-        color: #fff;
+      .app img {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: block;
       }
-      .dropdown-content img {
-        width: 16px;
-        height: 16px;
-        margin-right: 10px;
+      .app span {
+        font-size: 12px;
+        line-height: 1.2;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+      }
+      .app:hover,
+      .app:focus-visible {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      @media (max-width: 420px) {
+        .dropdown-content {
+          min-width: 280px;
+        }
+        .app-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
       }
 
       /* CENTRO: busca (agora no centro absoluto) */
@@ -481,7 +510,7 @@
       .tab-media-wrap img {
         width: 100%;
         height: 100%;
-        object-fit: cover; /* ocupa toda a área sem distorcer */
+        object-fit: cover;
         display: block;
       }
 
@@ -527,7 +556,6 @@
           max-height: 50px;
         }
       }
-
       @media (min-width: 768px) {
         .header-titles-desktop {
           display: flex;
@@ -560,107 +588,151 @@
                 Ferramentas
               </button>
 
+              <!-- ===== Dropdown estilo Google ===== -->
               <div
                 id="google-dropdown"
                 class="dropdown-content"
                 role="menu"
                 aria-hidden="true"
               >
-                <a
-                  href="https://www.google.com"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_google.ico" alt="" />Home
-                </a>
-                <a
-                  href="https://calendar.google.com"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_calendar.ico" alt="" />Agenda
-                </a>
-                <a
-                  href="https://mail.google.com"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_gmail.ico" alt="" />Gmail
-                </a>
-                <a
-                  href="https://docs.google.com/spreadsheets/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_sheets.ico" alt="" />Planilha
-                </a>
-                <a
-                  href="https://meet.google.com"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_meet.ico" alt="" />Google Meet
-                </a>
-
-                <!-- ======== NOVOS ITENS ======== -->
-                <a
-                  href="https://docs.google.com/document/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/docs.ico.svg" alt="" />Google Docs
-                </a>
-
-                <a
-                  href="https://chat.google.com/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/chat.ico" alt="" />Google Chat
-                </a>
-                <a
-                  href="https://www.youtube.com/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/youtube.ico" alt="" />YouTube
-                </a>
-                <a
-                  href="https://chatgpt.com/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/favicon_chagpt.ico" alt="" />ChatGPT
-                </a>
-                <a
-                  href="https://gemini.google.com/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/gemini.ico" alt="" />Gemini
-                </a>
-                <a
-                  href="https://plataformafasttrade.com.br/"
-                  target="_blank"
-                  rel="noopener"
-                  role="menuitem"
-                >
-                  <img src="images/fast_trade.ico" alt="" />Fast Trade
-                </a>
+                <div class="app-grid" role="list">
+                  <a
+                    class="app"
+                    href="https://www.google.com"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_google.ico" alt="" />
+                    <span>Home</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://calendar.google.com"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_calendar.ico" alt="" />
+                    <span>Agenda</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://mail.google.com"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_gmail.ico" alt="" />
+                    <span>Gmail</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://docs.google.com/spreadsheets/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_sheets.ico" alt="" />
+                    <span>Planilhas</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://meet.google.com"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_meet.ico" alt="" />
+                    <span>Meet</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://docs.google.com/document/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/docs.ico" alt="" />
+                    <span>Docs</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://chat.google.com/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/chat.ico" alt="" />
+                    <span>Chat</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://www.youtube.com/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/youtube.ico" alt="" />
+                    <span>YouTube</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://chatgpt.com/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/favicon_chagpt.ico" alt="" />
+                    <span>ChatGPT</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://gemini.google.com/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/gemini.ico" alt="" />
+                    <span>Gemini</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://plataformafasttrade.com.br/"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/fast_trade.ico" alt="" />
+                    <span>Fast Trade</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://drive.google.com"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/drive.ico" alt="" />
+                    <span>Drive</span>
+                  </a>
+                  <a
+                    class="app"
+                    href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin"
+                    target="_blank"
+                    rel="noopener"
+                    role="menuitem"
+                  >
+                    <img src="images/linkedin.ico" alt="" />
+                    <span>LinkedIn</span>
+                  </a>
+                </div>
               </div>
+              <!-- ===== /Dropdown ===== -->
             </div>
           </div>
 
+          <!-- Busca -->
           <form
             class="site-search"
             role="search"
@@ -700,7 +772,6 @@
 
           <!-- Direita: Logo -->
           <div class="header-titles-desktop" aria-hidden="false">
-            <!--<h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>-->
             <img
               src="images/logo_texto_recortado.png"
               alt="Logo Options & Company"
@@ -765,7 +836,6 @@
           aria-controls="tab-home"
           >Início</a
         >
-
         <a
           href="#indicadores"
           id="tablink-indicadores"
@@ -773,7 +843,6 @@
           aria-controls="tab-indicadores"
           >Indicadores</a
         >
-
         <a
           href="https://chamadoadm.netlify.app"
           id="link-chamado-ti"
@@ -794,7 +863,6 @@
       (() => {
         const btn = document.getElementById("google-button");
         const dd = document.getElementById("google-dropdown");
-
         if (!btn || !dd) return;
 
         const close = () => {
@@ -827,7 +895,6 @@
         const overlay = document.getElementById("overlay");
         const openBtn = document.getElementById("menu-toggle");
         const closeBtn = document.getElementById("close-sidebar");
-
         if (!sidebar || !overlay) return;
 
         const setOpen = (v) => {
@@ -845,7 +912,6 @@
           if (e.key === "Escape") setOpen(false);
         });
 
-        // expõe para outros módulos (ex.: fechar ao trocar de aba)
         window.__closeSidebar = () => setOpen(false);
       })();
 
@@ -881,7 +947,6 @@
             history.replaceState(null, "", "#indicadores");
         }
 
-        // Clique em links do menu com data-tab-target="home|indicadores"
         document.querySelectorAll("[data-tab-target]").forEach((a) => {
           a.addEventListener("click", (e) => {
             e.preventDefault();
@@ -890,7 +955,6 @@
           });
         });
 
-        // Inicial pelo hash ou storage
         function initFromHashOrStorage() {
           const hash = (location.hash || "").replace("#", "").toLowerCase();
           if (hash && panels[hash]) {
@@ -913,7 +977,7 @@
         });
 
         initFromHashOrStorage();
-        window.openTab = activate; // opcional: abrir via JS
+        window.openTab = activate;
       })();
 
       /* ===================== Autocomplete + recentes ===================== */
@@ -926,7 +990,6 @@
         const MAX_RECENTS = 10;
         const SUGGEST_LIMIT = 10;
 
-        // Catálogo de sites (removi duplicado do Flex Scan)
         const STANDARD_SITES = [
           { name: "Google", domain: "google.com", category: "Busca" },
           { name: "YouTube", domain: "youtube.com", category: "Vídeos" },
@@ -1207,17 +1270,14 @@
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
             .toLowerCase();
-
         const tokensFrom = (q) =>
           normalize(q)
             .split(/\s+/)
             .filter((t) => t.length >= 2);
-
         const looksLikeUrl = (text) => {
           const t = text.trim();
           return /\./.test(t) && !/\s/.test(t);
         };
-
         const domainFrom = (text) => {
           try {
             const url = /^https?:\/\//i.test(text) ? text : "https://" + text;
@@ -1226,14 +1286,12 @@
             return null;
           }
         };
-
         const faviconFor = (value) => {
           const host = domainFrom(value);
           return host
             ? `https://www.google.com/s2/favicons?domain=${host}&sz=32`
             : null;
         };
-
         const uniqBy = (arr, keyFn) => {
           const seen = new Set();
           const out = [];
@@ -1254,7 +1312,6 @@
             return [];
           }
         };
-
         const saveRecent = (q) => {
           const t = q.trim();
           if (!t) return;
@@ -1265,7 +1322,6 @@
           if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
           localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
         };
-
         const removeRecent = (label) => {
           const tgt = (label || "").trim().toLowerCase();
           const arr = getRecents().filter((v) => v.toLowerCase() !== tgt);
@@ -1386,15 +1442,12 @@
 
             const textWrap = document.createElement("div");
             textWrap.className = "suggest-text";
-
             const primary = document.createElement("div");
             primary.className = "suggest-primary";
             primary.textContent = m.label;
-
             const secondary = document.createElement("div");
             secondary.className = "suggest-secondary";
             secondary.textContent = m.subtitle;
-
             textWrap.append(primary, secondary);
 
             const badge = document.createElement("div");
@@ -1491,13 +1544,13 @@
           const input = document.querySelector(INPUT_SEL);
           const q = (input?.value || "").trim();
 
-          if (inputEvent?.inputType?.startsWith?.("delete"))
-            suppressInlineNext = true;
-          if (inputEvent?.ctrlKey || inputEvent?.metaKey || inputEvent?.altKey)
+          if (
+            inputEvent?.startsWith?.("delete") ||
+            inputEvent?.inputType?.startsWith?.("delete")
+          )
             suppressInlineNext = true;
 
           const stdModels = standardSiteModels(q);
-
           const rec = getRecents();
           const short = applyShortcuts(q);
           const remote = q ? await fetchGoogleSuggest(q) : [];
@@ -1515,7 +1568,6 @@
                 : "sugestao"
             )
           );
-
           otherModels = otherModels.filter((m) => modelMatchesQuery(m, q));
 
           const allModels = otherModels.concat(stdModels);
@@ -1555,7 +1607,6 @@
           if (e.key === "Backspace" || e.key === "Delete")
             suppressInlineNext = true;
           if (e.ctrlKey || e.metaKey || e.altKey) suppressInlineNext = true;
-
           if (!panel || panel.hidden) return;
 
           const max = Math.min(SUGGEST_LIMIT, currentModels.length) - 1;
@@ -1607,7 +1658,6 @@
             const url = /^https?:\/\//i.test(q) ? q : "https://" + q;
             window.location.assign(url);
           }
-          // senão, o <form> envia para Google com name="q"
         };
 
         const focusInput = () => {
