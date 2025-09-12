@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Benefícios da options</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ===== Paleta (mesmas cores da sua página "Meus Links") ===== */
+      :root {
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+        --card: #0f1f1d; /* cards escuros */
+        --card-2: #122826; /* variantes */
+        --text: #e6edf3; /* texto principal */
+        --muted: #a4b8b3; /* texto secundário */
+        --brand: #4ade80; /* verde destaque */
+        --ring: #22c55e; /* foco/realce */
+
+        /* Derivações de bordas/sombras para o tema escuro */
+        --border: rgba(148, 163, 184, 0.18);
+        --border-strong: rgba(148, 163, 184, 0.28);
+        --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.25);
+        --shadow-2: 0 18px 40px rgba(16, 185, 129, 0.1),
+          0 10px 30px rgba(34, 197, 94, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol";
+        color: var(--text);
+
+        /* Fundo novo: luzes suaves + gradiente com transição "amaciada" */
+        background:
+    /* brilhos suaves (bem transparentes) */ radial-gradient(
+            1000px 700px at 20% -12%,
+            rgba(74, 222, 128, 0.08),
+            transparent 60%
+          ),
+          radial-gradient(
+            1200px 800px at 82% -18%,
+            rgba(34, 197, 94, 0.06),
+            transparent 65%
+          ),
+          /* gradiente principal com “ponte” entre as cores */
+            linear-gradient(
+              180deg,
+              var(--bg-0) 0%,
+              /* ponte entre bg-0 e bg-1 */ #123432 22%,
+              var(--bg-1) 48%,
+              /* ponte entre bg-1 e bg-2 (evita o salto) */ #18483f 68%,
+              var(--bg-2) 100%
+            );
+
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ===== Topbar com o mesmo estilo translúcido ===== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        background: linear-gradient(
+          180deg,
+          rgba(15, 42, 41, 0.85) 0%,
+          rgba(15, 42, 41, 0.65) 70%,
+          rgba(15, 42, 41, 0) 100%
+        );
+        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+      }
+      .topbar-inner {
+        max-width: 1080px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* ===== Layout ===== */
+      .wrapper {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 28px 16px 64px;
+      }
+      .hero {
+        margin: 12px 0 28px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      h1 {
+        font-size: clamp(28px, 4vw, 40px);
+        line-height: 1.15;
+        margin: 0 0 6px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .subtitle {
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      /* ===== Seções em zigue-zague (cards escuros) ===== */
+      .section {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 24px;
+        align-items: center;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          ),
+          var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        margin: 18px 0;
+        box-shadow: var(--shadow-1);
+        transition: box-shadow 0.2s ease, transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+      .section:hover {
+        transform: translateY(-1px);
+        border-color: var(--border-strong);
+        box-shadow: var(--shadow-2);
+      }
+      .section:nth-child(even) .media {
+        order: 2;
+      }
+      .section:nth-child(even) .content {
+        order: 1;
+      }
+
+      .media {
+        width: 100%;
+      }
+      .media > .frame {
+        overflow: hidden;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #0e1b1a;
+        aspect-ratio: 16/10;
+        display: block;
+        width: 500px;
+        height: auto;
+      }
+      .media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: saturate(1.02);
+      }
+
+      .content h2 {
+        margin: 0 0 8px;
+        font-size: clamp(20px, 2.8vw, 28px);
+      }
+      .content p {
+        margin: 0 0 12px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          rgba(74, 222, 128, 0.08),
+          rgba(74, 222, 128, 0.02)
+        );
+        border: 1px solid var(--border);
+        color: #cfe9dc;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: var(--brand);
+        color: #0f1f1d;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background 0.15s ease, transform 0.15s ease,
+          box-shadow 0.2s ease;
+      }
+      .btn:hover {
+        background: var(--ring);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-2);
+      }
+      .btn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        outline: none;
+      }
+      .brand img {
+        height: 50px;
+        width: auto;
+        display: block;
+        margin-top: 10px;
+        margin-left: 25px;
+      }
+
+      /* ===== Responsivo ===== */
+      @media (max-width: 860px) {
+        .section {
+          grid-template-columns: 1fr;
+        }
+        .section:nth-child(even) .media,
+        .section:nth-child(even) .content {
+          order: initial;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header" role="banner">
+      <a class="brand" href="/" aria-label="Página inicial">
+        <img src="images/logo_texto_recortado.png" alt="Options & Company" />
+      </a>
+    </header>
+    <header class="topbar" aria-label="Barra de navegação">
+      <div class="topbar-inner">
+        <!-- Você pode inserir sua marca aqui, se quiser -->
+      </div>
+    </header>
+
+    <main class="wrapper">
+      <section class="hero">
+        <div>
+          <h1>Benefícios da Options</h1>
+          <div class="subtitle">
+            Conheça os benefícios que a Options & Company oferece para seus
+            funcionários
+          </div>
+        </div>
+      </section>
+
+      <!-- Bloco 1: Imagem esquerda / Texto direita -->
+      <section class="section">
+        <div class="media">
+          <div class="frame">
+            <img
+              src="images/medicina-img.webp"
+              alt="Equipe reunida em mesa de trabalho"
+            />
+          </div>
+        </div>
+        <div class="content">
+          <h2>Medicina Integrativa</h2>
+          <p>
+            Uma abordagem que une o melhor da medicina convencional com terapias
+            complementares e práticas que visam o bem-estar do paciente de forma
+            holística
+          </p>
+          <a class="btn" href="beneficio-medicina.html">Conhecer beneício</a>
+        </div>
+      </section>
+
+      <!-- Bloco 2: Texto esquerda / Imagem direita -->
+      <section class="section">
+        <div class="media">
+          <div class="frame">
+            <img src="images/academia-img.png" alt="Apresentação em painel" />
+          </div>
+        </div>
+        <div class="content">
+          <h2>Total Pass</h2>
+          <p>
+            bem-estar corporativo que oferece acesso a academias, estúdios,
+            nutricionistas, psicólogos e outros serviços relacionados ao
+            bem-estar físico e mental.
+          </p>
+          <a class="btn" href="#">Conhecer beneício</a>
+        </div>
+      </section>
+
+      <!-- Bloco 3: Imagem esquerda / Texto direita -->
+      <section class="section">
+        <div class="media">
+          <div class="frame">
+            <img src="images/planodesaude-img.jpg" />
+          </div>
+        </div>
+        <div class="content">
+          <h2>Plano de saúde</h2>
+          <p>
+            Plano de saúde com cobertura médica e hospitalar, consultas, exames,
+            internações e atendimentos de urgência/emergência. Rede credenciada
+            ampla e atendimento nacional, garantindo assistência à saúde com
+            qualidade e segurança
+          </p>
+          <a class="btn" href="#">Acompanhar</a>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
