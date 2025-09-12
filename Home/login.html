@@ -11,6 +11,8 @@
     />
     <style>
       :root {
+        --control-h: 44px; /* 44–48px costuma ficar ótimo */
+
         --bg-0: #0f2a29;
         --bg-1: #154138;
         --bg-2: #1c5244;
@@ -77,13 +79,14 @@
 
       input {
         width: 100%;
-        padding: 12px;
+        height: var(--control-h);
+        padding: 0 14px; /* vertical 0 pra bater com a altura fixa */
         border-radius: 12px;
         border: 1px solid rgba(148, 163, 184, 0.25);
         background: var(--card-2);
         color: var(--text);
         font-size: 14px;
-        margin-bottom: 16px;
+        margin: 0;
       }
       input:focus {
         outline: none;
@@ -187,6 +190,43 @@
         display: flex !important;
       }
       /* ================== */
+      .input-password {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      /*Olho de password*/
+      .input-password input {
+        flex: 1;
+      }
+
+      .toggle-visibility {
+        flex: 0 0 var(--control-h);
+        width: var(--control-h);
+        height: var(--control-h);
+        padding: 0;
+        margin-top: 0;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: transparent;
+        color: var(--muted);
+        display: grid;
+        place-items: center;
+        cursor: pointer;
+      }
+
+      .toggle-visibility:hover {
+        background: rgba(74, 222, 128, 0.08);
+        color: var(--text);
+        border-color: rgba(148, 163, 184, 0.35);
+      }
+
+      .toggle-visibility svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
@@ -198,7 +238,50 @@
         <input type="email" id="email" required placeholder="seu@email.com" />
 
         <label for="password">Senha</label>
-        <input type="password" id="password" required placeholder="••••••••" />
+        <div class="input-password">
+          <input
+            type="password"
+            id="password"
+            required
+            placeholder="••••••••"
+            aria-label="Senha"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            id="togglePassword"
+            class="toggle-visibility"
+            aria-label="Mostrar senha"
+            aria-pressed="false"
+            title="Mostrar senha"
+          >
+            <!-- Ícone olho (SVG) -->
+            <svg
+              class="icon-eye"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 5c-5 0-9 4.5-10 7 1 2.5 5 7 10 7s9-4.5 10-7c-1-2.5-5-7-10-7Zm0 11a4 4 0 1 1 0-8 4 4 0 0 1 0 8Z"
+              />
+            </svg>
+            <!-- Ícone olho fechado (SVG) -->
+            <svg
+              class="icon-eye-off"
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              aria-hidden="true"
+              style="display: none"
+            >
+              <path
+                d="M3 3l18 18M10.6 6.2A7.4 7.4 0 0 1 12 6c5 0 9 4.5 10 7-.46 1.16-1.43 2.66-2.86 4.03M5.77 5.77C3.9 7.14 2.54 8.93 2 13c1 2.5 5 7 10 7 1.77 0 3.36-.39 4.75-1.05M9 12a3 3 0 0 0 3 3"
+              />
+            </svg>
+          </button>
+        </div>
 
         <button type="submit">Entrar</button>
 
@@ -251,6 +334,10 @@
       </div>
     </div>
     <!-- ======================================== -->
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -400,7 +487,65 @@
         }
       });
 
-      // ==============================
+      // ======= Mostrar/ocultar senha =======
+      (() => {
+        const passInput = document.getElementById("password");
+        const toggleBtn = document.getElementById("togglePassword");
+        if (!passInput || !toggleBtn) return;
+
+        const eye = toggleBtn.querySelector(".icon-eye");
+        const eyeOff = toggleBtn.querySelector(".icon-eye-off");
+
+        function setVisible(visible) {
+          passInput.type = visible ? "text" : "password";
+          toggleBtn.setAttribute("aria-pressed", String(visible));
+          toggleBtn.setAttribute(
+            "aria-label",
+            visible ? "Ocultar senha" : "Mostrar senha"
+          );
+          toggleBtn.title = visible ? "Ocultar senha" : "Mostrar senha";
+          if (eye && eyeOff) {
+            eye.style.display = visible ? "none" : "block";
+            eyeOff.style.display = visible ? "block" : "none";
+          }
+        }
+
+        let peeking = false;
+
+        // “Segurar para espiar” (desktop e mobile com Pointer Events)
+        toggleBtn.addEventListener("pointerdown", () => {
+          peeking = true;
+          setVisible(true);
+        });
+
+        toggleBtn.addEventListener("pointerup", () => {
+          setVisible(false);
+          setTimeout(() => (peeking = false), 0);
+        });
+
+        toggleBtn.addEventListener("pointerleave", () => {
+          if (peeking) {
+            setVisible(false);
+            peeking = false;
+          }
+        });
+
+        // Clique alterna (ignora clique após peek)
+        toggleBtn.addEventListener("click", (e) => {
+          if (peeking) {
+            e.preventDefault();
+            return;
+          }
+          setVisible(passInput.type === "password");
+        });
+
+        // Enter no campo senha envia form
+        passInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            document.getElementById("login-form").requestSubmit();
+          }
+        });
+      })();
     </script>
   </body>
 </html>
