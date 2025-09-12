@@ -378,31 +378,19 @@
 
         try {
           btnSend.disabled = true;
-          btnSend.textContent = "Verificando...";
-
-          // Verifica se há método de login para esse e-mail
-          const methods = await auth.fetchSignInMethodsForEmail(email);
-          if (!methods || methods.length === 0) {
-            modalMsg.textContent = "Você não tem permissão.";
-            modalMsg.style.color = "tomato";
-            return; // não envia reset
-          }
-
           btnSend.textContent = "Enviando...";
           await auth.sendPasswordResetEmail(email);
-
-          modalMsg.innerHTML =
-            "Enviamos um link de redefinição para <strong>" +
-            email +
-            "</strong>.<br>Verifique também sua caixa de spam.";
+          modalMsg.innerHTML = `Enviaremos um link para <strong>${email}</strong>.<br>Verifique também o spam.`;
           modalMsg.style.color = "var(--brand)";
         } catch (err) {
           const map = {
             "auth/invalid-email": "E-mail inválido.",
-            "auth/user-not-found": "Você não tem permissão.",
-            "auth/invalid-credential": "Você não tem permissão.",
+            "auth/user-disabled":
+              "Usuário desativado. Fale com o administrador.",
             "auth/too-many-requests":
               "Muitas tentativas. Tente novamente em alguns minutos.",
+            "auth/unauthorized-domain":
+              "Domínio não autorizado nas configurações do Firebase.",
           };
           modalMsg.textContent = map[err.code] || "Erro: " + err.message;
           modalMsg.style.color = "tomato";
@@ -411,6 +399,7 @@
           btnSend.textContent = "Enviar link";
         }
       });
+
       // ==============================
     </script>
   </body>

@@ -13,18 +13,15 @@
     />
     <style>
       :root {
-        /* Baseado no #0F2A29 com variações */
-        --bg-0: #0f2a29; /* topo */
-        --bg-1: #154138; /* meio */
-        --bg-2: #1c5244; /* base */
-
-        --card: #0f1f1d; /* fundo cards (verde bem escuro quase preto) */
-        --card-2: #122826; /* variação */
-
-        --text: #e6edf3; /* texto claro */
-        --muted: #a4b8b3; /* cinza esverdeado */
-        --brand: #4ade80; /* verde claro (brand principal) */
-        --ring: #22c55e; /* verde foco */
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+        --card: #0f1f1d;
+        --card-2: #122826;
+        --text: #e6edf3;
+        --muted: #a4b8b3;
+        --brand: #4ade80;
+        --ring: #22c55e;
       }
 
       * {
@@ -52,16 +49,16 @@
         padding: 40px 16px;
       }
 
-      /* ===== Header fixo (apenas a logo no canto superior esquerdo) ===== */
+      /* ===== Header fixo ===== */
       .site-header {
         position: fixed;
-        inset: 0 0 auto 0; /* top:0; left:0; right:0 */
+        inset: 0 0 auto 0;
         height: 64px;
         display: flex;
         align-items: center;
+        justify-content: space-between; /* espaço entre logo e botão */
         padding: 0 16px;
         z-index: 1000;
-        /* fundo sutil para dar contraste sem “barrar” o layout */
         background: linear-gradient(
           180deg,
           rgba(15, 42, 41, 0.85) 0%,
@@ -79,13 +76,12 @@
         outline: none;
       }
       .brand img {
-        height: 50px; /* ajuste se quiser maior/menor */
+        height: 50px;
         width: auto;
         display: block;
         margin-top: 10px;
         margin-left: 10px;
       }
-      /* Reserva espaço para o header fixo */
       .page-offset {
         height: 64px;
       }
@@ -95,7 +91,7 @@
         max-width: 760px;
       }
 
-      /* ===== Hero (título central) ===== */
+      /* ===== Hero ===== */
       .hero {
         text-align: center;
         margin-bottom: 28px;
@@ -188,6 +184,35 @@
         color: var(--muted);
       }
 
+      /* ===== Botão Logout ===== */
+      .logout {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        padding: 10px 14px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #0f1f1d;
+        background: var(--brand);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: transform 0.15s ease, background 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .logout:hover {
+        background: var(--ring);
+        transform: translateY(-1px);
+      }
+      .logout:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.35);
+      }
+      .icon-logout {
+        width: 18px;
+        height: 18px;
+      }
+
       @media (max-width: 420px) {
         .card {
           grid-template-columns: 44px 1fr 24px;
@@ -206,6 +231,10 @@
         .brand img {
           height: 30px;
         }
+        .logout {
+          padding: 8px 12px;
+          font-size: 13px;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -216,34 +245,44 @@
     </style>
   </head>
   <body>
-    <!-- Header fixo com a logo no canto superior esquerdo -->
+    <!-- Header fixo -->
     <header class="site-header" role="banner">
       <a class="brand" href="/" aria-label="Página inicial">
         <img src="images/logo_texto_recortado.png" alt="Options & Company" />
       </a>
+
+      <button class="logout danger" id="btnSair" aria-label="Sair da conta">
+        <svg
+          class="icon-logout"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v4h-2V4H6v16h6v-3h2v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3z"
+          />
+          <path d="M21 12l-4-4v3h-7v2h7v3l4-4z" />
+        </svg>
+        Sair
+      </button>
     </header>
 
-    <!-- Espaço para não ficar atrás do header fixo -->
     <div class="page-offset" aria-hidden="true"></div>
 
     <main class="wrap">
-      <!-- Título central -->
       <section class="hero" aria-label="Cabeçalho da página">
         <h1>Processos de Recrutamento e Seleção</h1>
       </section>
 
       <section class="stack" aria-label="Lista de links principais">
-        <!-- Formulários de Candidaturas -->
+        <!-- Card 1 -->
         <a
           class="card"
-          role="link"
-          aria-label="Abrir Formulários de Candidaturas"
           href="https://www.notion.so/Formul-rios-de-Candidaturas-26956349244d80b38386f10b683cc561?source=copy_link"
           target="_blank"
           rel="noreferrer noopener"
         >
           <span class="icon" aria-hidden="true">
-            <!-- Ícone: prancheta com check -->
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -260,11 +299,10 @@
             </svg>
           </span>
           <div class="content">
-            <h3>Banco de dados de curriculos</h3>
+            <h3>Banco de dados de currículos</h3>
             <p>Acesse as candidaturas da options</p>
           </div>
           <span class="ext" aria-hidden="true">
-            <!-- ícone externa -->
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -282,17 +320,14 @@
           </span>
         </a>
 
-        <!-- Progressive Day -->
+        <!-- Card 2 -->
         <a
           class="card"
-          role="link"
-          aria-label="Abrir página do Progressive Day"
           href="https://www.notion.so/Progressive-Day-25356349244d80c1a24ae8a6a763391a?source=copy_link"
           target="_blank"
           rel="noreferrer noopener"
         >
           <span class="icon" aria-hidden="true">
-            <!-- Ícone: troféu -->
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -330,17 +365,14 @@
           </span>
         </a>
 
-        <!-- Processos de contratação -->
+        <!-- Card 3 -->
         <a
           class="card"
-          role="link"
-          aria-label="Abrir Processos de Contratação"
           href="https://www.notion.so/Processo-de-Contrata-o-25056349244d80c6886bded0c696228d?source=copy_link"
           target="_blank"
           rel="noreferrer noopener"
         >
           <span class="icon" aria-hidden="true">
-            <!-- Ícone: maleta -->
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -380,7 +412,39 @@
       </section>
     </main>
 
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyCuEODFf67xDoB-XfQVnhbWJMXq_ZffKMQ",
+        authDomain: "login-notion.firebaseapp.com",
+        projectId: "login-notion",
+        storageBucket: "login-notion.firebasestorage.app",
+        messagingSenderId: "248763654792",
+        appId: "1:248763654792:web:e986c851a2e62a81b5b53d",
+        measurementId: "G-EL1YGQEG6X",
+      };
+      if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // Protege a página
+      auth.onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = "index.html"; // redireciona se não logado
+        }
+      });
+
+      // Logout
+      document.getElementById("btnSair").addEventListener("click", async () => {
+        try {
+          await auth.signOut();
+          window.location.href = "login.html";
+        } catch (err) {
+          alert("Não foi possível sair: " + err.message);
+        }
+      });
+
       // Acessibilidade: Enter/Espaço clicam no card
       document.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("keydown", (e) => {
