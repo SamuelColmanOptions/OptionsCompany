@@ -1,1756 +1,307 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Options & Company</title>
-
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
     <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:wght@700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-
     <style>
-      /* ===== Scrollbar personalizada (Chrome/Edge/Safari) ===== */
-      ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
+      :root {
+        --control-h: 44px;
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+        --card: #0f1f1d;
+        --card-2: #122826;
+        --text: #e6edf3;
+        --muted: #a4b8b3;
+        --brand: #4ade80;
+        --ring: #22c55e;
       }
-      ::-webkit-scrollbar-track {
-        background: #1a1a1a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #418d75;
-        border-radius: 6px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #2e6b56;
-      }
-      /* ===== Firefox ===== */
       * {
-        scrollbar-width: thin;
-        scrollbar-color: #418d75 #1a1a1a;
-      }
-
-      /* --- Reset Básico e Configurações Globais --- */
-      * {
+        box-sizing: border-box;
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
       }
       body {
-        font-family: "Inter", sans-serif;
-        background-color: #0f2a29;
-        color: #ffffff;
-        position: relative;
-        overflow-x: hidden;
-        min-height: 100vh;
-      }
-      .font-logo {
-        font-family: serif;
-      }
-      .e-comercial {
-        color: #4ea788;
-      }
-
-      /* --- Efeito de Fundo --- */
-      body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
+        font-family: Inter, system-ui, Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 50% -10%,
+            rgba(34, 197, 94, 0.12),
+            transparent 60%
           ),
-          linear-gradient(
-            225deg,
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          );
-        background-size: 30px 30px;
-        z-index: 0;
-      }
-      .background-text {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-top: -2rem;
-        margin-right: -3rem;
-        user-select: none;
-        z-index: 0;
-      }
-      .background-text span {
-        font-family: "Playfair Display", serif;
-        font-size: 20vw;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.05);
-        transform: rotate(-12deg);
-        display: inline-block;
-      }
-
-      /* --- Estrutura Principal --- */
-      .container {
-        position: relative;
-        z-index: 1;
+          linear-gradient(180deg, var(--bg-0), var(--bg-1) 55%, var(--bg-2));
         min-height: 100vh;
         display: flex;
-        flex-direction: column;
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 0 1rem;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
       }
-
-      /* ===== TOPO ===== */
-      .header {
+      .card {
         width: 100%;
-        padding-top: 1rem;
-        position: relative;
+        max-width: 380px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          ),
+          var(--card);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(6px);
+      }
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
         margin-bottom: 20px;
       }
-      .header-content {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 20px 16px;
-        gap: 16px;
-        min-height: 72px;
-        flex-wrap: nowrap;
+      label {
+        font-size: 14px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
       }
-
-      /* Esquerda: Menu + Ferramentas */
-      .top-left {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        flex: 0 0 auto;
-        z-index: 5;
-      }
-
-      .menu-btn {
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        background: transparent;
-        color: white;
-        border-radius: 0.375rem;
-        padding: 0.375rem 1rem;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .menu-btn:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
-
-      /* Ferramentas (dropdown trigger) */
-      .google-tools {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.75rem;
-      }
-      .google-tools > button {
-        background: white;
-        color: black;
-        font-weight: 700;
-        border: none;
-        border-radius: 0.375rem;
-        padding: 0.375rem 0.75rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .google-tools > button:hover {
-        background: #e5e5e5;
-      }
-
-      /* ===================== DROPDOWN ESTILO GOOGLE ===================== */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 100%;
-        margin-top: 8px;
-        background: #dfdfdf; /* estilo Google */
-        min-width: 320px;
+      input {
+        width: 100%;
+        height: var(--control-h);
+        padding: 0 14px;
         border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: var(--card-2);
+        color: var(--text);
+        font-size: 14px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--ring);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+      }
+      button {
+        width: 100%;
         padding: 12px;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
-        z-index: 10;
-        opacity: 0;
-        transform: translateY(-8px) scale(0.98);
-        transition: opacity 0.18s ease, transform 0.18s ease;
-        pointer-events: none;
-        overflow: hidden;
-      }
-      .dropdown-content.show {
-        display: block;
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        pointer-events: auto;
-      }
-
-      .app-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-        max-height: 420px;
-        overflow: auto;
-      }
-      .app {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 8px;
-        text-decoration: none;
         border-radius: 12px;
-        color: #000000;
-        outline: none;
-      }
-      .app img {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        display: block;
-      }
-      .app span {
-        font-size: 12px;
-        line-height: 1.2;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-      }
-      .app:hover,
-      .app:focus-visible {
-        background: rgba(255, 255, 255, 0.08);
-      }
-      @media (max-width: 420px) {
-        .dropdown-content {
-          min-width: 280px;
-        }
-        .app-grid {
-          grid-template-columns: repeat(4, 1fr);
-        }
-      }
-
-      /* CENTRO: busca (agora no centro absoluto) */
-      .site-search {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        z-index: 4;
-        flex: 0 0 auto;
-      }
-      .search-wrap {
-        position: relative;
-      }
-      .search-wrap .search-icon {
-        position: absolute;
-        left: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        opacity: 0.9;
-        pointer-events: none;
-        filter: drop-shadow(0 0 0 rgba(0, 0, 0, 0));
-      }
-      .site-search input[type="search"] {
-        width: clamp(220px, 50vw, 520px);
-        padding: 10px 12px;
-        padding-left: 36px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(255, 255, 255, 0.06);
-        color: #fff;
-        border-radius: 10px;
-        outline: none;
-      }
-      .site-search input[type="search"]::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-      }
-      .site-search button[type="submit"] {
-        padding: 10px 14px;
-        border-radius: 10px;
-        border: 0;
-        background: #418d75;
-        color: #fff;
+        border: none;
+        background: var(--brand);
+        color: #0f1f1d;
         font-weight: 600;
         cursor: pointer;
+        transition: 0.2s;
+        background-position: center;
       }
-
-      /* SUGESTÕES */
-      .suggest-panel {
-        position: absolute;
-        top: calc(100% + 6px);
-        left: 0;
-        right: 0;
-        z-index: 50;
-        background: #232323;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 10px;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
-        padding: 6px;
-        max-height: min(50vh, 420px);
-        overflow: auto;
+      button:hover {
+        background: var(--ring);
       }
-      .suggest-empty {
-        padding: 10px 12px;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-      }
-      .suggest-item {
-        display: grid;
-        grid-template-columns: 28px 1fr auto auto;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-      .suggest-item:hover,
-      .suggest-item[aria-selected="true"] {
-        background: rgba(255, 255, 255, 0.08);
-      }
-      .suggest-icon {
-        width: 18px;
-        height: 18px;
-        border-radius: 4px;
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.12);
-      }
-      .suggest-text {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-      }
-      .suggest-primary {
-        color: #fff;
-        font-size: 14px;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .suggest-secondary {
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 12px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-top: 2px;
-      }
-      .suggest-badge {
-        font-size: 11px;
-        padding: 3px 6px;
-        border-radius: 999px;
-        background: rgba(65, 141, 117, 0.18);
-        color: #a6e0cf;
-        border: 1px solid rgba(65, 141, 117, 0.35);
-        margin-left: 8px;
-      }
-      .suggest-remove {
-        font-size: 16px;
-        line-height: 1;
-        padding: 2px 6px;
-        color: rgba(255, 255, 255, 0.65);
-        cursor: pointer;
-        user-select: none;
-      }
-      .suggest-remove:hover {
-        color: #ff6b6b;
-      }
-
-      /* DIREITA: logo */
-      .header-titles-desktop {
-        flex: 0 0 auto;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        z-index: 3;
-        text-align: right;
-      }
-      .header-titles-desktop .logo {
-        max-height: 50px;
-        width: auto;
-        object-fit: contain;
-        display: block;
-      }
-
-      .header-titles-mobile {
-        display: none;
-      }
-
-      /* --- Conteúdo Principal --- */
-      .main-content {
-        flex-grow: 1;
-        display: flex;
-        align-items: stretch;
-        justify-content: center;
-        padding: 0;
-      }
-
-      /* ---- TAB PANELS ---- */
-      .tab-panel {
-        display: none;
-        width: 100%;
-      }
-      .tab-panel.active {
-        display: block;
-      }
-      .tab-placeholder {
-        width: 100%;
-        min-height: 60vh;
-        display: grid;
-        place-items: center;
-        border: 1px dashed rgba(255, 255, 255, 0.15);
-        border-radius: 12px;
-        margin: 8px 0 16px;
-        background: rgba(255, 255, 255, 0.03);
-        text-align: center;
-        padding: 32px;
-        color: rgba(255, 255, 255, 0.75);
-      }
-
-      /* --- MENU LATERAL (Sidebar) --- */
-      .sidebar {
-        position: fixed;
-        inset: 0 auto 0 0;
-        width: min(82vw, 360px);
-        transform: translateX(-100%);
-        background: #0f2a29;
-        color: #fff;
-        padding: 16px;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.35);
-        transition: transform 0.3s ease;
-        z-index: 1000;
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: saturate(120%);
-      }
-      .sidebar.is-open {
-        transform: translateX(0);
-      }
-      .sidebar-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-      .sidebar-header h2 {
-        margin: 0;
-        font-size: 1.2rem;
-      }
-      .close-btn {
+      .btn-secondary {
         background: transparent;
-        color: #fff;
-        border: none;
-        font-size: 1.8rem;
-        line-height: 1;
-        cursor: pointer;
-        border-radius: 8px;
-        padding: 0.2rem 0.4rem;
+        color: var(--muted);
+        border: 1px solid rgba(148, 163, 184, 0.25);
       }
-      .close-btn:hover {
-        background: rgba(255, 255, 255, 0.08);
+      .btn-secondary:hover {
+        background: rgba(74, 222, 128, 0.08);
+        color: var(--text);
+        border-color: rgba(148, 163, 184, 0.35);
       }
-      .sidebar-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
+      #login-msg {
+        margin-top: 14px;
+        font-size: 14px;
+        text-align: center;
+        color: var(--muted);
+        min-height: 20px;
       }
-      .sidebar-links a {
-        color: #fff;
-        text-decoration: none;
-        padding: 0.65rem 0.6rem;
-        border-radius: 8px;
+      .row {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
       }
-      .sidebar-links a:hover {
-        background: #123c38;
-        color: #d1fae5;
-      }
-
-      .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.25s ease;
-        z-index: 999;
-      }
-      .overlay.is-open {
-        opacity: 1;
-        visibility: visible;
-      }
-
-      /* ===== Imagem única na Home ===== */
-      .tab-media-wrap {
-        width: 100%;
-        height: 95vh;
-        border-radius: 12px;
-        overflow: hidden;
-        margin: 8px 0 16px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        /*object-fit: contain;
-        background: #0f2a29; */
-      }
-      .tab-media-wrap img {
-        width: 100%;
-        height: 800px;
-        display: block;
-      }
-
-      html,
-      body {
-        overflow-x: hidden;
-      }
-
-      /* ===== Responsivo ===== */
-      @media (max-width: 640px) {
-        .header-content {
-          flex-wrap: wrap;
-          gap: 8px 12px;
-          padding: 8px 12px;
-        }
-        .top-left {
-          order: 1;
-        }
-        .site-search {
-          position: static;
-          transform: none;
-          order: 2;
-          width: 100%;
-          margin-top: 4px;
-          justify-content: center;
-        }
-        .site-search input[type="search"] {
-          width: 100%;
-          max-width: 100%;
-        }
-        .header-titles-desktop {
-          order: 3;
-          width: 100%;
-          display: flex;
-          justify-content: flex-end;
-          text-align: right;
-          margin-top: 6px;
-        }
-        .search-wrap .search-icon {
-          left: 12px;
-        }
-        .header-titles-desktop .logo {
-          max-height: 50px;
-        }
-      }
-      @media (min-width: 768px) {
-        .header-titles-desktop {
-          display: flex;
-        }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+        text-align: center;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <!-- Cabeçalho -->
-      <header class="header">
-        <div class="header-content">
-          <!-- Esquerda: Menu + Ferramentas -->
-          <div class="top-left">
-            <button
-              class="menu-btn"
-              id="menu-toggle"
-              aria-expanded="false"
-              aria-controls="sidebar"
-            >
-              Menu
-            </button>
+    <div class="card">
+      <h1>Acesso Restrito</h1>
 
-            <div class="google-tools">
-              <button
-                id="google-button"
-                aria-controls="google-dropdown"
-                aria-expanded="false"
-              >
-                Ferramentas
-              </button>
+      <!-- FORM: somente e-mail corporativo + senha -->
+      <form id="login-form" autocomplete="off">
+        <label for="email">E-mail corporativo</label>
+        <input
+          type="email"
+          id="email"
+          required
+          placeholder="seu@optionsco.com.br"
+          inputmode="email"
+        />
 
-              <!-- ===== Dropdown estilo Google ===== -->
-              <div
-                id="google-dropdown"
-                class="dropdown-content"
-                role="menu"
-                aria-hidden="true"
-              >
-                <div class="app-grid" role="list">
-                  <a
-                    class="app"
-                    href="https://www.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_google.ico" alt="" />
-                    <span>Home</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://calendar.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_calendar.ico" alt="" />
-                    <span>Agenda</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://mail.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_gmail.ico" alt="" />
-                    <span>Gmail</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://docs.google.com/spreadsheets/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_sheets.ico" alt="" />
-                    <span>Planilhas</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://meet.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_meet.ico" alt="" />
-                    <span>Meet</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://docs.google.com/document/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/docs.ico" alt="" />
-                    <span>Docs</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://chat.google.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/chat.ico" alt="" />
-                    <span>Chat</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/youtube.ico" alt="" />
-                    <span>YouTube</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://chatgpt.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/favicon_chagpt.ico" alt="" />
-                    <span>ChatGPT</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://gemini.google.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/gemini.ico" alt="" />
-                    <span>Gemini</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://plataformafasttrade.com.br/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/fast_trade.ico" alt="" />
-                    <span>Fast Trade</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://drive.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/drive.ico" alt="" />
-                    <span>Drive</span>
-                  </a>
-                  <a
-                    class="app"
-                    href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                  >
-                    <img src="images/linkedin.ico" alt="" />
-                    <span>LinkedIn</span>
-                  </a>
-                </div>
-              </div>
-              <!-- ===== /Dropdown ===== -->
-            </div>
-          </div>
+        <label for="password" style="margin-top: 10px">Senha</label>
+        <input type="password" id="password" required placeholder="********" />
 
-          <!-- Busca -->
-          <form
-            class="site-search"
-            role="search"
-            aria-label="Pesquisar na web"
-            action="https://www.google.com/search"
-            method="GET"
-            target="_self"
-            id="search-form"
-          >
-            <div class="search-wrap">
-              <img
-                src="images/favicon_google.ico"
-                alt=""
-                class="search-icon"
-                aria-hidden="true"
-              />
-              <input
-                id="q"
-                name="q"
-                type="search"
-                placeholder="Pesquisar no Google…"
-                autocomplete="off"
-                inputmode="search"
-                spellcheck="false"
-                aria-controls="suggestions"
-              />
-              <div
-                id="suggestions"
-                class="suggest-panel"
-                role="listbox"
-                aria-label="Sugestões"
-                hidden
-              ></div>
-            </div>
-            <button type="submit" aria-label="Pesquisar">Buscar</button>
-          </form>
-
-          <!-- Direita: Logo -->
-          <div class="header-titles-desktop" aria-hidden="false">
-            <img
-              src="images/logo_texto_recortado.png"
-              alt="Logo Options & Company"
-              class="logo"
-            />
-          </div>
+        <div class="row">
+          <button type="submit" id="btn-login">Entrar</button>
+          <button type="button" id="btn-voltar" class="btn-secondary">
+            Voltar
+          </button>
         </div>
-      </header>
+      </form>
 
-      <!-- Conteúdo Principal em Abas -->
-      <main class="main-content" id="tab-root" role="region" aria-live="polite">
-        <!-- Início (padrão) -->
-        <section
-          id="tab-home"
-          class="tab-panel active"
-          role="tabpanel"
-          aria-labelledby="tablink-home"
-        >
-          <div class="tab-media-wrap">
-            <img
-              src="images/WhatsApp Image 2025-09-15 at 08.42.39.jpeg"
-              alt="Mesa de operação - Options & Company"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
-        </section>
-
-        <!-- Indicadores -->
-        <section
-          id="tab-indicadores"
-          class="tab-panel"
-          role="tabpanel"
-          aria-labelledby="tablink-indicadores"
-        >
-          <div class="frame-wrap">
-            <iframe
-              title="Dashboard Looker Studio"
-              src="https://lookerstudio.google.com/embed/reporting/54b7c921-72e4-44a0-afe2-152eb1c9f98e/page/p_dz2a2qtivd"
-              style="width: 100%; height: 70vh; border: 0"
-              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-            >
-            </iframe>
-          </div>
-        </section>
-      </main>
+      <p id="login-msg"></p>
+      <p class="hint">Somente e-mails @optionsco.com.br são aceitos.</p>
     </div>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar" aria-hidden="true">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
-        <button class="close-btn" id="close-sidebar" aria-label="Fechar menu">
-          ×
-        </button>
-      </div>
-      <nav class="sidebar-links">
-        <a
-          href="#home"
-          id="tablink-home"
-          data-tab-target="home"
-          aria-controls="tab-home"
-          >Início</a
-        >
-        <a
-          href="#indicadores"
-          id="tablink-indicadores"
-          data-tab-target="indicadores"
-          aria-controls="tab-indicadores"
-          >Indicadores</a
-        >
-        <a
-          href="https://chamadoadm.netlify.app"
-          id="link-chamado-ti"
-          target="_blank"
-          rel="noopener"
-          >Suporte</a
-        >
-        <a id="link-website" href="login.html" target="_blank" rel="noopener"
-          >Liderança</a
-        >
-        <a
-          id="link-beneficios"
-          href="beneficios.html"
-          target="_blank"
-          rel="noopener"
-          >Beneficios</a
-        >
-      </nav>
-    </aside>
-    <div class="overlay" id="overlay" hidden></div>
+    <!-- Firebase (módulos) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+        onAuthStateChanged,
+        setPersistence,
+        browserLocalPersistence,
+      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
-    <!-- ===== Scripts ===== -->
-    <script>
-      /* ===================== Dropdown Ferramentas ===================== */
-      (() => {
-        const btn = document.getElementById("google-button");
-        const dd = document.getElementById("google-dropdown");
-        if (!btn || !dd) return;
+      // ===== CONFIG ===== (mesmo projeto que você já usa)
+      const firebaseConfig = {
+        apiKey: "AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",
+        authDomain: "login-intranet-96213.firebaseapp.com",
+        projectId: "login-intranet-96213",
+        storageBucket: "login-intranet-96213.firebasestorage.app",
+        messagingSenderId: "492024716317",
+        appId: "1:492024716317:web:17dd14c4b8decc8a86faf4",
+        measurementId: "G-1KB77SBJ7L",
+      };
 
-        const close = () => {
-          dd.classList.remove("show");
-          btn.setAttribute("aria-expanded", "false");
-          dd.setAttribute("aria-hidden", "true");
-        };
+      // ===== INIT =====
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      await setPersistence(auth, browserLocalPersistence);
 
-        btn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          dd.classList.toggle("show");
-          const open = dd.classList.contains("show");
-          btn.setAttribute("aria-expanded", open ? "true" : "false");
-          dd.setAttribute("aria-hidden", open ? "false" : "true");
-        });
+      // ===== Helpers =====
+      const MSG = document.getElementById("login-msg");
+      const EMAIL_INPUT = document.getElementById("email");
+      const PASS_INPUT = document.getElementById("password");
+      const BTN_LOGIN = document.getElementById("btn-login");
+      const BTN_VOLTAR = document.getElementById("btn-voltar");
 
-        document.addEventListener("click", (e) => {
-          if (!dd.classList.contains("show")) return;
-          if (!dd.contains(e.target) && e.target !== btn) close();
-        });
+      const TARGET_AFTER_LOGIN = "index2.html"; // para onde mandar após logar
 
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") close();
-        });
-      })();
+      function setMsg(text, ok = false) {
+        MSG.textContent = text || "";
+        MSG.style.color = ok ? "var(--brand)" : "var(--muted)";
+      }
+      function setErr(text) {
+        MSG.textContent = text || "Ocorreu um erro.";
+        MSG.style.color = "tomato";
+      }
+      function sanitize(v) {
+        return (v || "").trim();
+      }
+      function isAllowedEmail(email) {
+        const domain = (email || "").toLowerCase().split("@").pop()?.trim();
+        return domain === "optionsco.com.br";
+      }
 
-      /* ===================== Sidebar (Menu) ===================== */
-      (() => {
-        const sidebar = document.getElementById("sidebar");
-        const overlay = document.getElementById("overlay");
-        const openBtn = document.getElementById("menu-toggle");
-        const closeBtn = document.getElementById("close-sidebar");
-        if (!sidebar || !overlay) return;
-
-        const setOpen = (v) => {
-          sidebar.classList.toggle("is-open", v);
-          overlay.classList.toggle("is-open", v);
-          overlay.hidden = !v;
-          sidebar.setAttribute("aria-hidden", v ? "false" : "true");
-          openBtn?.setAttribute("aria-expanded", v ? "true" : "false");
-        };
-
-        openBtn?.addEventListener("click", () => setOpen(true));
-        closeBtn?.addEventListener("click", () => setOpen(false));
-        overlay?.addEventListener("click", () => setOpen(false));
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") setOpen(false);
-        });
-
-        window.__closeSidebar = () => setOpen(false);
-      })();
-
-      /* ===================== Sistema de Abas (menu) ===================== */
-      (() => {
-        const TAB_STORAGE_KEY = "lastTab_v1";
-        const panels = {
-          home: document.getElementById("tab-home"),
-          indicadores: document.getElementById("tab-indicadores"),
-        };
-
-        function activate(tab) {
-          Object.keys(panels).forEach((k) => {
-            panels[k]?.classList.toggle("active", k === tab);
-            if (panels[k]) {
-              const labelledby = panels[k].getAttribute("aria-labelledby");
-              if (labelledby) {
-                const link = document.getElementById(labelledby);
-                if (link)
-                  link.setAttribute(
-                    "aria-current",
-                    k === tab ? "page" : "false"
-                  );
-              }
-            }
-          });
-          try {
-            localStorage.setItem(TAB_STORAGE_KEY, tab);
-          } catch {}
-          window.__closeSidebar?.();
-          if (tab === "home") history.replaceState(null, "", "#home");
-          if (tab === "indicadores")
-            history.replaceState(null, "", "#indicadores");
+      async function login(email, password) {
+        email = sanitize(email).toLowerCase();
+        if (!email || !password) {
+          setErr("Preencha e-mail e senha.");
+          return;
         }
-
-        document.querySelectorAll("[data-tab-target]").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const tab = a.getAttribute("data-tab-target");
-            if (tab && panels[tab]) activate(tab);
-          });
-        });
-
-        function initFromHashOrStorage() {
-          const hash = (location.hash || "").replace("#", "").toLowerCase();
-          if (hash && panels[hash]) {
-            activate(hash);
-            return;
-          }
-          try {
-            const saved = localStorage.getItem(TAB_STORAGE_KEY);
-            if (saved && panels[saved]) {
-              activate(saved);
-              return;
-            }
-          } catch {}
-          activate("home");
+        if (!isAllowedEmail(email)) {
+          setErr("Use um e-mail @optionsco.com.br.");
+          return;
         }
-
-        window.addEventListener("hashchange", () => {
-          const hash = (location.hash || "").replace("#", "").toLowerCase();
-          if (hash && panels[hash]) activate(hash);
-        });
-
-        initFromHashOrStorage();
-        window.openTab = activate;
-      })();
-
-      /* ===================== Autocomplete + recentes ===================== */
-      (() => {
-        const INPUT_SEL = "#q";
-        const PANEL_SEL = "#suggestions";
-        const FORM_SEL = "#search-form";
-
-        const RECENTS_KEY = "recentSearches_v1";
-        const MAX_RECENTS = 10;
-        const SUGGEST_LIMIT = 10;
-
-        const STANDARD_SITES = [
-          { name: "Google", domain: "google.com", category: "Busca" },
-          { name: "YouTube", domain: "youtube.com", category: "Vídeos" },
-          { name: "Facebook", domain: "facebook.com", category: "Rede social" },
-          {
-            name: "Instagram",
-            domain: "instagram.com",
-            category: "Rede social",
-          },
-          {
-            name: "ChatGPT",
-            domain: "chatgpt.com",
-            category: "Inteligência artificial",
-          },
-          { name: "X", domain: "x.com", category: "Rede social" },
-          {
-            name: "Amazon",
-            domain: "amazon.com",
-            category: "Comércio eletrônico",
-          },
-          {
-            name: "LinkedIn",
-            domain: "linkedin.com",
-            category: "Rede social profissional",
-          },
-          {
-            name: "Netflix",
-            domain: "netflix.com",
-            category: "Streaming de filmes e séries",
-          },
-          {
-            name: "Gemini",
-            domain: "gemini.google.com",
-            category: "IA do Google",
-          },
-          {
-            name: "InfoMoney",
-            domain: "infomoney.com.br",
-            category: "Finanças",
-          },
-          {
-            name: "CNN",
-            domain: "cnn.com",
-            category: "Notícias gerais e economia",
-          },
-          {
-            name: "Looker Studio",
-            domain: "lookerstudio.google.com",
-            category: "Análise de dados",
-          },
-          {
-            name: "Google Sheets",
-            domain: "sheets.google.com",
-            category: "Planilhas",
-          },
-          {
-            name: "WhatsApp Web",
-            domain: "web.whatsapp.com",
-            category: "Mensagens",
-          },
-          {
-            name: "Formulários Google",
-            domain: "forms.google.com",
-            category: "Formulários",
-          },
-          { name: "Canva", domain: "canva.com", category: "Design gráfico" },
-          {
-            name: "Wikipedia",
-            domain: "wikipedia.org",
-            category: "Enciclopédia",
-          },
-          {
-            name: "Pinterest",
-            domain: "pinterest.com",
-            category: "Rede social",
-          },
-          { name: "Globo", domain: "globo.com", category: "Portal / Notícias" },
-          { name: "Telegram", domain: "t.me", category: "Mensagens" },
-          {
-            name: "The New York Times",
-            domain: "nytimes.com",
-            category: "Portal / Notícias",
-          },
-          {
-            name: "AliExpress",
-            domain: "aliexpress.com",
-            category: "Comércio eletrônico",
-          },
-          {
-            name: "Discord",
-            domain: "discord.com",
-            category: "Comunicação / Voz e texto",
-          },
-          {
-            name: "BBC",
-            domain: "bbc.com",
-            category: "Notícias internacionais",
-          },
-          {
-            name: "Speedtest by Ookla",
-            domain: "speedtest.net",
-            category: "Teste de velocidade",
-          },
-          { name: "Gmail", domain: "mail.google.com", category: "E-mail" },
-          {
-            name: "Google Drive",
-            domain: "drive.google.com",
-            category: "Armazenamento em nuvem",
-          },
-          {
-            name: "Google Docs",
-            domain: "docs.google.com",
-            category: "Documentos",
-          },
-          {
-            name: "Google Slides",
-            domain: "slides.google.com",
-            category: "Apresentações",
-          },
-          {
-            name: "Google Keep",
-            domain: "keep.google.com",
-            category: "Anotações",
-          },
-          {
-            name: "Google Calendar",
-            domain: "calendar.google.com",
-            category: "Agenda",
-          },
-          {
-            name: "Google Meet",
-            domain: "meet.google.com",
-            category: "Videoconferência",
-          },
-          {
-            name: "Google Chat",
-            domain: "chat.google.com",
-            category: "Mensagens",
-          },
-          {
-            name: "Google Maps",
-            domain: "maps.google.com",
-            category: "Mapas e navegação",
-          },
-          {
-            name: "Google Earth",
-            domain: "earth.google.com",
-            category: "Mapas e visualização 3D",
-          },
-          {
-            name: "Google Translate",
-            domain: "translate.google.com",
-            category: "Tradução",
-          },
-          {
-            name: "Google Photos",
-            domain: "photos.google.com",
-            category: "Fotos e álbuns",
-          },
-          {
-            name: "Google News",
-            domain: "news.google.com",
-            category: "Notícias",
-          },
-          {
-            name: "Google Finance",
-            domain: "google.com/finance",
-            category: "Finanças",
-          },
-          {
-            name: "Google Flights",
-            domain: "google.com/flights",
-            category: "Viagens",
-          },
-          {
-            name: "Google Books",
-            domain: "books.google.com",
-            category: "Livros",
-          },
-          {
-            name: "Google Play",
-            domain: "play.google.com",
-            category: "Loja de apps e mídia",
-          },
-          {
-            name: "Google Podcasts",
-            domain: "podcasts.google.com",
-            category: "Podcasts",
-          },
-          {
-            name: "Google Classroom",
-            domain: "classroom.google.com",
-            category: "Educação",
-          },
-          {
-            name: "Google Arts & Culture",
-            domain: "artsandculture.google.com",
-            category: "Arte e cultura",
-          },
-          {
-            name: "Google Ads",
-            domain: "ads.google.com",
-            category: "Publicidade",
-          },
-          {
-            name: "Google Analytics",
-            domain: "analytics.google.com",
-            category: "Métricas e estatísticas",
-          },
-          {
-            name: "Google Tag Manager",
-            domain: "tagmanager.google.com",
-            category: "Gerenciamento de tags",
-          },
-          {
-            name: "Google Cloud",
-            domain: "cloud.google.com",
-            category: "Serviços em nuvem",
-          },
-          {
-            name: "Google Colab",
-            domain: "colab.research.google.com",
-            category: "Notebooks de IA",
-          },
-          {
-            name: "Spotify",
-            domain: "spotify.com",
-            category: "Streaming de música",
-          },
-          {
-            name: "YouTube Music",
-            domain: "music.youtube.com",
-            category: "Streaming de música",
-          },
-          { name: "Tryd", domain: "tryd.com.br", category: "Tryd" },
-          {
-            name: "Fast trade",
-            domain: "plataformafasttrade.com.br",
-            category: "Fast Trade",
-          },
-          {
-            name: "Chat Guru",
-            domain: "chatguru.com.br",
-            category: "Chat Guru",
-          },
-          {
-            name: "Brasil Jornal",
-            domain: "braziljournal.com",
-            category: "Notícias",
-          },
-          {
-            name: "Flex Scan",
-            domain: "login.flexscan.com.br",
-            category: "Flexscan",
-          },
-          { name: "Git Hub", domain: "github.com", category: "Git Hub" },
-        ];
-
-        const SHORTCUTS = [
-          { re: /^y(t|o|outube)?$/i, items: ["YouTube", "youtube.com"] },
-          { re: /^g(mail)?$/i, items: ["Gmail", "mail.google.com"] },
-          {
-            re: /^c(al|alendar)?$/i,
-            items: ["Google Calendar", "calendar.google.com"],
-          },
-          { re: /^m(eet)?$/i, items: ["Google Meet", "meet.google.com"] },
-          { re: /^(d|drive)$/i, items: ["Google Drive", "drive.google.com"] },
-          {
-            re: /^(s|sheets?)$/i,
-            items: ["Google Sheets", "docs.google.com/spreadsheets/"],
-          },
-        ];
-
-        /* ---------- Helpers ---------- */
-        const normalize = (s) =>
-          (s || "")
-            .toString()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase();
-        const tokensFrom = (q) =>
-          normalize(q)
-            .split(/\s+/)
-            .filter((t) => t.length >= 2);
-        const looksLikeUrl = (text) => {
-          const t = text.trim();
-          return /\./.test(t) && !/\s/.test(t);
-        };
-        const domainFrom = (text) => {
-          try {
-            const url = /^https?:\/\//i.test(text) ? text : "https://" + text;
-            return new URL(url).hostname;
-          } catch {
-            return null;
-          }
-        };
-        const faviconFor = (value) => {
-          const host = domainFrom(value);
-          return host
-            ? `https://www.google.com/s2/favicons?domain=${host}&sz=32`
-            : null;
-        };
-        const uniqBy = (arr, keyFn) => {
-          const seen = new Set();
-          const out = [];
-          for (const v of arr) {
-            const k = keyFn(v);
-            if (!seen.has(k)) {
-              seen.add(k);
-              out.push(v);
-            }
-          }
-          return out;
-        };
-
-        const getRecents = () => {
-          try {
-            return JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]");
-          } catch {
-            return [];
-          }
-        };
-        const saveRecent = (q) => {
-          const t = q.trim();
-          if (!t) return;
-          let arr = getRecents().filter(
-            (v) => v.toLowerCase() !== t.toLowerCase()
-          );
-          arr.unshift(t);
-          if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
-          localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-        };
-        const removeRecent = (label) => {
-          const tgt = (label || "").trim().toLowerCase();
-          const arr = getRecents().filter((v) => v.toLowerCase() !== tgt);
-          localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-        };
-
-        const fetchGoogleSuggest = async (q) => {
-          if (!q) return [];
-          const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(
-            q
-          )}`;
-          try {
-            const res = await fetch(url, { mode: "cors" });
-            if (!res.ok) return [];
-            const data = await res.json();
-            return Array.isArray(data?.[1]) ? data[1] : [];
-          } catch {
-            return [];
-          }
-        };
-
-        const itemModel = (label, type = "sugestao", opts = {}) => {
-          const isUrl = opts.fillValue
-            ? looksLikeUrl(opts.fillValue)
-            : looksLikeUrl(label);
-          return {
-            label,
-            subtitle:
-              opts.subtitleOverride ??
-              (isUrl
-                ? (opts.fillValue || label).replace(/^https?:\/\//i, "")
-                : type === "atalho"
-                ? "Atalho"
-                : type === "recente"
-                ? "Recente"
-                : "Sugestão"),
-            badge:
-              type === "atalho"
-                ? "Atalho"
-                : type === "recente"
-                ? "Recente"
-                : "Sugestão",
-            icon:
-              opts.iconOverride ??
-              (isUrl
-                ? faviconFor(opts.fillValue || label) || ""
-                : "images/favicon_google.ico"),
-            type,
-            isUrl,
-            fillValue: opts.fillValue || label,
-          };
-        };
-
-        const standardSiteModels = (q) => {
-          if (!q) return [];
-          const s = normalize(q);
-          return STANDARD_SITES.filter((site) => {
-            const n = normalize(site.name);
-            const d = normalize(site.domain);
-            if (s.length === 1) return n.startsWith(s);
-            const toks = tokensFrom(q);
-            const hay = n + " " + d;
-            return toks.every((t) => hay.includes(t));
-          }).map((site) =>
-            itemModel(site.name, "atalho", {
-              subtitleOverride: `${site.domain}`,
-              iconOverride: faviconFor(site.domain),
-              fillValue: site.domain,
-            })
-          );
-        };
-
-        const modelMatchesQuery = (m, q) => {
-          const s = normalize(q || "");
-          if (!s) return false;
-          const base = normalize(
-            m.fillValue || m.label + " " + (m.subtitle || "")
-          );
-          if (s.length === 1) {
-            const dom = normalize((m.subtitle || "").split(" — ")[0] || "");
-            return base.startsWith(s) || dom.startsWith(s);
-          }
-          return s
-            .split(/\s+/)
-            .filter(Boolean)
-            .every((t) => base.includes(t));
-        };
-
-        const PANEL = () => document.querySelector(PANEL_SEL);
-
-        const renderPanel = (models, activeIndex = -1) => {
-          const panel = PANEL();
-          if (!panel) return;
-          panel.innerHTML = "";
-
-          if (!models.length) {
-            panel.hidden = false;
-            const div = document.createElement("div");
-            div.className = "suggest-empty";
-            div.textContent = "Sem sugestões";
-            panel.appendChild(div);
-            return;
-          }
-
-          models.slice(0, SUGGEST_LIMIT).forEach((m, idx) => {
-            const el = document.createElement("div");
-            el.className = "suggest-item";
-            el.setAttribute("role", "option");
-            el.dataset.index = String(idx);
-            if (idx === activeIndex) el.setAttribute("aria-selected", "true");
-
-            const icon = document.createElement("img");
-            icon.className = "suggest-icon";
-            icon.alt = "";
-            icon.referrerPolicy = "no-referrer";
-            if (m.icon) icon.src = m.icon;
-            else icon.style.visibility = "hidden";
-
-            const textWrap = document.createElement("div");
-            textWrap.className = "suggest-text";
-            const primary = document.createElement("div");
-            primary.className = "suggest-primary";
-            primary.textContent = m.label;
-            const secondary = document.createElement("div");
-            secondary.className = "suggest-secondary";
-            secondary.textContent = m.subtitle;
-            textWrap.append(primary, secondary);
-
-            const badge = document.createElement("div");
-            badge.className = "suggest-badge";
-            badge.textContent = m.badge;
-
-            el.append(icon, textWrap, badge);
-
-            if (m.type === "recente") {
-              const removeBtn = document.createElement("div");
-              removeBtn.className = "suggest-remove";
-              removeBtn.textContent = "×";
-              removeBtn.addEventListener("mousedown", (e) =>
-                e.preventDefault()
-              );
-              removeBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                removeRecent(m.fillValue || m.label);
-                el.remove();
-                if (!panel.querySelector(".suggest-item")) {
-                  panel.innerHTML = "";
-                  const empty = document.createElement("div");
-                  empty.className = "suggest-empty";
-                  empty.textContent = "Sem sugestões";
-                  panel.appendChild(empty);
-                }
-              });
-              el.appendChild(removeBtn);
-            }
-
-            el.addEventListener("mousedown", (e) => e.preventDefault());
-            el.addEventListener("click", () => applySuggestion(m));
-
-            panel.appendChild(el);
-          });
-
-          panel.hidden = false;
-        };
-
-        const hidePanel = () => {
-          const p = PANEL();
-          if (p) p.hidden = true;
-        };
-
-        const applySuggestion = (m) => {
-          const input = document.querySelector(INPUT_SEL);
-          if (!input) return;
-          input.value = m.fillValue || m.label;
-          input.setSelectionRange(input.value.length, input.value.length);
-          hidePanel();
-        };
-
-        let suppressInlineNext = false;
-
-        const shouldSuppressInline = (inputEl) =>
-          inputEl.selectionStart !== inputEl.selectionEnd ||
-          inputEl.selectionStart !== inputEl.value.length;
-
-        const inlineComplete = (typed, models, byKeyboard = false) => {
-          const input = document.querySelector(INPUT_SEL);
-          if (!input || !typed) return;
-          if (byKeyboard || suppressInlineNext || shouldSuppressInline(input))
-            return;
-
-          const cand = models.find((m) =>
-            (m.fillValue || m.label)
-              .toLowerCase()
-              .startsWith(typed.toLowerCase())
-          );
-          if (!cand) return;
-
-          const toShow = cand.fillValue || cand.label;
-          input.value = toShow;
-          try {
-            input.setSelectionRange(typed.length, toShow.length);
-          } catch {}
-        };
-
-        let activeIndex = -1;
-        let currentModels = [];
-
-        const debounce = (fn, ms = 120) => {
-          let id;
-          return (...args) => {
-            clearTimeout(id);
-            id = setTimeout(() => fn(...args), ms);
-          };
-        };
-
-        const refreshSuggestions = async (
-          byKeyboard = false,
-          inputEvent = null
-        ) => {
-          const input = document.querySelector(INPUT_SEL);
-          const q = (input?.value || "").trim();
-
+        try {
+          BTN_LOGIN.disabled = true;
+          BTN_LOGIN.textContent = "Entrando...";
+          await signInWithEmailAndPassword(auth, email, password);
+          setMsg("Login ok. Redirecionando...", true);
+          setTimeout(() => (window.location.href = TARGET_AFTER_LOGIN), 300);
+        } catch (err) {
+          console.error(err);
+          const code = err?.code || "";
+          // Mensagens mais amigáveis
           if (
-            inputEvent?.startsWith?.("delete") ||
-            inputEvent?.inputType?.startsWith?.("delete")
-          )
-            suppressInlineNext = true;
-
-          const stdModels = standardSiteModels(q);
-          const rec = getRecents();
-          const short = applyShortcuts(q);
-          const remote = q ? await fetchGoogleSuggest(q) : [];
-          const stringPool = q
-            ? Array.from(new Set([...short, ...remote, ...rec]))
-            : [];
-
-          let otherModels = stringPool.map((s) =>
-            itemModel(
-              s,
-              short.includes(s)
-                ? "atalho"
-                : rec.includes(s)
-                ? "recente"
-                : "sugestao"
-            )
-          );
-          otherModels = otherModels.filter((m) => modelMatchesQuery(m, q));
-
-          const allModels = otherModels.concat(stdModels);
-          if (
-            q &&
-            looksLikeUrl(q) &&
-            !allModels.some(
-              (m) => (m.fillValue || m.label).toLowerCase() === q.toLowerCase()
-            )
+            code === "auth/invalid-credential" ||
+            code === "auth/wrong-password"
           ) {
-            otherModels.unshift(itemModel(q, "sugestao"));
-          }
-
-          currentModels = uniqBy([...stdModels, ...otherModels], (m) =>
-            (m.fillValue || m.label).toLowerCase()
-          );
-
-          activeIndex = -1;
-          if (q) {
-            renderPanel(currentModels, activeIndex);
-            inlineComplete(q, currentModels, byKeyboard);
+            setErr("E-mail ou senha incorretos.");
+          } else if (code === "auth/user-not-found") {
+            setErr("Usuário não encontrado.");
+          } else if (code === "auth/too-many-requests") {
+            setErr("Muitas tentativas. Tente novamente mais tarde.");
+          } else if (code === "auth/invalid-email") {
+            setErr("E-mail inválido.");
           } else {
-            hidePanel();
+            setErr("Não foi possível entrar agora. Tente novamente.");
           }
+        } finally {
+          BTN_LOGIN.disabled = false;
+          BTN_LOGIN.textContent = "Entrar";
+        }
+      }
 
-          suppressInlineNext = false;
-        };
-
-        const debouncedRefresh = debounce((...args) => {
-          refreshSuggestions(...args);
-        }, 120);
-
-        const handleKeyDown = (e) => {
-          const panel = document.querySelector(PANEL_SEL);
-          const input = document.querySelector(INPUT_SEL);
-
-          if (e.key === "Backspace" || e.key === "Delete")
-            suppressInlineNext = true;
-          if (e.ctrlKey || e.metaKey || e.altKey) suppressInlineNext = true;
-          if (!panel || panel.hidden) return;
-
-          const max = Math.min(SUGGEST_LIMIT, currentModels.length) - 1;
-
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            activeIndex = activeIndex < max ? activeIndex + 1 : 0;
-            renderPanel(currentModels, activeIndex);
-            const m = currentModels[activeIndex];
-            if (m) {
-              const v = m.fillValue || m.label;
-              input.value = v;
-              input.setSelectionRange(v.length, v.length);
-            }
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            activeIndex = activeIndex > 0 ? activeIndex - 1 : max;
-            renderPanel(currentModels, activeIndex);
-            const m = currentModels[activeIndex];
-            if (m) {
-              const v = m.fillValue || m.label;
-              input.value = v;
-              input.setSelectionRange(v.length, v.length);
-            }
-          } else if (e.key === "Tab") {
-            const hasSelection = input.selectionStart !== input.selectionEnd;
-            if (hasSelection && currentModels.length) {
-              e.preventDefault();
-              input.setSelectionRange(input.value.length, input.value.length);
-              hidePanel();
-            }
-          } else if (e.key === "Enter") {
-            hidePanel();
-          } else if (e.key === "Escape") {
-            hidePanel();
-          }
-        };
-
-        const handleSubmit = (e) => {
-          const input = document.querySelector(INPUT_SEL);
-          const q = (input?.value || "").trim();
-          if (!q) {
-            e.preventDefault();
-            return;
-          }
-          saveRecent(q);
-          if (looksLikeUrl(q)) {
-            e.preventDefault();
-            const url = /^https?:\/\//i.test(q) ? q : "https://" + q;
-            window.location.assign(url);
-          }
-        };
-
-        const focusInput = () => {
-          const el = document.querySelector(INPUT_SEL);
-          if (!el) return;
-          if (document.visibilityState !== "visible") {
-            document.addEventListener("visibilitychange", focusInput, {
-              once: true,
-            });
-            return;
-          }
-          el.focus({ preventScroll: true });
-          try {
-            el.select();
-          } catch {}
-        };
-
-        const focusWithRetries = (retries = 24, delay = 50) => {
-          focusInput();
-          let i = 1;
-          const id = setInterval(() => {
-            const ok = document.activeElement?.matches?.(INPUT_SEL);
-            if (ok || i++ >= retries) clearInterval(id);
-            else focusInput();
-          }, delay);
-        };
-
-        const bindGlobalShortcuts = () => {
-          window.addEventListener("keydown", (e) => {
-            const typing = /input|textarea|select/i.test(e.target.tagName);
-            if (typing) return;
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-              e.preventDefault();
-              focusWithRetries(1, 0);
-            } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key === "/") {
-              e.preventDefault();
-              focusWithRetries(1, 0);
-            }
-          });
-        };
-
-        const bindOutsideClick = () => {
-          document.addEventListener("click", (e) => {
-            const panel = document.querySelector(PANEL_SEL);
-            const input = document.querySelector(INPUT_SEL);
-            if (!panel || panel.hidden) return;
-            if (!panel.contains(e.target) && e.target !== input) hidePanel();
-          });
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-          const input = document.querySelector(INPUT_SEL);
-          const panel = document.querySelector(PANEL_SEL);
-          const form = document.querySelector(FORM_SEL);
-          if (!input || !panel || !form) return;
-
-          focusWithRetries();
-
-          // Mostrar "recentes" ao focar quando vazio (após pointerdown)
-          let allowFocusRecents = false;
-          input.addEventListener("pointerdown", () => {
-            allowFocusRecents = true;
-          });
-          input.addEventListener("focus", () => {
-            if (allowFocusRecents && !input.value.trim()) {
-              const rec = getRecents().map((s) => itemModel(s, "recente"));
-              if (rec.length) renderPanel(rec);
-            }
-          });
-
-          input.addEventListener("input", (ev) => debouncedRefresh(false, ev));
-          input.addEventListener("keydown", handleKeyDown);
-          input.addEventListener("blur", () => setTimeout(hidePanel, 100));
-
-          form.addEventListener("submit", handleSubmit);
-          bindGlobalShortcuts();
-          bindOutsideClick();
+      // Submit
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await login(EMAIL_INPUT.value, PASS_INPUT.value);
         });
 
-        // atalhos (usa const SHORTCUTS do topo)
-        const applyShortcuts = (q) => {
-          const m = SHORTCUTS.find((s) => s.re.test(q));
-          return m ? m.items : [];
-        };
-      })();
+      // Se já estiver autenticado, vai direto
+      onAuthStateChanged(auth, (user) => {
+        if (user) window.location.replace(TARGET_AFTER_LOGIN);
+      });
+
+      // Botão voltar
+      BTN_VOLTAR.addEventListener("click", () => {
+        window.location.href = "index.html"; // ajuste se quiser outra página
+      });
+
+      document.addEventListener("keydown", (e) => {
+        const k = (e.key || "").toUpperCase();
+        const isAltGr = e.ctrlKey && e.altKey;
+
+        if (e.key === "F12") {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(k)) {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.metaKey && e.altKey && ["I", "J", "C"].includes(k)) {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.ctrlKey && !isAltGr && ["U", "S"].includes(k)) {
+          e.preventDefault();
+          return;
+        }
+
+        if (e.metaKey && ["U", "S"].includes(k)) {
+          e.preventDefault();
+          return;
+        }
+      });
+
+      document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+      });
     </script>
   </body>
 </html>
