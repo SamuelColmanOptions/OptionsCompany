@@ -124,13 +124,13 @@
         flex-wrap: nowrap;
       }
 
-      /* Esquerda: Menu + Ferramentas */
       .top-left {
         display: flex;
-        gap: 12px;
+        gap: 16px; /* antes era 12px */
         align-items: center;
         flex: 0 0 auto;
         z-index: 5;
+        order: 3;
       }
 
       .menu-btn {
@@ -374,12 +374,9 @@
 
       /* DIREITA: logo */
       .header-titles-desktop {
-        flex: 0 0 auto;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        z-index: 3;
-        text-align: right;
+        order: 1; /* vem primeiro (lado esquerdo) */
+        justify-content: flex-start;
+        text-align: left;
       }
       .header-titles-desktop .logo {
         max-height: 50px;
@@ -426,16 +423,16 @@
       /* --- MENU LATERAL (Sidebar) --- */
       .sidebar {
         position: fixed;
-        inset: 0 auto 0 0;
+        inset: 0 0 0 auto; /* antes: inset: 0 auto 0 0;  -> agora à DIREITA */
         width: min(82vw, 360px);
-        transform: translateX(-100%);
+        transform: translateX(100%); /* antes: -100% */
         background: #0f2a29;
         color: #fff;
         padding: 16px;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.35);
+        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.35); /* antes: 2px 0 8px ... */
         transition: transform 0.3s ease;
         z-index: 1000;
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        border-left: 1px solid rgba(255, 255, 255, 0.1); /* antes: border-right */
         backdrop-filter: saturate(120%);
       }
       .sidebar.is-open {
@@ -520,6 +517,40 @@
         overflow-x: hidden;
       }
 
+      /* Botão estilo "grade de apps" (Google) */
+      .google-tools > button.apps-btn {
+        width: 40px;
+        height: 40px;
+        background: transparent; /* tira o fundo branco do estilo atual */
+        color: #ffffff; /* cor dos pontinhos */
+        border: none;
+        border-radius: 8px; /* leve arredondado como no screenshot */
+        display: grid;
+        place-items: center;
+        padding: 0;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.06s;
+      }
+
+      /* hover/focus como o do Google */
+      .google-tools > button.apps-btn:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      .google-tools > button.apps-btn:active {
+        transform: translateY(1px);
+      }
+
+      /* Foco visível para acessibilidade */
+      .google-tools > button.apps-btn:focus-visible {
+        outline: 2px solid rgba(255, 255, 255, 0.6);
+        outline-offset: 2px;
+      }
+
+      /* Opcional: ajuste de espaçamento do container */
+      .google-tools {
+        gap: 0.25rem;
+      }
+
       /* ===== Responsivo ===== */
       @media (max-width: 640px) {
         .header-content {
@@ -543,12 +574,11 @@
           max-width: 100%;
         }
         .header-titles-desktop {
-          order: 3;
+          order: 1; /* logo primeiro no mobile também */
           width: 100%;
           display: flex;
-          justify-content: flex-end;
-          text-align: right;
-          margin-top: 6px;
+          justify-content: flex-start;
+          margin-top: 0; /* sobrescreve a margem anterior */
         }
         .search-wrap .search-icon {
           left: 12px;
@@ -589,10 +619,31 @@
             <div class="google-tools">
               <button
                 id="google-button"
+                class="apps-btn"
                 aria-controls="google-dropdown"
                 aria-expanded="false"
+                aria-label="Abrir aplicativos"
               >
-                Ferramentas
+                <!-- Ícone 3x3 - acessível, sem texto visível -->
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <g fill="currentColor">
+                    <circle cx="4" cy="4" r="1.5"></circle>
+                    <circle cx="10" cy="4" r="1.5"></circle>
+                    <circle cx="16" cy="4" r="1.5"></circle>
+                    <circle cx="4" cy="10" r="1.5"></circle>
+                    <circle cx="10" cy="10" r="1.5"></circle>
+                    <circle cx="16" cy="10" r="1.5"></circle>
+                    <circle cx="4" cy="16" r="1.5"></circle>
+                    <circle cx="10" cy="16" r="1.5"></circle>
+                    <circle cx="16" cy="16" r="1.5"></circle>
+                  </g>
+                </svg>
               </button>
 
               <!-- ===== Dropdown estilo Google ===== -->

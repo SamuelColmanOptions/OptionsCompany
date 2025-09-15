@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Benefício TotalPass</title>
+
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+    <meta name="color-scheme" content="dark light" />
+
+    <style>
+      /* ===== Design tokens ===== */
+      :root {
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+        --card: #0f1f1d;
+        --text: #e6edf3;
+        --muted: #a4b8b3;
+        --accent: #22d3ee;
+        --accent-2: #22c55e;
+        --border: rgba(148, 163, 184, 0.18);
+        --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        /* curvas mais suaves (Material/Fluent-like) */
+        --e-out: cubic-bezier(0, 0, 0.2, 1); /* desacelera ao final */
+        --e-in: cubic-bezier(0.4, 0, 1, 1); /* acelera no começo */
+        --e-std: cubic-bezier(0.2, 0, 0, 1); /* suave ida/volta */
+
+        /* durações um pouco maiores */
+        --t-fast: 220ms;
+        --t-med: 280ms;
+        --t-slow: 360ms;
+      }
+      /* tema claro opcional */
+      :root[data-theme="light"] {
+        --bg-0: #f5f9f8;
+        --bg-1: #eaf4f3;
+        --bg-2: #e1efec;
+        --card: #ffffff;
+        --text: #0b1f1e;
+        --muted: #4a5b58;
+        --border: rgba(2, 6, 23, 0.08);
+        --shadow: 0 8px 24px rgba(15, 42, 41, 0.12);
+      }
+
+      /* ===== Reset básico e acessibilidade ===== */
+      * {
+        box-sizing: border-box;
+      }
+      html:focus-within {
+        scroll-behavior: smooth;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      :focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 0.5 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+
+      /* ===== Base ===== */
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
+          "Helvetica Neue", Arial, "Noto Sans";
+        color: var(--text);
+        background: radial-gradient(
+            1200px 600px at 20% -10%,
+            rgba(34, 211, 238, 0.15),
+            transparent 60%
+          ),
+          radial-gradient(
+            1000px 500px at 90% 10%,
+            rgba(34, 197, 94, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(
+            180deg,
+            var(--bg-0) 0%,
+            #123432 22%,
+            var(--bg-1) 48%,
+            #18483f 68%,
+            var(--bg-2) 100%
+          );
+      }
+      .wrapper {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 24px 16px;
+      }
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: saturate(140%) blur(8px);
+        background: color-mix(in srgb, var(--bg-0) 80%, transparent);
+        border-bottom: 1px solid var(--border);
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 10px 8px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .brand img {
+        height: 42px;
+      }
+      .nav a.cta {
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 20%, transparent),
+          transparent
+        );
+        font-weight: 600;
+      }
+
+      /* ===== Hero ===== */
+      .hero {
+        min-height: 100vh; /* ocupa a tela inteira */
+        display: grid;
+        place-items: center; /* centraliza vertical e horizontal */
+        text-align: center;
+        padding: 0 16px;
+      }
+      .hero h1 {
+        font-size: clamp(32px, 5vw, 56px);
+        font-weight: 800;
+        margin: 0 0 12px;
+      }
+      .hero p.lead {
+        font-size: clamp(16px, 2.2vw, 18px);
+        color: var(--muted);
+        margin: 0 0 20px;
+      }
+      .cta-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .btn {
+        transform: translateZ(0);
+        transition: transform var(--t-fast) var(--e-std),
+          box-shadow var(--t-fast) var(--e-std),
+          background var(--t-med) var(--e-std);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        border: 1px solid var(--border);
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 600;
+        text-decoration: none;
+
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 12%, transparent),
+          transparent
+        );
+        box-shadow: var(--shadow);
+        transform: translateZ(0);
+        transition: transform 0.18s ease, box-shadow 0.18s ease,
+          background 0.2s ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+        transform: translateY(-1px); /* era -2px */
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22); /* menos contraste */
+      }
+      .btn.secondary {
+        background: transparent;
+        box-shadow: none;
+      }
+
+      /* ===== Secções ===== */
+      section {
+        padding: 36px 16px;
+      }
+      h2 {
+        font-size: clamp(22px, 3.2vw, 28px);
+        margin: 0 0 12px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      /* benefícios grid */
+      .features {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+      .feature {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px;
+        min-height: 140px;
+        transition: transform var(--t-fast) var(--e-std),
+          box-shadow var(--t-fast) var(--e-std),
+          background var(--t-med) var(--e-std);
+      }
+      .feature:hover {
+        transform: translateY(-2px); /* era -3px */
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+      }
+      .feature .icon {
+        width: 28px;
+        height: 28px;
+        margin-bottom: 10px;
+      }
+      .feature h3 {
+        margin: 0 0 6px;
+        font-size: 18px;
+      }
+
+      /* passo a passo */
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .step {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .step .num {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        font-weight: 700;
+        background: linear-gradient(
+          180deg,
+          var(--accent),
+          color-mix(in srgb, var(--accent), black 20%)
+        );
+        color: #032024;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      }
+
+      /* card texto */
+      .card {
+        background: var(--card);
+        padding: 24px;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        margin-bottom: 24px;
+      }
+
+      /* FAQ */
+      .faq {
+        display: grid;
+        gap: 14px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: color-mix(in srgb, var(--card) 94%, transparent);
+        cursor: pointer;
+        transition: background 0.3s ease;
+        overflow: hidden;
+        padding: 14px 16px;
+      }
+      details[open] {
+        background: color-mix(in srgb, var(--card) 98%, transparent);
+      }
+      details summary {
+        font-weight: 600;
+        font-size: 1.05rem;
+        list-style: none;
+        margin-bottom: 6px;
+      }
+      details summary::-webkit-details-marker {
+        display: none;
+      }
+      details .content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--t-slow) var(--e-out),
+          opacity var(--t-med) var(--e-out);
+        font-size: 0.95rem;
+        line-height: 1.5;
+        color: var(--muted);
+      }
+      details[open] .content {
+        padding-top: 8px;
+        padding-bottom: 6px;
+      }
+
+      /* rodapé */
+      footer {
+        border-top: 1px solid var(--border);
+        padding: 22px 0;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      /* ===== Modal (QR Code) ===== */
+      .modal-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.6);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity var(--t-med) var(--e-out),
+          visibility var(--t-med) var(--e-out);
+        z-index: 50;
+      }
+      .modal {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        visibility: hidden;
+        z-index: 60;
+      }
+      .modal.open {
+        visibility: visible;
+      }
+      .modal.open + .modal-backdrop {
+        opacity: 1;
+        visibility: visible;
+      }
+      .modal-card {
+        width: min(560px, 92vw);
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: var(--shadow);
+        transform: translateY(6px) scale(0.995); /* era 10px e 0.98 */
+        opacity: 0;
+        transition: transform var(--t-med) var(--e-out),
+          opacity var(--t-med) var(--e-out),
+          box-shadow var(--t-med) var(--e-out);
+      }
+      .modal.open .modal-card {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 16px 12px;
+        border-bottom: 1px solid var(--border);
+      }
+      .modal-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .modal-close {
+        appearance: none;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        border-radius: 10px;
+        padding: 6px 10px;
+        cursor: pointer;
+      }
+      .modal-body {
+        padding: 16px;
+      }
+      .device-tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+      .tab-btn {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .tab-btn[aria-selected="true"] {
+        outline: 0;
+        border-color: color-mix(in srgb, var(--accent) 60%, var(--border));
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--accent) 14%, transparent),
+          transparent
+        );
+      }
+      .qr-wrap {
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 8px;
+        padding: 14px;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+      }
+      .qr-img {
+        width: 260px;
+        height: 260px;
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--bg-1) 60%, transparent);
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+      }
+      .qr-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .helper {
+        color: var(--muted);
+        font-size: 14px;
+        text-align: center;
+      }
+      .alt-actions {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 10px;
+      }
+      .link-like {
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+
+      @media (max-width: 540px) {
+        .qr-img {
+          width: 220px;
+          height: 220px;
+        }
+      }
+
+      /* responsivo */
+      @media (max-width: 860px) {
+        .hero {
+          padding: 60px 16px;
+        }
+        .features {
+          grid-template-columns: 1fr 1fr;
+        }
+        .steps {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 540px) {
+        .features,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="wrapper nav">
+        <a class="brand" href="#top" aria-label="Início">
+          <img src="images/logo_texto_recortado.png" alt="Options & Company" />
+        </a>
+        <div style="display: flex; gap: 8px; align-items: center">
+          <a class="cta" href="#ativar">Ativar meu TotalPass</a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <div class="wrapper">
+        <!-- Hero -->
+        <section class="hero">
+          <div>
+            <h1>TotalPass: seu bem-estar com mais facilidade</h1>
+            <p class="lead">
+              Acesso a milhares de academias, estúdios e espaços de saúde pelo
+              Brasil — com mensalidade acessível e zero burocracia.
+            </p>
+            <div class="cta-row">
+              <a class="btn" href="#ativar" id="ativar">🎫 Ativar benefício</a>
+              <a class="btn secondary" href="#beneficios">Ver vantagens</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Texto principal -->
+        <section class="card">
+          <h2 id="beneficios">🌟 Vantagens para você</h2>
+          <p class="muted">
+            Flexibilidade, variedade e saúde em primeiro lugar.
+          </p>
+          <div class="features">
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 7h16M4 12h16M4 17h10"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Variedade</h3>
+              <p>
+                Mais de 5.000 academias e estúdios parceiros espalhados pelo
+                país.
+              </p>
+            </div>
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M3 7h18M8 7v10m8-10v10M5 17h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Flexibilidade</h3>
+              <p>Você escolhe onde e quando treinar, do seu jeito.</p>
+            </div>
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 3v18m9-9H3"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Diversidade</h3>
+              <p>
+                Musculação, pilates, yoga, natação, dança, lutas, cross e mais.
+              </p>
+            </div>
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M12 8a4 4 0 1 1 0 8M4 12a8 8 0 1 0 16 0"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Bem-estar</h3>
+              <p>
+                Incentivo contínuo a hábitos saudáveis e disposição no dia a
+                dia.
+              </p>
+            </div>
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M4 12h16M4 6h8m-8 12h8"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Sem fidelidade</h3>
+              <p>
+                Cancele ou altere o plano com praticidade, sem dor de cabeça.
+              </p>
+            </div>
+            <div class="feature">
+              <svg
+                class="icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path
+                  d="M5 12l4 4L19 6"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <h3>Simples</h3>
+              <p>Processo de adesão direto pelo app, em poucos passos.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Como funciona -->
+        <section class="card">
+          <h2>💡 Como funciona</h2>
+          <div class="steps">
+            <div class="step">
+              <div class="num">1</div>
+              <div>Baixe o app TotalPass.</div>
+            </div>
+            <div class="step">
+              <div class="num">2</div>
+              <div>Cadastre seu CPF e e-mail corporativo.</div>
+            </div>
+            <div class="step">
+              <div class="num">3</div>
+              <div>Escolha o plano ideal pra você.</div>
+            </div>
+            <div class="step">
+              <div class="num">4</div>
+              <div>Treine em qualquer espaço da rede.</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Motivação -->
+        <section class="card">
+          <p>
+            👉 O TotalPass é mais do que um benefício — é um convite para cuidar
+            da saúde, elevar a energia e equilibrar vida pessoal e profissional.
+          </p>
+        </section>
+
+        <!-- FAQ -->
+        <section class="card">
+          <h2>❓ Dúvidas frequentes</h2>
+          <div class="faq">
+            <details>
+              <summary>Posso trocar de plano depois?</summary>
+              <div class="muted">
+                Sim. Você pode alterar o plano pelo app, sem fidelidade.
+              </div>
+            </details>
+            <details>
+              <summary>Há taxa de cancelamento?</summary>
+              <div class="muted">
+                Não. O cancelamento é simples e sem cobrança adicional.
+              </div>
+            </details>
+            <details>
+              <summary>Preciso de carteirinha física?</summary>
+              <div class="muted">Não. Tudo é digital dentro do aplicativo.</div>
+            </details>
+          </div>
+        </section>
+
+        <!-- CTA final -->
+        <section
+          class="card"
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+          "
+        >
+          <div>
+            <h2 style="margin: 0 0 6px">Pronto para começar?</h2>
+            <p class="muted" style="margin: 0">
+              Ative o benefício em poucos minutos.
+            </p>
+          </div>
+          <a class="btn" href="#ativar">Começar agora</a>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="wrapper">
+        © <span id="year"></span> Options &amp; Company — TotalPass. •
+        <a href="#" class="muted">Política de Privacidade</a>
+      </div>
+    </footer>
+
+    <a
+      href="#top"
+      aria-label="Voltar ao topo"
+      style="
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        padding: 10px 12px;
+        border-radius: 12px;
+        text-decoration: none;
+      "
+      >↑</a
+    >
+
+    <!-- ===== Modal markup ===== -->
+    <div
+      class="modal"
+      id="qrModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="qrTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-card" role="document">
+        <div class="modal-header">
+          <h3 class="modal-title" id="qrTitle">Ativar TotalPass</h3>
+          <button class="modal-close" id="qrClose" aria-label="Fechar">
+            ✕
+          </button>
+        </div>
+        <div class="modal-body">
+          <div
+            class="device-tabs"
+            role="tablist"
+            aria-label="Escolha seu dispositivo"
+          >
+            <button
+              class="tab-btn"
+              id="tab-android"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-android"
+            >
+              Android
+            </button>
+            <button
+              class="tab-btn"
+              id="tab-ios"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-ios"
+            >
+              iPhone
+            </button>
+          </div>
+
+          <!-- Painel ANDROID -->
+          <div
+            id="panel-android"
+            role="tabpanel"
+            tabindex="0"
+            aria-labelledby="tab-android"
+          >
+            <div class="qr-wrap">
+              <div class="qr-img" aria-live="polite">
+                <img
+                  id="qrAndroid"
+                  src="images/qrcode_totalpass-android.png"
+                  alt="QR Code para ativar no Android"
+                />
+              </div>
+              <p class="helper">
+                Aponte a câmera do seu celular Android para o QR Code para abrir
+                o app/fluxo de ativação.
+              </p>
+              <div class="alt-actions">
+                <a
+                  id="linkAndroid"
+                  class="link-like"
+                  href="#"
+                  target="_blank"
+                  rel="noopener"
+                  >Abrir link direto</a
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Painel iOS -->
+          <div
+            id="panel-ios"
+            role="tabpanel"
+            tabindex="0"
+            aria-labelledby="tab-ios"
+            hidden
+          >
+            <div class="qr-wrap">
+              <div class="qr-img" aria-live="polite">
+                <img
+                  id="qrIos"
+                  src="images/qrcode_totalpass-iphone.png"
+                  alt="QR Code para ativar no iPhone"
+                />
+              </div>
+              <p class="helper">
+                Aponte a câmera do seu iPhone para o QR Code para abrir o
+                app/fluxo de ativação.
+              </p>
+              <div class="alt-actions">
+                <a
+                  id="linkIos"
+                  class="link-like"
+                  href="#"
+                  target="_blank"
+                  rel="noopener"
+                  >Abrir link direto</a
+                >
+              </div>
+            </div>
+          </div>
+          <!-- fim painéis -->
+        </div>
+      </div>
+    </div>
+    <div class="modal-backdrop" id="qrBackdrop" aria-hidden="true"></div>
+
+    <script>
+      // FAQ com animação suave de altura
+      document.querySelectorAll(".faq details").forEach((el) => {
+        const content = document.createElement("div");
+        while (el.children.length > 1) {
+          content.appendChild(el.children[1]);
+        }
+        content.classList.add("content");
+        el.appendChild(content);
+
+        el.addEventListener("toggle", () => {
+          if (el.open) {
+            el.classList.add("opening");
+            content.style.maxHeight = content.scrollHeight + "px";
+            content.addEventListener(
+              "transitionend",
+              () => {
+                el.classList.remove("opening");
+              },
+              { once: true }
+            );
+          } else {
+            el.classList.add("closing");
+            content.style.maxHeight = content.scrollHeight + "px";
+            requestAnimationFrame(() => {
+              content.style.maxHeight = "0px";
+            });
+            content.addEventListener(
+              "transitionend",
+              () => {
+                el.classList.remove("closing");
+              },
+              { once: true }
+            );
+          }
+        });
+
+        // Abrir/fechar clicando no bloco
+        el.addEventListener("click", (e) => {
+          if (e.target.tagName.toLowerCase() !== "summary") {
+            el.open = !el.open;
+          }
+        });
+      });
+
+      // ano no rodapé
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // ===== QR Modal logic =====
+      const modal = document.getElementById("qrModal");
+      const backdrop = document.getElementById("qrBackdrop");
+      const closeBtn = document.getElementById("qrClose");
+      const focusableSelectors =
+        'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+      let lastFocused = null;
+
+      // Tabs
+      const tabAndroid = document.getElementById("tab-android");
+      const tabIos = document.getElementById("tab-ios");
+      const panelAndroid = document.getElementById("panel-android");
+      const panelIos = document.getElementById("panel-ios");
+
+      // Links/Downloads (opcionais)
+      const linkAndroid = document.getElementById("linkAndroid");
+      const linkIos = document.getElementById("linkIos");
+      const downloadAndroid = document.getElementById("downloadAndroid");
+      const downloadIos = document.getElementById("downloadIos");
+      const qrAndroid = document.getElementById("qrAndroid");
+      const qrIos = document.getElementById("qrIos");
+
+      // Configure aqui os assets/links
+      const QR = {
+        android: {
+          img: "images/qrcode_totalpass-android.png",
+          link: "", // opcional: deep link/URL para Android
+        },
+        ios: {
+          img: "images/qrcode_totalpass-iphone.png",
+          link: "", // opcional: deep link/URL para iOS
+        },
+      };
+
+      // Atualiza fontes
+      function refreshAssets() {
+        qrAndroid.src = QR.android.img;
+        qrIos.src = QR.ios.img;
+        if (QR.android.link) linkAndroid.href = QR.android.link;
+        else linkAndroid.removeAttribute("href");
+        if (QR.ios.link) linkIos.href = QR.ios.link;
+        else linkIos.removeAttribute("href");
+      }
+      refreshAssets();
+
+      // Abre/fecha modal
+      function openModal(pref) {
+        lastFocused = document.activeElement;
+        modal.classList.add("open");
+        modal.removeAttribute("aria-hidden");
+        backdrop.removeAttribute("aria-hidden");
+        document.body.style.overflow = "hidden";
+        // Seleciona a aba de acordo com preferência/UA
+        if (pref === "ios") selectTab("ios");
+        else if (pref === "android") selectTab("android");
+        else selectTab(detectOS());
+        // foco
+        const first = modal.querySelector(focusableSelectors);
+        if (first) first.focus();
+        // ESC para fechar
+        document.addEventListener("keydown", onKeydown);
+      }
+      function closeModal() {
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden", "true");
+        backdrop.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        document.removeEventListener("keydown", onKeydown);
+        if (lastFocused) lastFocused.focus();
+      }
+      function onKeydown(e) {
+        if (e.key === "Escape") closeModal();
+        // trap focus
+        if (e.key === "Tab") {
+          const focusables = modal.querySelectorAll(focusableSelectors);
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
+      }
+
+      // Tabs helpers
+      function selectTab(kind) {
+        const isIos = kind === "ios";
+        tabIos.setAttribute("aria-selected", isIos ? "true" : "false");
+        tabAndroid.setAttribute("aria-selected", !isIos ? "true" : "false");
+        panelIos.hidden = !isIos;
+        panelAndroid.hidden = isIos;
+        (isIos ? panelIos : panelAndroid).focus();
+      }
+      tabAndroid.addEventListener("click", () => selectTab("android"));
+      tabIos.addEventListener("click", () => selectTab("ios"));
+
+      // Clique nos gatilhos (#ativar)
+      document.querySelectorAll('a[href="#ativar"]').forEach((el) => {
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          openModal();
+        });
+      });
+
+      // Fechações
+      closeBtn.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", closeModal);
+
+      // Downloads (PNG) – opcional
+      function downloadImage(imgEl, filename) {
+        const a = document.createElement("a");
+        a.href = imgEl.src;
+        a.download = filename;
+        a.click();
+      }
+      downloadAndroid.addEventListener("click", () =>
+        downloadImage(qrAndroid, "qr-totalpass-android.png")
+      );
+      downloadIos.addEventListener("click", () =>
+        downloadImage(qrIos, "qr-totalpass-iphone.png")
+      );
+
+      // Detecta SO do usuário para abrir a aba correta
+      function detectOS() {
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        if (/iPad|iPhone|iPod/.test(ua) && !window.MSStream) return "ios";
+        return "android";
+      }
+
+      // Torna acessível via hash (#ativar)
+      if (window.location.hash === "#ativar") {
+        openModal();
+      }
+
+      // API simples para uso futuro
+      window.TotalPassQR = {
+        openAndroid: () => openModal("android"),
+        openIos: () => openModal("ios"),
+        setAndroid: ({ img, link }) => {
+          if (img) QR.android.img = img;
+          if (link !== undefined) QR.android.link = link;
+          refreshAssets();
+        },
+        setIos: ({ img, link }) => {
+          if (img) QR.ios.img = img;
+          if (link !== undefined) QR.ios.link = link;
+          refreshAssets();
+        },
+      };
+    </script>
+  </body>
+</html>
