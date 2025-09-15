@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --control-h: 44px;
+        --bg-0: #0f2a29;
+        --bg-1: #154138;
+        --bg-2: #1c5244;
+        --card: #0f1f1d;
+        --card-2: #122826;
+        --text: #e6edf3;
+        --muted: #a4b8b3;
+        --brand: #4ade80;
+        --ring: #22c55e;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: Inter, system-ui, Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1200px 800px at 50% -10%,
+            rgba(34, 197, 94, 0.12),
+            transparent 60%
+          ),
+          linear-gradient(180deg, var(--bg-0), var(--bg-1) 55%, var(--bg-2));
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+      }
+      .card {
+        width: 100%;
+        max-width: 380px;
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.02),
+            rgba(255, 255, 255, 0)
+          ),
+          var(--card);
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(6px);
+      }
+      h1 {
+        text-align: center;
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+      label {
+        font-size: 14px;
+        color: var(--muted);
+        display: block;
+        margin-bottom: 4px;
+      }
+      input {
+        width: 100%;
+        height: var(--control-h);
+        padding: 0 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: var(--card-2);
+        color: var(--text);
+        font-size: 14px;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--ring);
+        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+      }
+      button {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: none;
+        background: var(--brand);
+        color: #0f1f1d;
+        font-weight: 600;
+        cursor: pointer;
+        transition: 0.2s;
+        background-position: center;
+      }
+      button:hover {
+        background: var(--ring);
+      }
+      .btn-secondary {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+      }
+      .btn-secondary:hover {
+        background: rgba(74, 222, 128, 0.08);
+        color: var(--text);
+        border-color: rgba(148, 163, 184, 0.35);
+      }
+      #login-msg {
+        margin-top: 14px;
+        font-size: 14px;
+        text-align: center;
+        color: var(--muted);
+        min-height: 20px;
+      }
+      .row {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Acesso Restrito</h1>
+
+      <!-- FORM: somente e-mail corporativo -->
+      <form id="login-form" autocomplete="off">
+        <label for="email">E-mail corporativo</label>
+        <input
+          type="email"
+          id="email"
+          required
+          placeholder="seu@optionsco.com.br"
+          inputmode="email"
+        />
+
+        <div class="row">
+          <button type="submit" id="btn-send">Enviar link de acesso</button>
+          <button type="button" id="btn-resend" class="btn-secondary">
+            Reenviar link
+          </button>
+          <button type="button" id="btn-voltar" class="btn-secondary">
+            Voltar
+          </button>
+        </div>
+      </form>
+
+      <p id="login-msg"></p>
+      <p class="hint">Somente e-mails @optionsco.com.br são aceitos.</p>
+    </div>
+
+    <!-- Firebase (módulos) -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import {
+        getAuth,
+        sendSignInLinkToEmail,
+        isSignInWithEmailLink,
+        signInWithEmailLink,
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+      // ===== CONFIG =====
+      const firebaseConfig = {
+        apiKey: "AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",
+        authDomain: "login-intranet-96213.firebaseapp.com",
+        projectId: "login-intranet-96213",
+        storageBucket: "login-intranet-96213.firebasestorage.app",
+        messagingSenderId: "492024716317",
+        appId: "1:492024716317:web:17dd14c4b8decc8a86faf4",
+        measurementId: "G-1KB77SBJ7L",
+      };
+
+      // ===== INIT =====
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // ===== Helpers =====
+      const MSG = document.getElementById("login-msg");
+      const EMAIL_INPUT = document.getElementById("email");
+      const BTN_SEND = document.getElementById("btn-send");
+      const BTN_RESEND = document.getElementById("btn-resend");
+      const BTN_VOLTAR = document.getElementById("btn-voltar");
+
+      const TARGET_AFTER_LOGIN = "index2.html"; // para onde mandar após logar
+      const EMAIL_KEY = "emailForSignIn";
+
+      function setMsg(text, ok = false) {
+        MSG.textContent = text || "";
+        MSG.style.color = ok ? "var(--brand)" : "var(--muted)";
+      }
+      function setErr(text) {
+        MSG.textContent = text || "Ocorreu um erro.";
+        MSG.style.color = "tomato";
+      }
+      function isAllowedEmail(email) {
+        const domain = (email || "").toLowerCase().split("@").pop()?.trim();
+        return domain === "optionsco.com.br";
+      }
+      function sanitizeEmail(v) {
+        return (v || "").trim().toLowerCase();
+      }
+
+      // O link volta para ESTA página; aqui finalizamos o login e redirecionamos
+      const REDIRECT_URL =
+        location.hostname === "127.0.0.1" || location.hostname === "localhost"
+          ? "http://127.0.0.1:5502/Home/index.html" // ajuste para o seu ambiente dev
+          : "https://intranet.optionsco.com.br/login.html"; // URL em produção
+
+      const actionCodeSettings = {
+        url: REDIRECT_URL,
+        handleCodeInApp: true,
+      };
+
+      async function sendMagicLink(email) {
+        email = sanitizeEmail(email);
+        if (!email) {
+          setErr("Informe seu e-mail.");
+          return;
+        }
+        if (!isAllowedEmail(email)) {
+          setErr("Use um e-mail @optionsco.com.br.");
+          return;
+        }
+
+        try {
+          BTN_SEND.disabled = true;
+          BTN_RESEND.disabled = true;
+          BTN_SEND.textContent = "Enviando...";
+          await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+          localStorage.setItem(EMAIL_KEY, email);
+          setMsg(
+            `Enviamos um link para ${email}. Verifique também o spam.`,
+            true
+          );
+        } catch (err) {
+          console.error(err);
+          setErr("Não conseguimos enviar o link. Tente novamente.");
+        } finally {
+          BTN_SEND.textContent = "Enviar link de acesso";
+          BTN_SEND.disabled = false;
+          BTN_RESEND.disabled = false;
+        }
+      }
+
+      // Submit principal
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          await sendMagicLink(EMAIL_INPUT.value);
+        });
+
+      // Reenviar usando o e-mail digitado ou o último salvo
+      BTN_RESEND.addEventListener("click", async () => {
+        const email =
+          sanitizeEmail(EMAIL_INPUT.value) || localStorage.getItem(EMAIL_KEY);
+        await sendMagicLink(email);
+      });
+
+      // Completar login quando o usuário volta pelo link
+      window.addEventListener("load", async () => {
+        try {
+          if (isSignInWithEmailLink(auth, window.location.href)) {
+            let email = localStorage.getItem(EMAIL_KEY);
+            if (!email) {
+              email =
+                prompt(
+                  "Confirme seu e-mail corporativo (@optionsco.com.br):"
+                ) || "";
+              email = sanitizeEmail(email);
+            }
+            if (!isAllowedEmail(email)) {
+              setErr("Domínio não autorizado.");
+              return;
+            }
+
+            const cred = await signInWithEmailLink(
+              auth,
+              email,
+              window.location.href
+            );
+            localStorage.removeItem(EMAIL_KEY);
+
+            // limpa querystring do link
+            history.replaceState({}, document.title, window.location.pathname);
+
+            setMsg(`Bem-vindo, ${cred.user.email}. Redirecionando...`, true);
+            // pequeno delay visual e redireciona
+            setTimeout(() => {
+              window.location.href = TARGET_AFTER_LOGIN;
+            }, 600);
+          }
+        } catch (err) {
+          console.error(err);
+          setErr("Link inválido ou expirado. Peça um novo.");
+        }
+      });
+
+      // Se já estiver autenticado, vai direto
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          window.location.replace(TARGET_AFTER_LOGIN);
+        }
+      });
+
+      // Botão voltar
+      BTN_VOLTAR.addEventListener("click", () => {
+        // troque para a página inicial do seu site, se quiser
+        window.location.href = "index.html";
+      });
+
+      // Dica: Se quiser oferecer “Sair” nesta página (útil para testes):
+      // await signOut(auth);
+    </script>
+  </body>
+</html>
