@@ -800,23 +800,21 @@
       }
 
       // 🔐 Guarda de rota
-onAuthStateChanged(auth, async (user) => {
-  try {
-    if (!user) return blockAndRedirect();
-    if (!isAllowedEmail(user.email)) return blockAndRedirect();
+      onAuthStateChanged(auth, async (user) => {
+        try {
+          if (!user) return blockAndRedirect();
+          if (!isAllowedEmail(user.email)) return blockAndRedirect();
 
-    // ✅ garanta que todo o DOM (incluindo #fav-modal / #confirm-modal) existe
-    await domReady();
-    requestAnimationFrame(() => initFavorites(user));
+          allowPage();
+          await loadProfileAndRenderTop(user);
 
-    allowPage();
-    await loadProfileAndRenderTop(user);
-    initFavorites(user);
-  } catch (e) {
-    console.error("[auth state]", e);
-    blockAndRedirect();
-  }
-});
+          // ✅ favoritos do usuário → dropdown + chips abaixo da busca
+          initFavorites(user);
+        } catch (e) {
+          console.error("[auth state]", e);
+          blockAndRedirect();
+        }
+      });
     </script>
 
     <!-- Modal dos Favoritos (fora do dropdown para não cortar o overlay) -->
