@@ -14,1257 +14,353 @@
       rel="stylesheet"
     />
 
-    <style>
-      /* ===== Scrollbar personalizada (Chrome/Edge/Safari) ===== */
-      ::-webkit-scrollbar {
-        width: 10px;
-        height: 10px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #1a1a1a;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #418d75;
-        border-radius: 6px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #2e6b56;
-      }
+<style>
+  /* Scrollbar (WebKit) */
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-track{background:#1a1a1a}
+  ::-webkit-scrollbar-thumb{background:#418d75;border-radius:6px}
+  ::-webkit-scrollbar-thumb:hover{background:#2e6b56}
 
-      /* ===== Firefox ===== */
-      * {
-        scrollbar-width: thin;
-        scrollbar-color: #418d75 #1a1a1a;
-      }
+  /* Reset + Firefox scrollbar */
+  *{
+    margin:0;padding:0;box-sizing:border-box;
+    scrollbar-width:thin;scrollbar-color:#418d75 #1a1a1a
+  }
 
-      /* --- Reset Básico e Configurações Globais --- */
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html,
-      body {
-        overflow-x: hidden;
-      }
-      body {
-        --bg-image: url("images/"); /* imagem da Home virou fundo */
-        font-family: "Inter", sans-serif;
-        background-color: #0f2a29;
-        color: #ffffff;
-        position: relative;
-        overflow-x: hidden;
-        min-height: 100vh;
-      }
-      .font-logo {
-        font-family: serif;
-      }
-      .e-comercial {
-        color: #4ea788;
-      }
+  html,body{overflow-x:hidden}
+  body{
+    --bg-image:url("images/");
+    font-family:"Inter",sans-serif;background-color:#0f2a29;color:#fff;
+    position:relative;min-height:100vh
+  }
+  .font-logo{font-family:serif}
+  .e-comercial{color:#4ea788}
 
-      /* --- Efeito de Fundo: grade leve --- */
-      body::before {
-        content: "";
-        position: fixed;
-        inset: 0;
-        background-image: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          ),
-          linear-gradient(
-            225deg,
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-          );
-        background-size: 30px 30px;
-        z-index: 0;
-        pointer-events: none;
-      }
+  /* Fundo grade leve */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+    background-image:
+      linear-gradient(135deg,rgba(255,255,255,.03) 1px,transparent 1px),
+      linear-gradient(225deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:30px 30px
+  }
+  body::after{content:none}
 
-      /* --- Foto de fundo cobrindo toda a tela --- */
-      body::after {
-        content: none;
-      }
+  .background-text{position:absolute;top:0;right:0;margin:-2rem -3rem 0 0;user-select:none;z-index:0}
+  .background-text span{
+    font-family:"Playfair Display",serif;font-size:20vw;font-weight:700;
+    color:rgba(255,255,255,.05);transform:rotate(-12deg);display:inline-block
+  }
 
-      .background-text {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin-top: -2rem;
-        margin-right: -3rem;
-        user-select: none;
-        z-index: 0;
-      }
-      .background-text span {
-        font-family: "Playfair Display", serif;
-        font-size: 20vw;
-        font-weight: 700;
-        color: rgba(255, 255, 255, 0.05);
-        transform: rotate(-12deg);
-        display: inline-block;
-      }
+  .container{
+    position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
+    max-width:1280px;margin:0 auto;padding:0 1rem
+  }
 
-      /* --- Estrutura Principal --- */
-      .container {
-        position: relative;
-        z-index: 1; /* acima do fundo */
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        max-width: 1280px;
-        margin: 0 auto;
-        padding: 0 1rem;
-      }
+  .header{width:100%;padding-top:1rem;position:relative;margin-bottom:0}
+  .header-content{
+    position:relative;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:nowrap;
+    border-bottom:1px solid rgba(255,255,255,.1);padding:10px 20px 16px;min-height:72px;
+    background:rgba(0,0,0,.15);backdrop-filter:saturate(120%) blur(2px);border-radius:12px
+  }
+  .top-left{display:flex;gap:16px;align-items:center;flex:1 1 auto;z-index:5;order:1}
+  .menu-btn{
+    border:1px solid rgba(255,255,255,.5);background:transparent;color:#fff;border-radius:.375rem;
+    padding:.375rem 1rem;font-size:.875rem;cursor:pointer;transition:background-color .2s
+  }
+  .menu-btn:hover{background-color:rgba(255,255,255,.1)}
 
-      /* ===== TOPO ===== */
-      .header {
-        width: 100%;
-        padding-top: 1rem;
-        position: relative;
-        margin-bottom: 0;
-      }
-      .header-content {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px 20px 16px;
-        gap: 16px;
-        min-height: 72px;
-        flex-wrap: nowrap;
-        background: rgba(0, 0, 0, 0.15);
-        backdrop-filter: saturate(120%) blur(2px);
-        border-radius: 12px;
-      }
-      .top-left {
-        display: flex;
-        gap: 16px;
-        align-items: center;
-        flex: 1 1 auto;
-        z-index: 5;
-        order: 1;
-      }
-      .menu-btn {
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        background: transparent;
-        color: white;
-        border-radius: 0.375rem;
-        padding: 0.375rem 1rem;
-        font-size: 0.875rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .menu-btn:hover {
-        background-color: rgba(255, 255, 255, 0.1);
-      }
+  /* Ferramentas (Google-style) */
+  .google-tools{
+    position:relative;display:flex;align-items:center;gap:.25rem;font-size:.75rem;margin-left:auto
+  }
+  .google-tools>button{
+    background:#fff;color:#000;font-weight:700;border:0;border-radius:.375rem;
+    padding:.375rem .75rem;cursor:pointer;transition:background-color .2s
+  }
+  .google-tools>button:hover{background:#e5e5e5}
+  .google-tools>button.apps-btn{
+    width:40px;height:40px;background:transparent;color:#fff;border:0;border-radius:8px;
+    display:grid;place-items:center;padding:0;cursor:pointer;transition:background-color .2s,transform .06s
+  }
+  .google-tools>button.apps-btn:hover{background:rgba(255,255,255,.1)}
+  .google-tools>button.apps-btn:active{transform:translateY(1px)}
+  .google-tools>button.apps-btn:focus-visible{outline:2px solid rgba(255,255,255,.6);outline-offset:2px}
 
-      /* Ferramentas (dropdown trigger) */
-      .google-tools {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        font-size: 0.75rem;
-        margin-left: auto; /* cola no lado direito do header */
-      }
-      .google-tools > button {
-        background: white;
-        color: black;
-        font-weight: 700;
-        border: none;
-        border-radius: 0.375rem;
-        padding: 0.375rem 0.75rem;
-        cursor: pointer;
-        transition: background-color 0.2s;
-      }
-      .google-tools > button:hover {
-        background: #e5e5e5;
-      }
+  /* Dropdown estilo Google */
+  .dropdown-content{
+    display:none;position:absolute;right:0;top:100%;margin-top:8px;z-index:10;pointer-events:none;overflow:hidden;
+    background:#dfdfdf;min-width:320px;border-radius:12px;padding:12px;
+    box-shadow:0 12px 28px rgba(0,0,0,.3);opacity:0;transform:translateY(-8px) scale(.98);
+    transition:opacity .18s ease,transform .18s ease
+  }
+  .dropdown-content.show{display:block;opacity:1;transform:translateY(0) scale(1);pointer-events:auto}
+  .app-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-height:420px;overflow:auto}
+  .app{
+    display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 8px;
+    text-decoration:none;border-radius:12px;color:#000;outline:none
+  }
+  .app img{width:32px;height:32px;border-radius:8px;display:block}
+  .app span{
+    font-size:12px;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%
+  }
+  .app:hover,.app:focus-visible{background:rgba(255,255,255,.08)}
+  @media (max-width:420px){
+    .dropdown-content{min-width:280px}
+    .app-grid{grid-template-columns:repeat(4,1fr)}
+  }
 
-      /* Botão estilo "grade de apps" (Google) */
-      .google-tools > button.apps-btn {
-        width: 40px;
-        height: 40px;
-        background: transparent;
-        color: #ffffff;
-        border: none;
-        border-radius: 8px;
-        display: grid;
-        place-items: center;
-        padding: 0;
-        cursor: pointer;
-        transition: background-color 0.2s, transform 0.06s;
-      }
-      .google-tools > button.apps-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
-      .google-tools > button.apps-btn:active {
-        transform: translateY(1px);
-      }
-      .google-tools > button.apps-btn:focus-visible {
-        outline: 2px solid rgba(255, 255, 255, 0.6);
-        outline-offset: 2px;
-      }
-      .google-tools {
-        gap: 0.25rem;
-      }
+  /* “Página inicial” estilo Google */
+  .google-hero{flex:1;display:grid;place-items:center;padding:6vh 1rem 8vh}
+  .hero-inner{width:100%;max-width:640px;display:flex;flex-direction:column;align-items:center;gap:24px;text-align:center}
+  .hero-logo{max-width:min(60vw,300px);height:auto;filter:drop-shadow(0 2px 10px rgba(0,0,0,.35))}
 
-      /* ===================== DROPDOWN ESTILO GOOGLE ===================== */
-      .dropdown-content {
-        display: none;
-        position: absolute;
-        right: 0;
-        top: 100%;
-        margin-top: 8px;
-        background: #dfdfdf;
-        min-width: 320px;
-        border-radius: 12px;
-        padding: 12px;
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
-        z-index: 10;
-        opacity: 0;
-        transform: translateY(-8px) scale(0.98);
-        transition: opacity 0.18s ease, transform 0.18s ease;
-        pointer-events: none;
-        overflow: hidden;
-      }
-      .dropdown-content.show {
-        display: block;
-        opacity: 1;
-        transform: translateY(0) scale(1);
-        pointer-events: auto;
-      }
-      .app-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-        max-height: 420px;
-        overflow: auto;
-      }
-      .app {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        padding: 12px 8px;
-        text-decoration: none;
-        border-radius: 12px;
-        color: #000000;
-        outline: none;
-      }
-      .app img {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-        display: block;
-      }
-      .app span {
-        font-size: 12px;
-        line-height: 1.2;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-      }
-      .app:hover,
-      .app:focus-visible {
-        background: rgba(255, 255, 255, 0.08);
-      }
-      @media (max-width: 420px) {
-        .dropdown-content {
-          min-width: 280px;
-        }
-        .app-grid {
-          grid-template-columns: repeat(4, 1fr);
-        }
-      }
+  .site-search{
+    position:static;transform:none;display:flex;align-items:center;gap:8px;z-index:4;flex:0 0 auto;width:100%;justify-content:center
+  }
+  .search-wrap{position:relative;flex:1}
+  .search-wrap .search-icon{
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.9;pointer-events:none;z-index:2
+  }
+  .site-search input[type="search"]{
+    width:100%;padding:12px 14px 12px 40px;border:1px solid rgba(255,255,255,.18);
+    background:rgba(0,0,0,.28);color:#fff;border-radius:999px;outline:none;backdrop-filter:blur(4px)
+  }
+  .site-search input[type="search"]::placeholder{color:rgba(255,255,255,.7)}
+  .site-search button[type="submit"]{
+    padding:12px 18px;border-radius:999px;border:0;background:#418d75;color:#fff;font-weight:600;cursor:pointer;white-space:nowrap
+  }
 
-      /* ===== "PÁGINA INICIAL" ESTILO GOOGLE ===== */
-      .google-hero {
-        flex: 1;
-        display: grid;
-        place-items: center;
-        padding: 6vh 1rem 8vh;
-      }
-      .hero-inner {
-        width: 100%;
-        max-width: 640px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-        text-align: center;
-      }
-      .hero-logo {
-        max-width: min(60vw, 300px);
-        height: auto;
-        filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.35));
-      }
+  /* Sugestões */
+  .suggest-panel{
+    position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:50;background:#232323;
+    border:1px solid rgba(255,255,255,.12);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.38);
+    padding:6px;max-height:min(50vh,420px);overflow:auto
+  }
+  .suggest-empty{padding:10px 12px;color:rgba(255,255,255,.7);font-size:14px}
+  .suggest-item{
+    display:grid;grid-template-columns:28px 1fr auto auto;align-items:center;gap:10px;
+    padding:8px 10px;border-radius:8px;cursor:pointer
+  }
+  .suggest-item:hover,.suggest-item[aria-selected="true"]{background:rgba(255,255,255,.08)}
+  .suggest-icon{width:18px;height:18px;border-radius:4px;display:inline-block;background:rgba(255,255,255,.12)}
+  .suggest-text{display:flex;flex-direction:column;min-width:0}
+  .suggest-primary{
+    color:#fff;font-size:14px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis
+  }
+  .suggest-secondary{
+    color:rgba(255,255,255,.65);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px
+  }
+  .suggest-badge{
+    font-size:11px;padding:3px 6px;border-radius:999px;background:rgba(65,141,117,.18);
+    color:#a6e0cf;border:1px solid rgba(65,141,117,.35);margin-left:8px
+  }
+  .suggest-remove{font-size:16px;line-height:1;padding:2px 6px;color:rgba(255,255,255,.65);cursor:pointer;user-select:none}
+  .suggest-remove:hover{color:#ff6b6b}
 
-      /* Barra de busca central (agora dentro da hero) */
-      .site-search {
-        position: static; /* remove o absolute */
-        transform: none;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        z-index: 4;
-        flex: 0 0 auto;
-        width: 100%;
-        justify-content: center;
-      }
-      .search-wrap {
-        position: relative;
-        flex: 1;
-      }
-      .search-wrap .search-icon {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 18px;
-        height: 18px;
-        opacity: 0.9;
-        pointer-events: none;
-        z-index: 2; /* ⟵ sobe o ícone */
-      }
-      .site-search input[type="search"] {
-        width: 100%;
-        padding: 12px 14px;
-        padding-left: 40px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: rgba(0, 0, 0, 0.28);
-        color: #fff;
-        border-radius: 999px;
-        outline: none;
-        backdrop-filter: blur(4px);
-      }
-      .site-search input[type="search"]::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-      }
-      .site-search button[type="submit"] {
-        padding: 12px 18px;
-        border-radius: 999px;
-        border: 0;
-        background: #418d75;
-        color: #fff;
-        font-weight: 600;
-        cursor: pointer;
-        white-space: nowrap;
-      }
+  .header-titles-desktop{display:none!important}
+  .main-content{display:none}
+  .tab-panel{display:none;width:100%}
+  .tab-panel.active{display:block}
 
-      /* SUGESTÕES (autocomplete) */
-      .suggest-panel {
-        position: absolute;
-        top: calc(100% + 6px);
-        left: 0;
-        right: 0;
-        z-index: 50;
-        background: #232323;
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        border-radius: 12px;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
-        padding: 6px;
-        max-height: min(50vh, 420px);
-        overflow: auto;
-      }
-      .suggest-empty {
-        padding: 10px 12px;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 14px;
-      }
-      .suggest-item {
-        display: grid;
-        grid-template-columns: 28px 1fr auto auto;
-        align-items: center;
-        gap: 10px;
-        padding: 8px 10px;
-        border-radius: 8px;
-        cursor: pointer;
-      }
-      .suggest-item:hover,
-      .suggest-item[aria-selected="true"] {
-        background: rgba(255, 255, 255, 0.08);
-      }
-      .suggest-icon {
-        width: 18px;
-        height: 18px;
-        border-radius: 4px;
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.12);
-      }
-      .suggest-text {
-        display: flex;
-        flex-direction: column;
-        min-width: 0;
-      }
-      .suggest-primary {
-        color: #fff;
-        font-size: 14px;
-        line-height: 1.2;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .suggest-secondary {
-        color: rgba(255, 255, 255, 0.65);
-        font-size: 12px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        margin-top: 2px;
-      }
-      .suggest-badge {
-        font-size: 11px;
-        padding: 3px 6px;
-        border-radius: 999px;
-        background: rgba(65, 141, 117, 0.18);
-        color: #a6e0cf;
-        border: 1px solid rgba(65, 141, 117, 0.35);
-        margin-left: 8px;
-      }
-      .suggest-remove {
-        font-size: 16px;
-        line-height: 1;
-        padding: 2px 6px;
-        color: rgba(255, 255, 255, 0.65);
-        cursor: pointer;
-        user-select: none;
-      }
-      .suggest-remove:hover {
-        color: #ff6b6b;
-      }
+  /* Sidebar */
+  .sidebar{
+    position:fixed;inset:0 0 0 auto;width:min(82vw,360px);transform:translateX(100%);
+    background:#0f2a29;color:#fff;padding:16px;box-shadow:-2px 0 8px rgba(0,0,0,.35);
+    transition:transform .3s ease;z-index:1000;border-left:1px solid rgba(255,255,255,.1);backdrop-filter:saturate(120%)
+  }
+  .sidebar.is-open{transform:translateX(0)}
+  .sidebar-header{
+    display:flex;align-items:center;justify-content:space-between;gap:1rem;
+    border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:.5rem;margin-bottom:.75rem
+  }
+  .sidebar-header h2{margin:0;font-size:1.2rem}
+  .close-btn{
+    background:transparent;color:#fff;border:none;font-size:1.8rem;line-height:1;cursor:pointer;border-radius:8px;padding:.2rem .4rem
+  }
+  .close-btn:hover{background:rgba(255,255,255,.08)}
+  .sidebar-links{display:flex;flex-direction:column;gap:.25rem}
+  .sidebar-links a{color:#fff;text-decoration:none;padding:.65rem .6rem;border-radius:8px}
+  .sidebar-links a:hover{background:#123c38;color:#d1fae5}
+  .overlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.45);opacity:0;visibility:hidden;transition:.25s ease;z-index:999
+  }
+  .overlay.is-open{opacity:1;visibility:visible}
 
-      /* DIREITA: logo no header (agora escondida para ficar "estilo Google") */
-      .header-titles-desktop {
-        display: none !important;
-      }
+  /* Imagem única Home (oculta) */
+  .tab-media-wrap{
+    width:100%;height:95vh;border-radius:12px;overflow:hidden;margin:8px 0 16px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.15);display:none
+  }
+  .tab-media-wrap img{width:100%;height:800px;display:block;object-fit:cover}
 
-      /* --- Conteúdo Principal (mantido para as abas existentes) --- */
-      .main-content {
-        display: none;
-      } /* escondemos a área antiga na Home para usar a hero central */
-      .tab-panel {
-        display: none;
-        width: 100%;
-      }
-      .tab-panel.active {
-        display: block;
-      }
+  /* Responsivo */
+  @media (max-width:640px){
+    .header-content{flex-wrap:wrap;gap:8px 12px;padding:8px 12px}
+    .top-left{order:1}
+    .hero-logo{max-width:68vw}
+  }
 
-      /* --- MENU LATERAL (Sidebar) --- */
-      .sidebar {
-        position: fixed;
-        inset: 0 0 0 auto;
-        width: min(82vw, 360px);
-        transform: translateX(100%);
-        background: #0f2a29;
-        color: #fff;
-        padding: 16px;
-        box-shadow: -2px 0 8px rgba(0, 0, 0, 0.35);
-        transition: transform 0.3s ease;
-        z-index: 1000;
-        border-left: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: saturate(120%);
-      }
-      .sidebar.is-open {
-        transform: translateX(0);
-      }
-      .sidebar-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-        padding-bottom: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-      .sidebar-header h2 {
-        margin: 0;
-        font-size: 1.2rem;
-      }
-      .close-btn {
-        background: transparent;
-        color: #fff;
-        border: none;
-        font-size: 1.8rem;
-        line-height: 1;
-        cursor: pointer;
-        border-radius: 8px;
-        padding: 0.2rem 0.4rem;
-      }
-      .close-btn:hover {
-        background: rgba(255, 255, 255, 0.08);
-      }
-      .sidebar-links {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-      }
-      .sidebar-links a {
-        color: #fff;
-        text-decoration: none;
-        padding: 0.65rem 0.6rem;
-        border-radius: 8px;
-      }
-      .sidebar-links a:hover {
-        background: #123c38;
-        color: #d1fae5;
-      }
-      .overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        opacity: 0;
-        visibility: hidden;
-        transition: 0.25s ease;
-        z-index: 999;
-      }
-      .overlay.is-open {
-        opacity: 1;
-        visibility: visible;
-      }
+  /* Modal (popup central) */
+  .menu-modal{position:fixed;inset:0;display:grid;place-items:center;z-index:1100;visibility:hidden}
+  .menu-modal.is-open{visibility:visible}
+  .menu-modal .overlay-blur{
+    position:absolute;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px) saturate(110%);
+    opacity:0;transition:opacity .22s ease
+  }
+  .menu-modal.is-open .overlay-blur{opacity:1}
+  .menu-card{
+    position:relative;width:min(92vw,560px);border-radius:16px;padding:18px;
+    background:radial-gradient(1200px 400px at 10% -20%,rgba(78,167,136,.12),transparent 60%),rgba(20,48,47,.92);
+    border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 60px rgba(0,0,0,.45);
+    transform:translateY(8px) scale(.96);opacity:0;
+    transition:transform .26s cubic-bezier(.2,.8,.2,1),opacity .2s ease
+  }
+  .menu-modal.is-open .menu-card{transform:translateY(0) scale(1);opacity:1}
+  .menu-header{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 8px 12px;
+    border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:8px
+  }
+  .menu-title{font-size:1.125rem;font-weight:700;letter-spacing:.2px}
+  .menu-close{
+    background:transparent;color:#fff;border:0;font-size:1.6rem;line-height:1;cursor:pointer;border-radius:10px;padding:2px 8px
+  }
+  .menu-close:hover{background:rgba(255,255,255,.08)}
+  .menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding-top:10px}
+  @media (max-width:560px){.menu-grid{grid-template-columns:1fr}}
+  .menu-item{
+    display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;text-decoration:none;color:#eaf6f2;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);
+    transition:transform .12s ease,background .2s ease,border-color .2s ease
+  }
+  .menu-item:hover{background:rgba(65,141,117,.12);border-color:rgba(65,141,117,.35);transform:translateY(-1px)}
+  .menu-item-icon{
+    width:36px;height:36px;border-radius:10px;display:grid;place-items:center;
+    background:rgba(65,141,117,.18);border:1px solid rgba(65,141,117,.35)
+  }
+  .menu-item-title{font-weight:600}
+  .menu-item-sub{font-size:.85rem;opacity:.8}
+  @media (prefers-reduced-motion:reduce){
+    .menu-card,.menu-modal .overlay-blur{transition:none}
+  }
 
-      /* ===== Imagem única na Home (agora escondida, pois virou background) ===== */
-      .tab-media-wrap {
-        width: 100%;
-        height: 95vh;
-        border-radius: 12px;
-        overflow: hidden;
-        margin: 8px 0 16px;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.15);
-        display: none;
-      }
-      .tab-media-wrap img {
-        width: 100%;
-        height: 800px;
-        display: block;
-        object-fit: cover;
-      }
+  /* Vídeo de fundo */
+  #video-bg.video-bg{
+    position:fixed;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-2;
+    filter:brightness(.5);pointer-events:none;background:#0f2a29
+  }
 
-      /* ===== Responsivo ===== */
-      @media (max-width: 640px) {
-        .header-content {
-          flex-wrap: wrap;
-          gap: 8px 12px;
-          padding: 8px 12px;
-        }
-        .top-left {
-          order: 1;
-        }
-        .hero-logo {
-          max-width: 68vw;
-        }
-      }
+  /* Atalhos rápidos */
+  .quick-shortcuts{width:100%;max-width:640px;margin-top:10px}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:4px;overflow-x:auto}
+  .shortcut-chip{
+    position:relative;display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;text-decoration:none;color:#fff;
+    background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(4px);
+    transition:background .2s,transform .06s,border-color .2s
+  }
+  .shortcut-chip:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+  .shortcut-chip:active{transform:translateY(1px)}
+  .shortcut-chip img{width:18px;height:18px;border-radius:4px;display:block}
+  .shortcut-add{font-weight:700;border-style:dashed;border-color:rgba(255,255,255,.22);cursor:pointer}
+  .shortcut-chip button[type="button"]{opacity:0;transition:opacity .15s}
+  .shortcut-chip:hover button[type="button"]{opacity:1}
 
-      /*POP UP*/
+  @media (prefers-reduced-motion:reduce){#video-bg.video-bg{display:none}}
+</style>
 
-      /* ===== Modal de opções (popup central) ===== */
-      .menu-modal {
-        position: fixed;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        z-index: 1100;
-        visibility: hidden;
-      }
+<style>
+  html.auth-checking{visibility:hidden}
+</style>
 
-      .menu-modal.is-open {
-        visibility: visible;
-      }
-
-      /* usamos o mesmo #overlay já existente */
-      .menu-modal .overlay-blur {
-        position: absolute;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(4px) saturate(110%);
-        opacity: 0;
-        transition: opacity 0.22s ease;
-      }
-      .menu-modal.is-open .overlay-blur {
-        opacity: 1;
-      }
-
-      .menu-card {
-        position: relative;
-        width: min(92vw, 560px);
-        border-radius: 16px;
-        padding: 18px;
-        background: radial-gradient(
-            1200px 400px at 10% -20%,
-            rgba(78, 167, 136, 0.12),
-            transparent 60%
-          ),
-          rgba(20, 48, 47, 0.92);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.45);
-        transform: translateY(8px) scale(0.96);
-        opacity: 0;
-        transition: transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1),
-          opacity 0.2s ease;
-      }
-      .menu-modal.is-open .menu-card {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-
-      .menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 6px 8px 12px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        margin-bottom: 8px;
-      }
-      .menu-title {
-        font-size: 1.125rem;
-        font-weight: 700;
-        letter-spacing: 0.2px;
-      }
-      .menu-close {
-        background: transparent;
-        color: #fff;
-        border: 0;
-        font-size: 1.6rem;
-        line-height: 1;
-        cursor: pointer;
-        border-radius: 10px;
-        padding: 2px 8px;
-      }
-      .menu-close:hover {
-        background: rgba(255, 255, 255, 0.08);
-      }
-
-      .menu-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
-        padding-top: 10px;
-      }
-      @media (max-width: 560px) {
-        .menu-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .menu-item {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        padding: 12px;
-        border-radius: 12px;
-        text-decoration: none;
-        color: #eaf6f2;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        transition: transform 0.12s ease, background 0.2s ease,
-          border-color 0.2s ease;
-      }
-      .menu-item:hover {
-        background: rgba(65, 141, 117, 0.12);
-        border-color: rgba(65, 141, 117, 0.35);
-        transform: translateY(-1px);
-      }
-      .menu-item-icon {
-        width: 36px;
-        height: 36px;
-        border-radius: 10px;
-        display: grid;
-        place-items: center;
-        background: rgba(65, 141, 117, 0.18);
-        border: 1px solid rgba(65, 141, 117, 0.35);
-      }
-      .menu-item-title {
-        font-weight: 600;
-      }
-      .menu-item-sub {
-        font-size: 0.85rem;
-        opacity: 0.8;
-      }
-
-      /* Respeita redução de movimento */
-      @media (prefers-reduced-motion: reduce) {
-        .menu-card,
-        .menu-modal .overlay-blur {
-          transition: none;
-        }
-      }
-
-      #video-bg.video-bg {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center;
-        z-index: -2; /* abaixo da grade (body::before) e do conteúdo */
-        filter: brightness(0.5); /* mesma ideia do seu fundo escurecido */
-        pointer-events: none; /* não bloquear cliques */
-        background: #0f2a29; /* cor base enquanto o vídeo inicia */
-      }
-
-      /* Respeita usuários com redução de movimento */
-      @media (prefers-reduced-motion: reduce) {
-        #video-bg.video-bg {
-          display: none;
-        }
-      }
-    </style>
-
-    <style>
-      /* Oculta o conteúdo até terminar a checagem de autenticação */
-      html.auth-checking {
-        visibility: hidden;
-      }
-    </style>
   </head>
   <body>
-    <video
-      id="video-bg"
-      class="video-bg"
-      autoplay
-      muted
-      loop
-      playsinline
-      poster="images/video-bg.mp4"
-    >
-      <!-- Coloque seus arquivos de vídeo aqui -->
-      <source src="images/video-bg.mp4" type="video/mp4" />
-      <!-- Fallback simples -->
-      Seu navegador não suporta vídeo em HTML5.
-    </video>
-    <div class="container">
-      <!-- Cabeçalho -->
-      <header class="header">
-        <div class="header-content">
-          <!-- Esquerda: Menu + Ferramentas -->
-          <div class="top-left">
-            <button
-              class="menu-btn"
-              id="menu-toggle"
-              aria-expanded="false"
-              aria-controls="sidebar"
-            >
-              Menu
-            </button>
-
-            <div class="google-tools">
-              <span
-                id="welcomeUser"
-                style="margin-left: 12px; font-weight: 700"
-              ></span>
-
-              <button
-                id="google-button"
-                class="apps-btn"
-                aria-controls="google-dropdown"
-                aria-expanded="false"
-                aria-label="Abrir aplicativos"
-              >
-                <!-- Ícone 3x3 -->
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 20 20"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <g fill="currentColor">
-                    <circle cx="4" cy="4" r="1.5"></circle>
-                    <circle cx="10" cy="4" r="1.5"></circle>
-                    <circle cx="16" cy="4" r="1.5"></circle>
-                    <circle cx="4" cy="10" r="1.5"></circle>
-                    <circle cx="10" cy="10" r="1.5"></circle>
-                    <circle cx="16" cy="10" r="1.5"></circle>
-                    <circle cx="4" cy="16" r="1.5"></circle>
-                    <circle cx="10" cy="16" r="1.5"></circle>
-                    <circle cx="16" cy="16" r="1.5"></circle>
-                  </g>
-                </svg>
-              </button>
-
-              <!-- ===== Dropdown estilo Google ===== -->
-              <div
-                id="google-dropdown"
-                class="dropdown-content"
-                role="menu"
-                aria-hidden="true"
-              >
-                <div class="app-grid" role="list">
-                  <a
-                    class="app"
-                    href="https://www.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_google.ico" alt="" /><span
-                      >Home</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://calendar.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_calendar.ico" alt="" /><span
-                      >Agenda</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://mail.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_gmail.ico" alt="" /><span
-                      >Gmail</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://docs.google.com/spreadsheets/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_sheets.ico" alt="" /><span
-                      >Planilhas</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://meet.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_meet.ico" alt="" /><span
-                      >Meet</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://docs.google.com/document/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/docs.ico" alt="" /><span>Docs</span></a
-                  >
-                  <a
-                    class="app"
-                    href="https://chat.google.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/chat.ico" alt="" /><span>Chat</span></a
-                  >
-                  <a
-                    class="app"
-                    href="https://www.youtube.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/youtube.ico" alt="" /><span
-                      >YouTube</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://chatgpt.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/favicon_chagpt.ico" alt="" /><span
-                      >ChatGPT</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://gemini.google.com/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/gemini.ico" alt="" /><span
-                      >Gemini</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://plataformafasttrade.com.br/"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/fast_trade.ico" alt="" /><span
-                      >Fast Trade</span
-                    ></a
-                  >
-                  <a
-                    class="app"
-                    href="https://drive.google.com"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/drive.ico" alt="" /><span>Drive</span></a
-                  >
-                  <a
-                    class="app"
-                    href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin"
-                    target="_blank"
-                    rel="noopener"
-                    role="menuitem"
-                    ><img src="images/linkedin.ico" alt="" /><span
-                      >LinkedIn</span
-                    ></a
-                  >
-                </div>
-              </div>
-              <!-- ===== /Dropdown ===== -->
+    <video id="video-bg" class="video-bg" autoplay muted loop playsinline poster="images/video-bg.mp4"><source src="images/video-bg.mp4" type="video/mp4">Seu navegador não suporta vídeo em HTML5.</video>
+<div class="container">
+  <header class="header">
+    <div class="header-content">
+      <div class="top-left">
+        <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="sidebar">Menu</button>
+        <div class="google-tools">
+          <span id="welcomeUser" style="margin-left:12px;font-weight:700"></span>
+          <button id="google-button" class="apps-btn" aria-controls="google-dropdown" aria-expanded="false" aria-label="Abrir aplicativos">
+            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><g fill="currentColor"><circle cx="4" cy="4" r="1.5"></circle><circle cx="10" cy="4" r="1.5"></circle><circle cx="16" cy="4" r="1.5"></circle><circle cx="4" cy="10" r="1.5"></circle><circle cx="10" cy="10" r="1.5"></circle><circle cx="16" cy="10" r="1.5"></circle><circle cx="4" cy="16" r="1.5"></circle><circle cx="10" cy="16" r="1.5"></circle><circle cx="16" cy="16" r="1.5"></circle></g></svg>
+          </button>
+          <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
+            <div class="app-grid" role="list">
+              <a class="app" href="https://www.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_google.ico" alt=""><span>Home</span></a>
+              <a class="app" href="https://calendar.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_calendar.ico" alt=""><span>Agenda</span></a>
+              <a class="app" href="https://mail.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_gmail.ico" alt=""><span>Gmail</span></a>
+              <a class="app" href="https://docs.google.com/spreadsheets/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_sheets.ico" alt=""><span>Planilhas</span></a>
+              <a class="app" href="https://meet.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_meet.ico" alt=""><span>Meet</span></a>
+              <a class="app" href="https://docs.google.com/document/" target="_blank" rel="noopener" role="menuitem"><img src="images/docs.ico" alt=""><span>Docs</span></a>
+              <a class="app" href="https://chat.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/chat.ico" alt=""><span>Chat</span></a>
+              <a class="app" href="https://www.youtube.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/youtube.ico" alt=""><span>YouTube</span></a>
+              <a class="app" href="https://chatgpt.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_chagpt.ico" alt=""><span>ChatGPT</span></a>
+              <a class="app" href="https://gemini.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/gemini.ico" alt=""><span>Gemini</span></a>
+              <a class="app" href="https://plataformafasttrade.com.br/" target="_blank" rel="noopener" role="menuitem"><img src="images/fast_trade.ico" alt=""><span>Fast Trade</span></a>
+              <a class="app" href="https://drive.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/drive.ico" alt=""><span>Drive</span></a>
+              <a class="app" href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin" target="_blank" rel="noopener" role="menuitem"><img src="images/linkedin.ico" alt=""><span>LinkedIn</span></a>
             </div>
           </div>
-
-          <!-- Direita: Logo (escondida para ficar como Google) -->
-          <div class="header-titles-desktop" aria-hidden="true">
-            <img
-              src="images/logo_texto_recortado.png"
-              alt="Logo Options & Company"
-              class="logo"
-            />
-          </div>
-        </div>
-      </header>
-
-      <!-- ===== Modal central do Menu ===== -->
-      <div id="menu-modal" class="menu-modal" aria-hidden="true">
-        <div class="overlay-blur" data-close-modal></div>
-
-        <div
-          class="menu-card"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="menu-modal-title"
-        >
-          <div class="menu-header">
-            <h2 id="menu-modal-title" class="menu-title">Opções</h2>
-            <button
-              class="menu-close"
-              type="button"
-              aria-label="Fechar"
-              data-close-modal
-            >
-              ×
-            </button>
-          </div>
-
-          <nav class="menu-grid">
-            <!-- Exemplo de itens (reutilizei seus links) -->
-            <a class="menu-item" href="#home" data-tab-target="home">
-              <div class="menu-item-icon">
-                <!-- ícone minimalista -->
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Início</div>
-                <div class="menu-item-sub">Voltar para a tela principal</div>
-              </div>
-            </a>
-
-            <a
-              class="menu-item"
-              href="https://indicadoresmesaco.netlify.app/"
-              target="_blank"
-              rel="noopener"
-            >
-              <div class="menu-item-icon">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 13v7h4v-7H4Zm6-6v13h4V7h-4Zm6 3v10h4V10h-4Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Indicadores</div>
-                <div class="menu-item-sub">Looker Studio</div>
-              </div>
-            </a>
-
-            <a
-              class="menu-item"
-              href="https://chamadoadm.netlify.app"
-              target="_blank"
-              rel="noopener"
-            >
-              <div class="menu-item-icon">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 3v6m0 12a9 9 0 1 0-9-9h9v9Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Suporte</div>
-                <div class="menu-item-sub">Abrir chamado de TI</div>
-              </div>
-            </a>
-
-            <a
-              class="menu-item"
-              href="login.html"
-              target="_blank"
-              rel="noopener"
-            >
-              <div class="menu-item-icon">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Liderança</div>
-                <div class="menu-item-sub">Área restrita</div>
-              </div>
-            </a>
-
-            <a
-              class="menu-item"
-              href="https://bibliotecaco.netlify.app/"
-              target="_blank"
-              rel="noopener"
-            >
-              <div class="menu-item-icon">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Biblioteca</div>
-                <div class="menu-item-sub">Documentos e materiais</div>
-              </div>
-            </a>
-
-            <a
-              class="menu-item"
-              href="beneficios.html"
-              target="_blank"
-              rel="noopener"
-            >
-              <div class="menu-item-icon">
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                  />
-                </svg>
-              </div>
-              <div>
-                <div class="menu-item-title">Benefícios</div>
-                <div class="menu-item-sub">Guias e políticas</div>
-              </div>
-            </a>
-          </nav>
         </div>
       </div>
-
-      <!-- HERO central: Logo acima + Busca no meio da tela -->
-      <section class="google-hero" role="region" aria-label="Página inicial">
-        <div class="hero-inner">
-          <img
-            class="hero-logo"
-            src="images/logo_texto_recortado.png"
-            alt="Options & Company"
-          />
-
-          <!-- Busca -->
-          <form
-            class="site-search"
-            role="search"
-            aria-label="Pesquisar na web"
-            action="https://www.google.com/search"
-            method="GET"
-            target="_self"
-            id="search-form"
-          >
-            <div class="search-wrap">
-              <img
-                src="images/favicon_google.ico"
-                alt=""
-                class="search-icon"
-                aria-hidden="true"
-              />
-              <input
-                id="q"
-                name="q"
-                type="search"
-                placeholder="Pesquisar no Google…"
-                autocomplete="off"
-                inputmode="search"
-                spellcheck="false"
-                aria-controls="suggestions"
-              />
-              <div
-                id="suggestions"
-                class="suggest-panel"
-                role="listbox"
-                aria-label="Sugestões"
-                hidden
-              ></div>
-            </div>
-            <button type="submit" aria-label="Pesquisar">Buscar</button>
-          </form>
-        </div>
-      </section>
-
-      <!-- Conteúdo Principal em Abas (mantido para quando quiser usar as páginas internas) -->
-      <main class="main-content" id="tab-root" role="region" aria-live="polite">
-        <!-- Início (padrão) -->
-        <section
-          id="tab-home"
-          class="tab-panel active"
-          role="tabpanel"
-          aria-labelledby="tablink-home"
-        >
-          <div class="tab-media-wrap">
-            <!-- A imagem abaixo foi mantida, mas está oculta via CSS porque agora é o fundo do site -->
-            <img
-              src="images/WhatsApp Image 2025-09-15 at 08.42.39.jpeg"
-              alt="Mesa de operação - Options & Company"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
-        </section>
-
-        <!-- Indicadores -->
-        <section
-          id="tab-indicadores"
-          class="tab-panel"
-          role="tabpanel"
-          aria-labelledby="tablink-indicadores"
-        >
-          <div class="frame-wrap">
-            <iframe
-              title="Dashboard Looker Studio"
-              src="https://indicadoresmesaco.netlify.app/"
-              style="width: 100%; height: 70vh; border: 0"
-              sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
-            >
-            </iframe>
-          </div>
-        </section>
-      </main>
+      <div id="fav-grid" class="app-grid" role="list"></div>
+      <template id="fav-add-card"><button class="app" type="button" data-open-fav-modal><div style="width:32px;height:32px;border-radius:8px;background:#0b5;display:grid;place-items:center;color:#fff;font-weight:900">+</div><span>Atalho</span></button></template>
+      <div class="header-titles-desktop" aria-hidden="true"><img src="images/logo_texto_recortado.png" alt="Logo Options & Company" class="logo"></div>
     </div>
+  </header>
 
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar" aria-hidden="true">
-      <div class="sidebar-header">
-        <h2>Menu</h2>
-        <button class="close-btn" id="close-sidebar" aria-label="Fechar menu">
-          ×
-        </button>
-      </div>
-      <nav class="sidebar-links">
-        <a
-          href="#home"
-          id="tablink-home"
-          data-tab-target="home"
-          aria-controls="tab-home"
-          >Início</a
-        >
-        <a
-          id="link-biblioteca"
-          href="https://bibliotecaco.netlify.app/"
-          target="_blank"
-          rel="noopener"
-          >Biblioteca</a
-        >
-        <a
-          href="https://indicadoresmesaco.netlify.app/"
-          id="link-indicadores"
-          target="_blank"
-          rel="noopener"
-          >Indicadores</a
-        >
-
-        <a
-          href="https://chamadoadm.netlify.app"
-          id="link-chamado-ti"
-          target="_blank"
-          rel="noopener"
-          >Suporte</a
-        >
-        <a id="link-website" href="login.html" target="_blank" rel="noopener"
-          >Liderança</a
-        >
-        <a
-          id="link-beneficios"
-          href="beneficios.html"
-          target="_blank"
-          rel="noopener"
-          >Beneficios</a
-        >
+  <div id="menu-modal" class="menu-modal" aria-hidden="true">
+    <div class="overlay-blur" data-close-modal></div>
+    <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title">
+      <div class="menu-header"><h2 id="menu-modal-title" class="menu-title">Opções</h2><button class="menu-close" type="button" aria-label="Fechar" data-close-modal>×</button></div>
+      <nav class="menu-grid">
+        <a class="menu-item" href="#home" data-tab-target="home"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Início</div><div class="menu-item-sub">Voltar para a tela principal</div></div></a>
+        <a class="menu-item" href="https://indicadoresmesaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13v7h4v-7H4Zm6-6v13h4V7h-4Zm6 3v10h4V10h-4Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Indicadores</div><div class="menu-item-sub">Looker Studio</div></div></a>
+        <a class="menu-item" href="https://chamadoadm.netlify.app" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v6m0 12a9 9 0 1 0-9-9h9v9Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Suporte</div><div class="menu-item-sub">Abrir chamado de TI</div></div></a>
+        <a class="menu-item" href="login.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Liderança</div><div class="menu-item-sub">Área restrita</div></div></a>
+        <a class="menu-item" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Biblioteca</div><div class="menu-item-sub">Documentos e materiais</div></div></a>
+        <a class="menu-item" href="beneficios.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Benefícios</div><div class="menu-item-sub">Guias e políticas</div></div></a>
       </nav>
-    </aside>
-    <div class="overlay" id="overlay" hidden></div>
+    </div>
+  </div>
 
+  <section class="google-hero" role="region" aria-label="Página inicial">
+    <div class="hero-inner">
+      <img class="hero-logo" src="images/logo_texto_recortado.png" alt="Options & Company">
+      <form class="site-search" role="search" aria-label="Pesquisar na web" action="https://www.google.com/search" method="GET" target="_self" id="search-form">
+        <div class="search-wrap"><img src="images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true"><input id="q" name="q" type="search" placeholder="Pesquisar no Google…" autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions"><div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div></div>
+        <button type="submit" aria-label="Pesquisar">Buscar</button>
+      </form>
+      <nav id="quick-shortcuts" class="quick-shortcuts" aria-label="Atalhos rápidos"><div id="quick-chip-row" class="chip-row" role="list"></div></nav>
+    </div>
+  </section>
+
+  <main class="main-content" id="tab-root" role="region" aria-live="polite">
+    <section id="tab-home" class="tab-panel active" role="tabpanel" aria-labelledby="tablink-home">
+      <div class="tab-media-wrap"><img src="images/WhatsApp Image 2025-09-15 at 08.42.39.jpeg" alt="Mesa de operação - Options & Company" loading="eager" fetchpriority="high"></div>
+    </section>
+    <section id="tab-indicadores" class="tab-panel" role="tabpanel" aria-labelledby="tablink-indicadores">
+      <div class="frame-wrap"><iframe title="Dashboard Looker Studio" src="https://indicadoresmesaco.netlify.app/" style="width:100%;height:70vh;border:0" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+    </section>
+  </main>
+</div>
+
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="sidebar-header"><h2>Menu</h2><button class="close-btn" id="close-sidebar" aria-label="Fechar menu">×</button></div>
+  <nav class="sidebar-links">
+    <a href="#home" id="tablink-home" data-tab-target="home" aria-controls="tab-home">Início</a>
+    <a id="link-biblioteca" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener">Biblioteca</a>
+    <a href="https://indicadoresmesaco.netlify.app/" id="link-indicadores" target="_blank" rel="noopener">Indicadores</a>
+    <a href="https://chamadoadm.netlify.app" id="link-chamado-ti" target="_blank" rel="noopener">Suporte</a>
+    <a id="link-website" href="login.html" target="_blank" rel="noopener">Liderança</a>
+    <a id="link-beneficios" href="beneficios.html" target="_blank" rel="noopener">Beneficios</a>
+  </nav>
+</aside>
+<div class="overlay" id="overlay" hidden></div>
+
+
+    <!-- Firebase + Auth + Favoritos -->
     <script type="module">
       /* ===== Firebase SDKs ===== */
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
@@ -1275,7 +371,13 @@
         browserLocalPersistence,
         signOut,
       } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-      /* ✅ Firestore para buscar o nome */
+      import {
+        getRemoteConfig,
+        fetchAndActivate,
+        getValue,
+      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-remote-config.js";
+
+      /* Firestore */
       import {
         getFirestore,
         doc,
@@ -1285,7 +387,22 @@
         where,
         getDocs,
         limit,
+        addDoc,
+        updateDoc,
+        deleteDoc,
+        onSnapshot,
+        orderBy,
+        serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+      function domReady() {
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    document.addEventListener("DOMContentLoaded", resolve, { once: true });
+  });
+}
 
       // Oculta a página até confirmar a sessão
       document.documentElement.classList.add("auth-checking");
@@ -1334,7 +451,6 @@
         try {
           const ref = doc(db, "users", uid);
           const snap = await getDoc(ref);
-          console.debug("[users/{uid}] exists:", snap.exists(), "uid:", uid);
           if (snap.exists()) {
             const d = snap.data();
             if (d?.displayName) return String(d.displayName);
@@ -1352,7 +468,6 @@
               limit(1)
             );
             const qs = await getDocs(q);
-            console.debug("[users where email==]", email, "found:", !qs.empty);
             if (!qs.empty) {
               const d = qs.docs[0].data();
               if (d?.displayName) return String(d.displayName);
@@ -1362,7 +477,7 @@
           console.warn("[fetch by email] erro:", e);
         }
 
-        // 3) fallback: displayName do Auth ou prefixo do email
+        // 3) fallback
         return user.displayName || (email ? email.split("@")[0] : "Usuário");
       }
 
@@ -1371,15 +486,12 @@
         const el = document.getElementById("welcomeUser");
         try {
           let niceName = await fetchNiceName(user);
-
-          // Sanitiza (aspas e espaços duplicados)
           if (typeof niceName === "string") {
             niceName = niceName
               .replace(/^[“”"']+|[“”"']+$/g, "")
               .replace(/\s+/g, " ")
               .trim();
           }
-
           if (el) el.textContent = `Olá, ${niceName}`;
         } catch (err) {
           console.error("[loadProfileAndRenderTop]", err);
@@ -1387,1009 +499,710 @@
         }
       }
 
-      // 🔐 Guarda de rota
-      onAuthStateChanged(auth, async (user) => {
+      // ===== Utilitários visuais (injeta container + estilos dos chips) =====
+      function ensureQuickShortcutsContainer() {
+        let chipRow = document.getElementById("quick-chip-row");
+        if (chipRow) return chipRow;
+
+        const form = document.querySelector(".site-search");
+        if (!form || !form.parentElement) return null;
+
+        const nav = document.createElement("nav");
+        nav.id = "quick-shortcuts";
+        nav.className = "quick-shortcuts";
+        nav.setAttribute("aria-label", "Atalhos rápidos");
+
+        chipRow = document.createElement("div");
+        chipRow.id = "quick-chip-row";
+        chipRow.className = "chip-row";
+        chipRow.setAttribute("role", "list");
+
+        nav.appendChild(chipRow);
+        form.parentElement.insertBefore(nav, form.nextSibling);
+        return chipRow;
+      }
+
+      function injectQuickShortcutStyles() {
+        if (document.getElementById("quick-shortcuts-styles")) return;
+        const css = `
+            .quick-shortcuts{width:100%;max-width:640px;margin-top:10px}
+            .chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:4px;overflow-x:auto}
+            .shortcut-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;text-decoration:none;color:#fff;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(4px);transition:background .2s,transform .06s,border-color .2s;white-space:nowrap}
+            .shortcut-chip:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
+            .shortcut-chip:active{transform:translateY(1px)}
+            .shortcut-chip img{width:18px;height:18px;border-radius:4px;display:block}
+            .shortcut-add{font-weight:700;border-style:dashed;border-color:rgba(255,255,255,.22);cursor:pointer;background:transparent}
+            @media (max-width:640px){.quick-shortcuts{max-width:90vw}}
+          `;
+        const style = document.createElement("style");
+        style.id = "quick-shortcuts-styles";
+        style.textContent = css;
+        document.head.appendChild(style);
+      }
+
+      // ====== FAVORITOS (users/{uid}/favorites) ======
+      function faviconFor(url) {
         try {
-          if (!user) return blockAndRedirect();
-          if (!isAllowedEmail(user.email)) return blockAndRedirect();
-          // if (!user.emailVerified) return blockAndRedirect(); // opcional
-
-          allowPage();
-          await loadProfileAndRenderTop(user);
-        } catch (e) {
-          console.error("[auth state]", e);
-          blockAndRedirect();
+          const u = new URL(/^https?:\/\//i.test(url) ? url : "https://" + url);
+          return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`;
+        } catch {
+          return "images/favicon_google.ico";
         }
-      });
-    </script>
+      }
+      function normalizeUrl(url) {
+        const t = (url || "").trim();
+        if (!t) return "";
+        if (/^https?:\/\//i.test(t)) return t;
+        return "https://" + t;
+      }
 
-    <!-- ===== Scripts ===== -->
-    <script>
-      /* ===================== Dropdown Ferramentas ===================== */
-      (() => {
-        const btn = document.getElementById("google-button");
-        const dd = document.getElementById("google-dropdown");
-        if (!btn || !dd) return;
+      function renderFavCard(docData) {
+        const a = document.createElement("a");
+        a.className = "app";
+        a.href = docData.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.role = "menuitem";
 
-        const close = () => {
-          dd.classList.remove("show");
-          btn.setAttribute("aria-expanded", "false");
-          dd.setAttribute("aria-hidden", "true");
-        };
+        const img = document.createElement("img");
+        img.src = docData.icon || faviconFor(docData.url);
+        img.alt = "";
+        img.referrerPolicy = "no-referrer";
 
-        btn.addEventListener("click", (e) => {
+        const span = document.createElement("span");
+        span.textContent = docData.name || docData.url;
+
+        // botão remover (canto)
+        const rm = document.createElement("button");
+        rm.type = "button";
+        rm.title = "Remover";
+        rm.style.cssText =
+          "position:absolute; top:6px; right:6px; border:0; background:rgba(0,0,0,.2); color:#fff; width:22px; height:22px; border-radius:6px; cursor:pointer;";
+        rm.textContent = "×";
+        rm.addEventListener("click", async (e) => {
+          e.preventDefault();
           e.stopPropagation();
-          dd.classList.toggle("show");
-          const open = dd.classList.contains("show");
-          btn.setAttribute("aria-expanded", open ? "true" : "false");
-          dd.setAttribute("aria-hidden", open ? "false" : "true");
+          if (!confirm(`Remover "${docData.name}"?`)) return;
+          await deleteDoc(docData._ref);
         });
 
-        document.addEventListener("click", (e) => {
-          if (!dd.classList.contains("show")) return;
-          if (!dd.contains(e.target) && e.target !== btn) close();
-        });
+        const wrap = document.createElement("div");
+        wrap.style.position = "relative";
+        wrap.appendChild(img);
+        wrap.appendChild(rm);
 
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") close();
-        });
-      })();
+        a.append(wrap, span);
+        return a;
+      }
 
-      /* ===================== Modal do Menu (popup central) ===================== */
-      (() => {
-        const openBtn = document.getElementById("menu-toggle");
-        const modal = document.getElementById("menu-modal");
-        const getCloseEls = () =>
-          modal?.querySelectorAll("[data-close-modal]") ?? [];
-        let lastFocused = null;
+      // Modal de confirmação que retorna uma Promise<boolean>
+      function confirmPopup({
+        title = "Confirmar ação",
+        message = "Tem certeza?",
+        confirmText = "OK",
+      } = {}) {
+        return new Promise((resolve) => {
+          const modal = document.getElementById("confirm-modal");
+          const titleEl = modal.querySelector("#confirm-title");
+          const msgEl = modal.querySelector("#confirm-message");
+          const okBtn = modal.querySelector("#confirm-ok");
+          const cancelEls = modal.querySelectorAll("[data-confirm-cancel]");
 
-        if (!openBtn || !modal) return;
+          let lastFocused = document.activeElement;
+          const open = () => {
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+            okBtn.textContent = confirmText;
 
-        const setOpen = (v) => {
-          if (v) {
-            lastFocused = document.activeElement;
             modal.classList.add("is-open");
             modal.setAttribute("aria-hidden", "false");
-            // foco acessível no título
-            const title = modal.querySelector("#menu-modal-title");
-            // garante foco no próximo tick para browsers mais chatos
-            setTimeout(() => title?.focus?.(), 0);
-            // trava rolagem do body
             document.body.style.overflow = "hidden";
-          } else {
+            setTimeout(() => okBtn?.focus?.(), 0);
+            document.addEventListener("keydown", onKeydown);
+          };
+          const close = (answer) => {
             modal.classList.remove("is-open");
             modal.setAttribute("aria-hidden", "true");
             document.body.style.overflow = "";
+            document.removeEventListener("keydown", onKeydown);
             if (lastFocused && lastFocused.focus) lastFocused.focus();
-          }
+            resolve(answer);
+          };
+          const onKeydown = (e) => {
+            if (e.key === "Escape") close(false);
+            if (e.key === "Enter") close(true);
+          };
+
+          okBtn.onclick = () => close(true);
+          cancelEls.forEach((el) => (el.onclick = () => close(false)));
+
+          open();
+        });
+      }
+
+      function bindFavModal(favsCol) {
+        const modal = document.getElementById("fav-modal");
+        const inputName = document.getElementById("fav-name");
+        const inputUrl = document.getElementById("fav-url");
+        const btnSave = document.getElementById("fav-save");
+
+        const open = () => {
+          modal.classList.add("is-open");
+          modal.setAttribute("aria-hidden", "false");
+          inputName.value = "";
+          inputUrl.value = "";
+          setTimeout(() => inputName?.focus?.(), 0);
+          document.body.style.overflow = "hidden";
+        };
+        const close = () => {
+          modal.classList.remove("is-open");
+          modal.setAttribute("aria-hidden", "true");
+          document.body.style.overflow = "";
         };
 
-        openBtn.addEventListener("click", (e) => {
-          e.preventDefault();
-          setOpen(true);
-          openBtn.setAttribute("aria-expanded", "true");
+        // Delegação para qualquer [data-open-fav-modal]
+        document.addEventListener("click", (e) => {
+          const btn = e.target.closest("[data-open-fav-modal]");
+          if (btn) open();
+          if (e.target.matches("[data-close-fav]")) close();
         });
-
-        // fechar por clique no overlay e no botão X
-        getCloseEls().forEach((el) => {
-          el.addEventListener("click", () => {
-            setOpen(false);
-            openBtn.setAttribute("aria-expanded", "false");
-          });
-        });
-
-        // fechar com ESC
         document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && modal.classList.contains("is-open")) {
-            setOpen(false);
-            openBtn.setAttribute("aria-expanded", "false");
-          }
+          if (e.key === "Escape" && modal.classList.contains("is-open"))
+            close();
         });
 
-        // focus trap simples dentro do modal
-        modal.addEventListener("keydown", (e) => {
-          if (e.key !== "Tab") return;
-          const focusables = modal.querySelectorAll(
-            'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
-          );
-          const f = Array.from(focusables).filter(
-            (el) => el.offsetParent !== null
-          );
-          if (!f.length) return;
-          const first = f[0],
-            last = f[f.length - 1];
-          if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-          } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-          }
-        });
-
-        // itens do modal que mudam de aba sem recarregar
-        modal.querySelectorAll("[data-tab-target]").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const tab = a.getAttribute("data-tab-target");
-            if (window.openTab && tab) window.openTab(tab);
-            setOpen(false);
-            openBtn.setAttribute("aria-expanded", "false");
-          });
-        });
-      })();
-
-      /* ===================== Sistema de Abas (menu) ===================== */
-      (() => {
-        const TAB_STORAGE_KEY = "lastTab_v1";
-        const panels = {
-          home: document.getElementById("tab-home"),
-        };
-
-        function activate(tab) {
-          Object.keys(panels).forEach((k) => {
-            panels[k]?.classList.toggle("active", k === tab);
-            if (panels[k]) {
-              const labelledby = panels[k].getAttribute("aria-labelledby");
-              if (labelledby) {
-                const link = document.getElementById(labelledby);
-                if (link)
-                  link.setAttribute(
-                    "aria-current",
-                    k === tab ? "page" : "false"
-                  );
-              }
-            }
-          });
+        btnSave?.addEventListener("click", async () => {
+          const name = inputName.value.trim();
+          const url = normalizeUrl(inputUrl.value);
+          if (!name || !url) return alert("Preencha Nome e URL.");
           try {
-            localStorage.setItem(TAB_STORAGE_KEY, tab);
-          } catch {}
-          if (tab === "home") history.replaceState(null, "", "#home");
-        }
-
-        document.querySelectorAll("[data-tab-target]").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const tab = a.getAttribute("data-tab-target");
-            if (tab && panels[tab]) activate(tab);
-          });
-        });
-
-        function initFromHashOrStorage() {
-          const hash = (location.hash || "").replace("#", "").toLowerCase();
-          if (hash && panels[hash]) {
-            activate(hash);
-            return;
-          }
-          try {
-            const saved = localStorage.getItem(TAB_STORAGE_KEY);
-            if (saved && panels[saved]) {
-              activate(saved);
-              return;
-            }
-          } catch {}
-          activate("home");
-        }
-
-        window.addEventListener("hashchange", () => {
-          const hash = (location.hash || "").replace("#", "").toLowerCase();
-          if (hash && panels[hash]) activate(hash);
-        });
-
-        initFromHashOrStorage();
-        window.openTab = activate;
-      })();
-
-      /* ===================== Autocomplete + recentes ===================== */
-      (() => {
-        const INPUT_SEL = "#q";
-        const PANEL_SEL = "#suggestions";
-        const FORM_SEL = "#search-form";
-
-        const RECENTS_KEY = "recentSearches_v1";
-        const MAX_RECENTS = 10;
-        const SUGGEST_LIMIT = 10;
-
-        const STANDARD_SITES = [
-          { name: "Google", domain: "google.com", category: "Busca" },
-          { name: "YouTube", domain: "youtube.com", category: "Vídeos" },
-          { name: "Facebook", domain: "facebook.com", category: "Rede social" },
-          {
-            name: "Instagram",
-            domain: "instagram.com",
-            category: "Rede social",
-          },
-          {
-            name: "ChatGPT",
-            domain: "chatgpt.com",
-            category: "Inteligência artificial",
-          },
-          { name: "X", domain: "x.com", category: "Rede social" },
-          {
-            name: "Amazon",
-            domain: "amazon.com",
-            category: "Comércio eletrônico",
-          },
-          {
-            name: "LinkedIn",
-            domain: "linkedin.com",
-            category: "Rede social profissional",
-          },
-          {
-            name: "Netflix",
-            domain: "netflix.com",
-            category: "Streaming de filmes e séries",
-          },
-          {
-            name: "Gemini",
-            domain: "gemini.google.com",
-            category: "IA do Google",
-          },
-          {
-            name: "InfoMoney",
-            domain: "infomoney.com.br",
-            category: "Finanças",
-          },
-          {
-            name: "CNN",
-            domain: "cnn.com",
-            category: "Notícias gerais e economia",
-          },
-          {
-            name: "Looker Studio",
-            domain: "lookerstudio.google.com",
-            category: "Análise de dados",
-          },
-          {
-            name: "Google Sheets",
-            domain: "sheets.google.com",
-            category: "Planilhas",
-          },
-          {
-            name: "WhatsApp Web",
-            domain: "web.whatsapp.com",
-            category: "Mensagens",
-          },
-          {
-            name: "Formulários Google",
-            domain: "forms.google.com",
-            category: "Formulários",
-          },
-          { name: "Canva", domain: "canva.com", category: "Design gráfico" },
-          {
-            name: "Wikipedia",
-            domain: "wikipedia.org",
-            category: "Enciclopédia",
-          },
-          {
-            name: "Pinterest",
-            domain: "pinterest.com",
-            category: "Rede social",
-          },
-          { name: "Globo", domain: "globo.com", category: "Portal / Notícias" },
-          { name: "Telegram", domain: "t.me", category: "Mensagens" },
-          {
-            name: "The New York Times",
-            domain: "nytimes.com",
-            category: "Portal / Notícias",
-          },
-          {
-            name: "AliExpress",
-            domain: "aliexpress.com",
-            category: "Comércio eletrônico",
-          },
-          {
-            name: "Discord",
-            domain: "discord.com",
-            category: "Comunicação / Voz e texto",
-          },
-          {
-            name: "BBC",
-            domain: "bbc.com",
-            category: "Notícias internacionais",
-          },
-          {
-            name: "Speedtest by Ookla",
-            domain: "speedtest.net",
-            category: "Teste de velocidade",
-          },
-          { name: "Gmail", domain: "mail.google.com", category: "E-mail" },
-          {
-            name: "Google Drive",
-            domain: "drive.google.com",
-            category: "Armazenamento em nuvem",
-          },
-          {
-            name: "Google Docs",
-            domain: "docs.google.com",
-            category: "Documentos",
-          },
-          {
-            name: "Google Slides",
-            domain: "slides.google.com",
-            category: "Apresentações",
-          },
-          {
-            name: "Google Keep",
-            domain: "keep.google.com",
-            category: "Anotações",
-          },
-          {
-            name: "Google Calendar",
-            domain: "calendar.google.com",
-            category: "Agenda",
-          },
-          {
-            name: "Google Meet",
-            domain: "meet.google.com",
-            category: "Videoconferência",
-          },
-          {
-            name: "Google Chat",
-            domain: "chat.google.com",
-            category: "Mensagens",
-          },
-          {
-            name: "Google Maps",
-            domain: "maps.google.com",
-            category: "Mapas e navegação",
-          },
-          {
-            name: "Google Earth",
-            domain: "earth.google.com",
-            category: "Mapas e visualização 3D",
-          },
-          {
-            name: "Google Translate",
-            domain: "translate.google.com",
-            category: "Tradução",
-          },
-          {
-            name: "Google Photos",
-            domain: "photos.google.com",
-            category: "Fotos e álbuns",
-          },
-          {
-            name: "Google News",
-            domain: "news.google.com",
-            category: "Notícias",
-          },
-          {
-            name: "Google Finance",
-            domain: "google.com/finance",
-            category: "Finanças",
-          },
-          {
-            name: "Google Flights",
-            domain: "google.com/flights",
-            category: "Viagens",
-          },
-          {
-            name: "Google Books",
-            domain: "books.google.com",
-            category: "Livros",
-          },
-          {
-            name: "Google Play",
-            domain: "play.google.com",
-            category: "Loja de apps e mídia",
-          },
-          {
-            name: "Google Podcasts",
-            domain: "podcasts.google.com",
-            category: "Podcasts",
-          },
-          {
-            name: "Google Classroom",
-            domain: "classroom.google.com",
-            category: "Educação",
-          },
-          {
-            name: "Google Arts & Culture",
-            domain: "artsandculture.google.com",
-            category: "Arte e cultura",
-          },
-          {
-            name: "Google Ads",
-            domain: "ads.google.com",
-            category: "Publicidade",
-          },
-          {
-            name: "Google Analytics",
-            domain: "analytics.google.com",
-            category: "Métricas e estatísticas",
-          },
-          {
-            name: "Google Tag Manager",
-            domain: "tagmanager.google.com",
-            category: "Gerenciamento de tags",
-          },
-          {
-            name: "Google Cloud",
-            domain: "cloud.google.com",
-            category: "Serviços em nuvem",
-          },
-          {
-            name: "Google Colab",
-            domain: "colab.research.google.com",
-            category: "Notebooks de IA",
-          },
-          {
-            name: "Spotify",
-            domain: "spotify.com",
-            category: "Streaming de música",
-          },
-          {
-            name: "YouTube Music",
-            domain: "music.youtube.com",
-            category: "Streaming de música",
-          },
-          { name: "Tryd", domain: "tryd.com.br", category: "Tryd" },
-          {
-            name: "Fast trade",
-            domain: "plataformafasttrade.com.br",
-            category: "Fast Trade",
-          },
-          {
-            name: "Chat Guru",
-            domain: "chatguru.com.br",
-            category: "Chat Guru",
-          },
-          {
-            name: "Brasil Jornal",
-            domain: "braziljournal.com",
-            category: "Notícias",
-          },
-          {
-            name: "Flex Scan",
-            domain: "login.flexscan.com.br",
-            category: "Flexscan",
-          },
-          { name: "Git Hub", domain: "github.com", category: "Git Hub" },
-        ];
-
-        const SHORTCUTS = [
-          { re: /^y(t|o|outube)?$/i, items: ["YouTube", "youtube.com"] },
-          { re: /^g(mail)?$/i, items: ["Gmail", "mail.google.com"] },
-          {
-            re: /^c(al|alendar)?$/i,
-            items: ["Google Calendar", "calendar.google.com"],
-          },
-          { re: /^m(eet)?$/i, items: ["Google Meet", "meet.google.com"] },
-          { re: /^(d|drive)$/i, items: ["Google Drive", "drive.google.com"] },
-          {
-            re: /^(s|sheets?)$/i,
-            items: ["Google Sheets", "docs.google.com/spreadsheets/"],
-          },
-        ];
-
-        /* ---------- Helpers ---------- */
-        const normalize = (s) =>
-          (s || "")
-            .toString()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .toLowerCase();
-        const tokensFrom = (q) =>
-          normalize(q)
-            .split(/\s+/)
-            .filter((t) => t.length >= 2);
-        const looksLikeUrl = (text) => {
-          const t = text.trim();
-          return /\./.test(t) && !/\s/.test(t);
-        };
-        const domainFrom = (text) => {
-          try {
-            const url = /^https?:\/\//i.test(text) ? text : "https://" + text;
-            return new URL(url).hostname;
-          } catch {
-            return null;
-          }
-        };
-        const faviconFor = (value) => {
-          const host = domainFrom(value);
-          return host
-            ? `https://www.google.com/s2/favicons?domain=${host}&sz=32`
-            : null;
-        };
-        const uniqBy = (arr, keyFn) => {
-          const seen = new Set();
-          const out = [];
-          for (const v of arr) {
-            const k = keyFn(v);
-            if (!seen.has(k)) {
-              seen.add(k);
-              out.push(v);
-            }
-          }
-          return out;
-        };
-
-        const getRecents = () => {
-          try {
-            return JSON.parse(localStorage.getItem(RECENTS_KEY) || "[]");
-          } catch {
-            return [];
-          }
-        };
-        const saveRecent = (q) => {
-          const t = q.trim();
-          if (!t) return;
-          let arr = getRecents().filter(
-            (v) => v.toLowerCase() !== t.toLowerCase()
-          );
-          arr.unshift(t);
-          if (arr.length > MAX_RECENTS) arr = arr.slice(0, MAX_RECENTS);
-          localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-        };
-        const removeRecent = (label) => {
-          const tgt = (label || "").trim().toLowerCase();
-          const arr = getRecents().filter((v) => v.toLowerCase() !== tgt);
-          localStorage.setItem(RECENTS_KEY, JSON.stringify(arr));
-        };
-
-        const fetchGoogleSuggest = async (q) => {
-          if (!q) return [];
-          const url = `https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(
-            q
-          )}`;
-          try {
-            const res = await fetch(url, { mode: "cors" });
-            if (!res.ok) return [];
-            const data = await res.json();
-            return Array.isArray(data?.[1]) ? data[1] : [];
-          } catch {
-            return [];
-          }
-        };
-
-        const itemModel = (label, type = "sugestao", opts = {}) => {
-          const isUrl = opts.fillValue
-            ? looksLikeUrl(opts.fillValue)
-            : looksLikeUrl(label);
-          return {
-            label,
-            subtitle:
-              opts.subtitleOverride ??
-              (isUrl
-                ? (opts.fillValue || label).replace(/^https?:\/\//i, "")
-                : type === "atalho"
-                ? "Atalho"
-                : type === "recente"
-                ? "Recente"
-                : "Sugestão"),
-            badge:
-              type === "atalho"
-                ? "Atalho"
-                : type === "recente"
-                ? "Recente"
-                : "Sugestão",
-            icon:
-              opts.iconOverride ??
-              (isUrl
-                ? faviconFor(opts.fillValue || label) || ""
-                : "images/favicon_google.ico"),
-            type,
-            isUrl,
-            fillValue: opts.fillValue || label,
-          };
-        };
-
-        const standardSiteModels = (q) => {
-          if (!q) return [];
-          const s = normalize(q);
-          return STANDARD_SITES.filter((site) => {
-            const n = normalize(site.name);
-            const d = normalize(site.domain);
-            if (s.length === 1) return n.startsWith(s);
-            const toks = tokensFrom(q);
-            const hay = n + " " + d;
-            return toks.every((t) => hay.includes(t));
-          }).map((site) =>
-            itemModel(site.name, "atalho", {
-              subtitleOverride: `${site.domain}`,
-              iconOverride: faviconFor(site.domain),
-              fillValue: site.domain,
-            })
-          );
-        };
-
-        const modelMatchesQuery = (m, q) => {
-          const s = normalize(q || "");
-          if (!s) return false;
-          const base = normalize(
-            (m.fillValue || m.label) + " " + (m.subtitle || "")
-          );
-          if (s.length === 1) {
-            const dom = normalize((m.subtitle || "").split(" — ")[0] || "");
-            return base.startsWith(s) || dom.startsWith(s);
-          }
-          return s
-            .split(/\s+/)
-            .filter(Boolean)
-            .every((t) => base.includes(t));
-        };
-
-        const PANEL = () => document.querySelector(PANEL_SEL);
-
-        const renderPanel = (models, activeIndex = -1) => {
-          const panel = PANEL();
-          if (!panel) return;
-          panel.innerHTML = "";
-          if (!models.length) {
-            panel.hidden = false;
-            const div = document.createElement("div");
-            div.className = "suggest-empty";
-            div.textContent = "Sem sugestões";
-            panel.appendChild(div);
-            return;
-          }
-          models.slice(0, SUGGEST_LIMIT).forEach((m, idx) => {
-            const el = document.createElement("div");
-            el.className = "suggest-item";
-            el.setAttribute("role", "option");
-            el.dataset.index = String(idx);
-            if (idx === activeIndex) el.setAttribute("aria-selected", "true");
-
-            const icon = document.createElement("img");
-            icon.className = "suggest-icon";
-            icon.alt = "";
-            icon.referrerPolicy = "no-referrer";
-            if (m.icon) icon.src = m.icon;
-            else icon.style.visibility = "hidden";
-
-            const textWrap = document.createElement("div");
-            textWrap.className = "suggest-text";
-            const primary = document.createElement("div");
-            primary.className = "suggest-primary";
-            primary.textContent = m.label;
-            const secondary = document.createElement("div");
-            secondary.className = "suggest-secondary";
-            secondary.textContent = m.subtitle;
-            textWrap.append(primary, secondary);
-
-            const badge = document.createElement("div");
-            badge.className = "suggest-badge";
-            badge.textContent = m.badge;
-
-            el.append(icon, textWrap, badge);
-
-            if (m.type === "recente") {
-              const removeBtn = document.createElement("div");
-              removeBtn.className = "suggest-remove";
-              removeBtn.textContent = "×";
-              removeBtn.addEventListener("mousedown", (e) =>
-                e.preventDefault()
-              );
-              removeBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                removeRecent(m.fillValue || m.label);
-                el.remove();
-                if (!panel.querySelector(".suggest-item")) {
-                  panel.innerHTML = "";
-                  const empty = document.createElement("div");
-                  empty.className = "suggest-empty";
-                  empty.textContent = "Sem sugestões";
-                  panel.appendChild(empty);
-                }
-              });
-              el.appendChild(removeBtn);
-            }
-
-            el.addEventListener("mousedown", (e) => e.preventDefault());
-            el.addEventListener("click", () => applySuggestion(m));
-            panel.appendChild(el);
-          });
-          panel.hidden = false;
-        };
-
-        const hidePanel = () => {
-          const p = PANEL();
-          if (p) p.hidden = true;
-        };
-
-        const applySuggestion = (m) => {
-          const input = document.querySelector(INPUT_SEL);
-          if (!input) return;
-          input.value = m.fillValue || m.label;
-          input.setSelectionRange(input.value.length, input.value.length);
-          hidePanel();
-        };
-
-        let suppressInlineNext = false;
-        const shouldSuppressInline = (inputEl) =>
-          inputEl.selectionStart !== inputEl.selectionEnd ||
-          inputEl.selectionStart !== inputEl.value.length;
-
-        const inlineComplete = (typed, models, byKeyboard = false) => {
-          const input = document.querySelector(INPUT_SEL);
-          if (!input || !typed) return;
-          if (byKeyboard || suppressInlineNext || shouldSuppressInline(input))
-            return;
-          const cand = models.find((m) =>
-            (m.fillValue || m.label)
-              .toLowerCase()
-              .startsWith(typed.toLowerCase())
-          );
-          if (!cand) return;
-          const toShow = cand.fillValue || cand.label;
-          input.value = toShow;
-          try {
-            input.setSelectionRange(typed.length, toShow.length);
-          } catch {}
-        };
-
-        let activeIndex = -1;
-        let currentModels = [];
-
-        const debounce = (fn, ms = 120) => {
-          let id;
-          return (...args) => {
-            clearTimeout(id);
-            id = setTimeout(() => fn(...args), ms);
-          };
-        };
-
-        const refreshSuggestions = async (
-          byKeyboard = false,
-          inputEvent = null
-        ) => {
-          const input = document.querySelector(INPUT_SEL);
-          const q = (input?.value || "").trim();
-
-          if (
-            inputEvent?.startsWith?.("delete") ||
-            inputEvent?.inputType?.startsWith?.("delete")
-          )
-            suppressInlineNext = true;
-          if (inputEvent?.ctrlKey || inputEvent?.metaKey || inputEvent?.altKey)
-            suppressInlineNext = true;
-
-          const stdModels = standardSiteModels(q);
-          const rec = getRecents();
-          const short = applyShortcuts(q);
-          const remote = q ? await fetchGoogleSuggest(q) : [];
-
-          const stringPool = q
-            ? Array.from(new Set([...short, ...remote, ...rec]))
-            : [];
-          let otherModels = stringPool.map((s) =>
-            itemModel(
-              s,
-              short.includes(s)
-                ? "atalho"
-                : rec.includes(s)
-                ? "recente"
-                : "sugestao"
-            )
-          );
-          otherModels = otherModels.filter((m) => modelMatchesQuery(m, q));
-          const allModels = otherModels.concat(stdModels);
-
-          if (
-            q &&
-            looksLikeUrl(q) &&
-            !allModels.some(
-              (m) => (m.fillValue || m.label).toLowerCase() === q.toLowerCase()
-            )
-          ) {
-            otherModels.unshift(itemModel(q, "sugestao"));
-          }
-
-          currentModels = uniqBy([...stdModels, ...otherModels], (m) =>
-            (m.fillValue || m.label).toLowerCase()
-          );
-          activeIndex = -1;
-
-          if (q) {
-            renderPanel(currentModels, activeIndex);
-            inlineComplete(q, currentModels, byKeyboard);
-          } else {
-            hidePanel();
-          }
-          suppressInlineNext = false;
-        };
-
-        const debouncedRefresh = debounce((...args) => {
-          refreshSuggestions(...args);
-        }, 120);
-
-        const handleKeyDown = (e) => {
-          const panel = document.querySelector(PANEL_SEL);
-          const input = document.querySelector(INPUT_SEL);
-          if (e.key === "Backspace" || e.key === "Delete")
-            suppressInlineNext = true;
-          if (e.ctrlKey || e.metaKey || e.altKey) suppressInlineNext = true;
-          if (!panel || panel.hidden) return;
-
-          const max = Math.min(SUGGEST_LIMIT, currentModels.length) - 1;
-          if (e.key === "ArrowDown") {
-            e.preventDefault();
-            activeIndex = activeIndex < max ? activeIndex + 1 : 0;
-            renderPanel(currentModels, activeIndex);
-            const m = currentModels[activeIndex];
-            if (m) {
-              const v = m.fillValue || m.label;
-              input.value = v;
-              input.setSelectionRange(v.length, v.length);
-            }
-          } else if (e.key === "ArrowUp") {
-            e.preventDefault();
-            activeIndex = activeIndex > 0 ? activeIndex - 1 : max;
-            renderPanel(currentModels, activeIndex);
-            const m = currentModels[activeIndex];
-            if (m) {
-              const v = m.fillValue || m.label;
-              input.value = v;
-              input.setSelectionRange(v.length, v.length);
-            }
-          } else if (e.key === "Tab") {
-            const hasSelection = input.selectionStart !== input.selectionEnd;
-            if (hasSelection && currentModels.length) {
-              e.preventDefault();
-              input.setSelectionRange(input.value.length, input.value.length);
-              hidePanel();
-            }
-          } else if (e.key === "Enter") {
-            hidePanel();
-          } else if (e.key === "Escape") {
-            hidePanel();
-          }
-        };
-
-        const handleSubmit = (e) => {
-          const input = document.querySelector(INPUT_SEL);
-          const q = (input?.value || "").trim();
-          if (!q) {
-            e.preventDefault();
-            return;
-          }
-          saveRecent(q);
-          if (looksLikeUrl(q)) {
-            e.preventDefault();
-            const url = /^https?:\/\//i.test(q) ? q : "https://" + q;
-            window.location.assign(url);
-          }
-        };
-
-        const focusInput = () => {
-          const el = document.querySelector(INPUT_SEL);
-          if (!el) return;
-          if (document.visibilityState !== "visible") {
-            document.addEventListener("visibilitychange", focusInput, {
-              once: true,
+            await addDoc(favsCol, {
+              name,
+              url,
+              icon: faviconFor(url),
+              createdAt: serverTimestamp(),
             });
-            return;
+            close();
+          } catch (e) {
+            console.error("Erro ao salvar favorito:", e);
+            alert("Não foi possível salvar o atalho.");
           }
-          el.focus({ preventScroll: true });
-          try {
-            el.select();
-          } catch {}
-        };
-
-        const focusWithRetries = (retries = 24, delay = 50) => {
-          focusInput();
-          let i = 1;
-          const id = setInterval(() => {
-            const ok = document.activeElement?.matches?.(INPUT_SEL);
-            if (ok || i++ >= retries) clearInterval(id);
-            else focusInput();
-          }, delay);
-        };
-
-        const bindGlobalShortcuts = () => {
-          window.addEventListener("keydown", (e) => {
-            const typing = /input|textarea|select/i.test(e.target.tagName);
-            if (typing) return;
-            if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-              e.preventDefault();
-              focusWithRetries(1, 0);
-            } else if (!e.ctrlKey && !e.metaKey && !e.altKey && e.key === "/") {
-              e.preventDefault();
-              focusWithRetries(1, 0);
-            }
-          });
-        };
-
-        const bindOutsideClick = () => {
-          document.addEventListener("click", (e) => {
-            const panel = document.querySelector(PANEL_SEL);
-            const input = document.querySelector(INPUT_SEL);
-            if (!panel || panel.hidden) return;
-            if (!panel.contains(e.target) && e.target !== input) hidePanel();
-          });
-        };
-
-        document.addEventListener("DOMContentLoaded", () => {
-          const input = document.querySelector(INPUT_SEL);
-          const panel = document.querySelector(PANEL_SEL);
-          const form = document.querySelector(FORM_SEL);
-          if (!input || !panel || !form) return;
-
-          focusWithRetries();
-
-          // Mostrar "recentes" ao focar quando vazio (após pointerdown)
-          let allowFocusRecents = false;
-          input.addEventListener("pointerdown", () => {
-            allowFocusRecents = true;
-          });
-          input.addEventListener("focus", () => {
-            if (allowFocusRecents && !input.value.trim()) {
-              const rec = getRecents().map((s) => itemModel(s, "recente"));
-              if (rec.length) {
-                panel.innerHTML = "";
-                rec.slice(0, SUGGEST_LIMIT).forEach((m, idx) => {
-                  const el = document.createElement("div");
-                  el.className = "suggest-item";
-                  el.setAttribute("role", "option");
-                  el.dataset.index = String(idx);
-
-                  const icon = document.createElement("img");
-                  icon.className = "suggest-icon";
-                  icon.alt = "";
-                  icon.referrerPolicy = "no-referrer";
-                  if (m.icon) icon.src = m.icon;
-                  else icon.style.visibility = "hidden";
-
-                  const textWrap = document.createElement("div");
-                  textWrap.className = "suggest-text";
-                  const primary = document.createElement("div");
-                  primary.className = "suggest-primary";
-                  primary.textContent = m.label;
-                  const secondary = document.createElement("div");
-                  secondary.className = "suggest-secondary";
-                  secondary.textContent = m.subtitle;
-
-                  textWrap.append(primary, secondary);
-
-                  const badge = document.createElement("div");
-                  badge.className = "suggest-badge";
-                  badge.textContent = m.badge;
-
-                  const removeBtn = document.createElement("div");
-                  removeBtn.className = "suggest-remove";
-                  removeBtn.textContent = "×";
-                  removeBtn.addEventListener("mousedown", (e) =>
-                    e.preventDefault()
-                  );
-                  removeBtn.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    removeRecent(m.fillValue || m.label);
-                    el.remove();
-                    if (!panel.querySelector(".suggest-item")) {
-                      panel.innerHTML = "";
-                      const empty = document.createElement("div");
-                      empty.className = "suggest-empty";
-                      empty.textContent = "Sem sugestões";
-                      panel.appendChild(empty);
-                    }
-                  });
-
-                  el.append(icon, textWrap, badge, removeBtn);
-                  el.addEventListener("mousedown", (e) => e.preventDefault());
-                  el.addEventListener("click", () => applySuggestion(m));
-                  panel.appendChild(el);
-                });
-                panel.hidden = false;
-              }
-            }
-          });
-
-          input.addEventListener("input", (ev) => debouncedRefresh(false, ev));
-          input.addEventListener("keydown", handleKeyDown);
-          input.addEventListener("blur", () => setTimeout(hidePanel, 100));
-          form.addEventListener("submit", handleSubmit);
-
-          bindGlobalShortcuts();
-          bindOutsideClick();
         });
+      }
 
-        // atalhos (usa const SHORTCUTS do topo)
-        const applyShortcuts = (q) => {
-          const m = SHORTCUTS.find((s) => s.re.test(q));
-          return m ? m.items : [];
-        };
-      })();
+      // ===== NOVO: renderização dos favoritos também como "chips" abaixo da busca =====
+      // ===== NOVO: favoritos só como "chips" abaixo da busca =====
+      function initFavorites(user) {
+        const chipRow = ensureQuickShortcutsContainer(); // abaixo da busca
+        injectQuickShortcutStyles();
+        if (!chipRow) return;
+
+        const favsCol = collection(db, "users", user.uid, "favorites");
+        bindFavModal(favsCol); // mantém o modal para "+ Atalho"
+
+        // helper: cria um <a> chip
+        function renderChip(docData) {
+          const a = document.createElement("a");
+          a.className = "shortcut-chip";
+          a.href = docData.url;
+          a.target = "_blank";
+          a.rel = "noopener";
+          a.role = "listitem";
+          a.style.position = "relative"; // para posicionar o botão "×"
+
+          const img = document.createElement("img");
+          img.src = docData.icon || faviconFor(docData.url);
+          img.alt = "";
+          img.referrerPolicy = "no-referrer";
+
+          const span = document.createElement("span");
+          span.textContent = docData.name || docData.url;
+
+          // --- Botão remover (pequeno "×") ---
+          const rm = document.createElement("button");
+          rm.type = "button";
+          rm.title = "Remover atalho";
+          rm.textContent = "×";
+          rm.style.cssText = `
+      position:absolute; top:-6px; right:-6px;
+      width:20px; height:20px; border-radius:50%;
+      border:0; cursor:pointer;
+      background: rgba(0,0,0,.55); color:#fff;
+      display:grid; place-items:center; line-height:1;
+    `;
+          rm.addEventListener("click", async (e) => {
+            e.preventDefault(); // não abre o link
+            e.stopPropagation();
+
+            const ok = await confirmPopup({
+              title: "Remover atalho",
+              message: `Tem certeza que deseja remover "${
+                docData.name || docData.url
+              }"?`,
+              confirmText: "Remover",
+            });
+            if (!ok) return;
+
+            try {
+              await deleteDoc(docData._ref);
+            } catch (err) {
+              console.error("Erro ao remover favorito:", err);
+              alert("Não foi possível remover o atalho.");
+            }
+          });
+
+          a.append(img, span, rm);
+          return a;
+        }
+
+        // chip de adicionar (“+ Atalho”) → abre o mesmo modal
+        function renderAddChip() {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "shortcut-chip shortcut-add";
+          btn.setAttribute("data-open-fav-modal", "");
+          btn.textContent = "+ Atalho";
+          return btn;
+        }
+
+        // Defaults quando o usuário ainda não tem favoritos
+        const DEFAULT_CHIPS = [
+          { name: "Google", url: "https://www.google.com" },
+          { name: "ChatGPT", url: "https://chatgpt.com" },
+        ];
+
+        const qFavs = query(favsCol, orderBy("createdAt", "asc"));
+        onSnapshot(qFavs, (snap) => {
+          chipRow.innerHTML = "";
+
+          const docs = snap.docs.map((d) => ({
+            id: d.id,
+            ...d.data(),
+            _ref: d.ref,
+          }));
+
+          if (docs.length) {
+            docs.forEach((d) => chipRow.appendChild(renderChip(d)));
+            chipRow.appendChild(renderAddChip());
+          } else {
+            DEFAULT_CHIPS.forEach((d) => {
+              chipRow.appendChild(
+                renderChip({
+                  name: d.name,
+                  url: d.url,
+                  icon: faviconFor(d.url),
+                })
+              );
+            });
+            chipRow.appendChild(renderAddChip());
+          }
+        });
+      }
+
+      // 🔐 Guarda de rota
+onAuthStateChanged(auth, async (user) => {
+  try {
+    if (!user) return blockAndRedirect();
+    if (!isAllowedEmail(user.email)) return blockAndRedirect();
+
+    // ✅ garanta que todo o DOM (incluindo #fav-modal / #confirm-modal) existe
+    await domReady();
+    requestAnimationFrame(() => initFavorites(user));
+
+    allowPage();
+    await loadProfileAndRenderTop(user);
+    initFavorites(user);
+  } catch (e) {
+    console.error("[auth state]", e);
+    blockAndRedirect();
+  }
+});
     </script>
+
+    <!-- Modal dos Favoritos (fora do dropdown para não cortar o overlay) -->
+    <div id="fav-modal" class="menu-modal" aria-hidden="true">
+      <div class="overlay-blur" data-close-fav></div>
+      <div
+        class="menu-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="fav-modal-title"
+      >
+        <div class="menu-header">
+          <h2 id="fav-modal-title" class="menu-title">Atalho</h2>
+          <button
+            class="menu-close"
+            type="button"
+            aria-label="Fechar"
+            data-close-fav
+          >
+            ×
+          </button>
+        </div>
+        <div style="display: grid; gap: 10px; padding: 10px 6px">
+          <label style="display: grid; gap: 6px">
+            <span>Nome</span>
+            <input
+              id="fav-name"
+              type="text"
+              placeholder="Ex.: Planilhas"
+              style="
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #ccc;
+                background: #fff;
+                color: #111;
+              "
+            />
+          </label>
+          <label style="display: grid; gap: 6px">
+            <span>URL</span>
+            <input
+              id="fav-url"
+              type="url"
+              placeholder="Ex.: https://docs.google.com/spreadsheets/"
+              style="
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid #ccc;
+                background: #fff;
+                color: #111;
+              "
+            />
+          </label>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 8px;
+              margin-top: 6px;
+            "
+          >
+            <button type="button" class="menu-btn" data-close-fav>
+              Cancelar
+            </button>
+            <button
+              id="fav-save"
+              type="button"
+              class="menu-btn"
+              style="background: #418d75; border-color: #418d75"
+            >
+              Concluir
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal genérico de confirmação -->
+    <div id="confirm-modal" class="menu-modal" aria-hidden="true">
+      <div class="overlay-blur" data-confirm-cancel></div>
+      <div
+        class="menu-card"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="confirm-title"
+      >
+        <div class="menu-header">
+          <h2 id="confirm-title" class="menu-title">Confirmar ação</h2>
+          <button
+            class="menu-close"
+            type="button"
+            aria-label="Fechar"
+            data-confirm-cancel
+          >
+            ×
+          </button>
+        </div>
+        <div style="display: grid; gap: 12px; padding: 10px 6px">
+          <p id="confirm-message" style="opacity: 0.9"></p>
+          <div
+            style="
+              display: flex;
+              justify-content: flex-end;
+              gap: 8px;
+              margin-top: 6px;
+            "
+          >
+            <button type="button" class="menu-btn" data-confirm-cancel>
+              Cancelar
+            </button>
+            <button
+              type="button"
+              class="menu-btn"
+              id="confirm-ok"
+              style="background: #d24b4b; border-color: #d24b4b"
+            >
+              Remover
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Scripts do UI (dropdown, modal principal, abas, busca) ===== -->
+
+<script>
+(() => {
+  /* === Dropdown Ferramentas === */
+  const btn = document.querySelector("#google-button"), dd = document.querySelector("#google-dropdown");
+  if (btn && dd) {
+    const set = v => { dd.classList.toggle("show", v); btn.setAttribute("aria-expanded", v?"true":"false"); dd.setAttribute("aria-hidden", v?"false":"true"); };
+    btn.addEventListener("click", e => { e.stopPropagation(); set(!dd.classList.contains("show")); });
+    document.addEventListener("click", e => dd.classList.contains("show") && !dd.contains(e.target) && e.target !== btn && set(false));
+    document.addEventListener("keydown", e => e.key === "Escape" && set(false));
+  }
+
+  /* === Modal do Menu === */
+  const openBtn = document.querySelector("#menu-toggle"), modal = document.querySelector("#menu-modal");
+  if (openBtn && modal) {
+    let lastFocused = null;
+    const setOpen = v => {
+      if (v) {
+        lastFocused = document.activeElement;
+        modal.classList.add("is-open"); modal.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
+        setTimeout(() => modal.querySelector("#menu-modal-title")?.focus?.(), 0);
+      } else {
+        modal.classList.remove("is-open"); modal.setAttribute("aria-hidden","true"); document.body.style.overflow="";
+        lastFocused?.focus?.();
+      }
+    };
+    openBtn.addEventListener("click", e => { e.preventDefault(); setOpen(true); openBtn.setAttribute("aria-expanded","true"); });
+    modal.addEventListener("click", e => e.target.closest("[data-close-modal]") && (setOpen(false), openBtn.setAttribute("aria-expanded","false"))); // delegação p/ todos os botões de fechar
+    document.addEventListener("keydown", e => e.key==="Escape" && modal.classList.contains("is-open") && (setOpen(false), openBtn.setAttribute("aria-expanded","false")));
+    modal.addEventListener("keydown", e => { if (e.key!=="Tab") return; const f = [...modal.querySelectorAll('a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null); if(!f.length) return; const [first,last]=[f[0],f.at(-1)]; if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()} else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()} });
+    modal.querySelectorAll("[data-tab-target]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); const t=a.getAttribute("data-tab-target"); if (t && window.openTab) window.openTab(t); setOpen(false); openBtn.setAttribute("aria-expanded","false"); }));
+  }
+
+  /* === Sistema de Abas === */
+  (() => {
+    const KEY="lastTab_v1", panels={ home:document.querySelector("#tab-home") };
+    const aria = (p, on) => { const id=p?.getAttribute("aria-labelledby"); id && document.getElementById(id)?.setAttribute("aria-current", on?"page":"false"); };
+    const activate = tab => {
+      Object.keys(panels).forEach(k => { const p=panels[k]; p?.classList.toggle("active", k===tab); aria(p, k===tab); });
+      try{ localStorage.setItem(KEY, tab); }catch{}
+      if (tab==="home") history.replaceState(null,"","#home");
+    };
+    document.querySelectorAll("[data-tab-target]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); const t=a.getAttribute("data-tab-target"); t && panels[t] && activate(t); }));
+    const fromHashOrStorage = () => {
+      const h=(location.hash||"").replace("#","").toLowerCase();
+      if (h && panels[h]) return activate(h);
+      try{ const s=localStorage.getItem(KEY); if (s && panels[s]) return activate(s);}catch{}
+      activate("home");
+    };
+    addEventListener("hashchange", () => { const h=(location.hash||"").replace("#","").toLowerCase(); h && panels[h] && activate(h); });
+    fromHashOrStorage();
+    window.openTab = activate;
+  })();
+
+  /* === Autocomplete + recentes === */
+  (() => {
+    const INPUT="#q", PANEL="#suggestions", FORM="#search-form";
+    const RECENTS="recentSearches_v1", MAX_R=10, LIMIT=10;
+    const STANDARD_SITES=[{name:"Google",domain:"google.com" ,category:"Busca"},
+      {name:"YouTube","domain":"youtube.com",category:"Vídeos"},
+      {name:"Facebook","domain":"facebook.com",category:"Rede social"},
+      {name:"Instagram","domain":"instagram.com",category:"Rede social"},
+      {name:"ChatGPT","domain":"chatgpt.com",category:"Inteligência artificial"},
+      {name:"X","domain":"x.com",category:"Rede social"},
+      {name:"Amazon","domain":"amazon.com",category:"Comércio eletrônico"},
+      {name:"LinkedIn","domain":"linkedin.com",category:"Rede social profissional"},
+      {name:"Netflix","domain":"netflix.com",category:"Streaming de filmes e séries"},
+      {name:"Gemini","domain":"gemini.google.com",category:"IA do Google"},
+      {name:"InfoMoney","domain":"infomoney.com.br",category:"Finanças"},
+      {name:"CNN","domain":"cnn.com",category:"Notícias gerais e economia"},
+      {name:"Looker Studio","domain":"lookerstudio.google.com",category:"Análise de dados"},
+      {name:"Google Sheets","domain":"sheets.google.com",category:"Planilhas"},
+      {name:"WhatsApp Web","domain":"web.whatsapp.com",category:"Mensagens"},
+      {name:"Formulários Google","domain":"forms.google.com",category:"Formulários"},
+      {name:"Canva","domain":"canva.com",category:"Design gráfico"},
+      {name:"Wikipedia","domain":"wikipedia.org",category:"Enciclopédia"},
+      {name:"Pinterest","domain":"pinterest.com",category:"Rede social"},
+      {name:"Globo","domain":"globo.com",category:"Portal / Notícias"},
+      {name:"Telegram","domain":"t.me",category:"Mensagens"},
+      {name:"The New York Times","domain":"nytimes.com",category:"Portal / Notícias"},
+      {name:"AliExpress","domain":"aliexpress.com",category:"Comércio eletrônico"},
+      {name:"Discord","domain":"discord.com",category:"Comunicação / Voz e texto"},
+      {name:"BBC","domain":"bbc.com",category:"Notícias internacionais"},
+      {name:"Speedtest by Ookla","domain":"speedtest.net",category:"Teste de velocidade"},
+      {name:"Gmail","domain":"mail.google.com",category:"E-mail"},
+      {name:"Google Drive","domain":"drive.google.com",category:"Armazenamento em nuvem"},
+      {name:"Google Docs","domain":"docs.google.com",category:"Documentos"},
+      {name:"Google Slides","domain":"slides.google.com",category:"Apresentações"},
+      {name:"Google Keep","domain":"keep.google.com",category:"Anotações"},
+      {name:"Google Calendar","domain":"calendar.google.com",category:"Agenda"},
+      {name:"Google Meet","domain":"meet.google.com",category:"Videoconferência"},
+      {name:"Google Chat","domain":"chat.google.com",category:"Mensagens"},
+      {name:"Google Maps","domain":"maps.google.com",category:"Mapas e navegação"},
+      {name:"Google Earth","domain":"earth.google.com",category:"Mapas e visualização 3D"},
+      {name:"Google Translate","domain":"translate.google.com",category:"Tradução"},
+      {name:"Google Photos","domain":"photos.google.com",category:"Fotos e álbuns"},
+      {name:"Google News","domain":"news.google.com",category:"Notícias"},
+      {name:"Google Finance","domain":"google.com/finance",category:"Finanças"},
+      {name:"Google Flights","domain":"google.com/flights",category:"Viagens"},
+      {name:"Google Books","domain":"books.google.com",category:"Livros"},
+      {name:"Google Play","domain":"play.google.com",category:"Loja de apps e mídia"},
+      {name:"Google Podcasts","domain":"podcasts.google.com",category:"Podcasts"},
+      {name:"Google Classroom","domain":"classroom.google.com",category:"Educação"},
+      {name:"Google Arts & Culture","domain":"artsandculture.google.com",category:"Arte e cultura"},
+      {name:"Google Ads","domain":"ads.google.com",category:"Publicidade"},
+      {name:"Google Analytics","domain":"analytics.google.com",category:"Métricas e estatísticas"},
+      {name:"Google Tag Manager","domain":"tagmanager.google.com",category:"Gerenciamento de tags"},
+      {name:"Google Cloud","domain":"cloud.google.com",category:"Serviços em nuvem"},
+      {name:"Google Colab","domain":"colab.research.google.com",category:"Notebooks de IA"},
+      {name:"Spotify","domain":"spotify.com",category:"Streaming de música"},
+      {name:"YouTube Music","domain":"music.youtube.com",category:"Streaming de música"},
+      {name:"Tryd","domain":"tryd.com.br",category:"Tryd"},
+      {name:"Fast trade","domain":"plataformafasttrade.com.br",category:"Fast Trade"},
+      {name:"Chat Guru","domain":"chatguru.com.br",category:"Chat Guru"},
+      {name:"Brasil Jornal","domain":"braziljournal.com",category:"Notícias"},
+      {name:"Flex Scan","domain":"login.flexscan.com.br",category:"Flexscan"},
+      {name:"Git Hub","domain":"github.com",category:"Git Hub"}];
+    const SHORTCUTS=[{re:/^y(t|o|outube)?$/i,items:["YouTube","youtube.com"]},{re:/^g(mail)?$/i,items:["Gmail","mail.google.com"]},{re:/^c(al|alendar)?$/i,items:["Google Calendar","calendar.google.com"]},{re:/^m(eet)?$/i,items:["Google Meet","meet.google.com"]},{re:/^(d|drive)$/i,items:["Google Drive","drive.google.com"]},{re:/^(s|sheets?)$/i,items:["Google Sheets","docs.google.com/spreadsheets/"]}];
+
+    const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+    const norm = s => (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+    const toks = q => norm(q).split(/\s+/).filter(t=>t.length>=2);
+    const looksUrl = t => (t=t.trim(), /\./.test(t) && !/\s/.test(t));
+    const hostFrom = t => { try{ const u=/^https?:\/\//i.test(t)?t:"https://"+t; return new URL(u).hostname; }catch{ return null; } };
+    const favicon = v => { const h = hostFrom(v); return h?`https://www.google.com/s2/favicons?domain=${h}&sz=32`:null; };
+    const uniqBy = (arr, key) => { const s=new Set, out=[]; for (const v of arr){ const k=key(v); if(!s.has(k)){s.add(k); out.push(v);} } return out; };
+
+    const recents = () => { try{ return JSON.parse(localStorage.getItem(RECENTS)||"[]"); }catch{ return []; } };
+    const saveRecent = q => { const t=q.trim(); if(!t) return; let a=recents().filter(v=>v.toLowerCase()!==t.toLowerCase()); a.unshift(t); if(a.length>MAX_R) a=a.slice(0,MAX_R); localStorage.setItem(RECENTS, JSON.stringify(a)); };
+    const removeRecent = lbl => { const tgt=(lbl||"").trim().toLowerCase(); localStorage.setItem(RECENTS, JSON.stringify(recents().filter(v=>v.toLowerCase()!==tgt))); };
+
+    const googleSuggest = async q => {
+      if (!q) return [];
+      try{ const r=await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`,{mode:"cors"}); if(!r.ok) return []; const d=await r.json(); return Array.isArray(d?.[1])?d[1]:[]; }catch{ return []; }
+    };
+
+    const item = (label, type="sugestao", opt={}) => {
+      const isUrl = opt.fillValue ? looksUrl(opt.fillValue) : looksUrl(label);
+      return {
+        label,
+        subtitle: opt.subtitleOverride ?? (isUrl ? (opt.fillValue||label).replace(/^https?:\/\//i,"") : type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão"),
+        badge: type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão",
+        icon: opt.iconOverride ?? (isUrl ? (favicon(opt.fillValue||label)||"") : "images/favicon_google.ico"),
+        type, isUrl, fillValue: opt.fillValue||label
+      };
+    };
+
+    const stdModels = q => !q?[]:STANDARD_SITES.filter(s=>{
+      const n=norm(s.name), d=norm(s.domain), S=norm(q);
+      return S.length===1 ? n.startsWith(S) : toks(q).every(t=>(n+" "+d).includes(t));
+    }).map(s=>item(s.name,"atalho",{subtitleOverride:`${s.domain}`,iconOverride:favicon(s.domain),fillValue:s.domain}));
+
+    const matches = (m,q) => { const s=norm(q||""); if(!s) return false; const base=norm(`${m.fillValue||m.label} ${m.subtitle||""}`); if(s.length===1){ const dom=norm((m.subtitle||"").split(" — ")[0]||""); return base.startsWith(s)||dom.startsWith(s); } return s.split(/\s+/).filter(Boolean).every(t=>base.includes(t)); };
+
+    const panel = () => $(PANEL);
+    const apply = m => { const i=$(INPUT); if(!i) return; i.value = m.fillValue||m.label; i.setSelectionRange(i.value.length, i.value.length); hide(); };
+    const hide = () => { const p=panel(); p && (p.hidden=true); };
+
+    const makeEl = (m, idx, withRemove=false) => {
+      const el=document.createElement("div"); el.className="suggest-item"; el.setAttribute("role","option"); el.dataset.index=idx;
+      const ic=document.createElement("img"); ic.className="suggest-icon"; ic.alt=""; ic.referrerPolicy="no-referrer"; m.icon?ic.src=m.icon:ic.style.visibility="hidden";
+      const txt=document.createElement("div"); txt.className="suggest-text";
+      const pri=document.createElement("div"); pri.className="suggest-primary"; pri.textContent=m.label;
+      const sec=document.createElement("div"); sec.className="suggest-secondary"; sec.textContent=m.subtitle;
+      txt.append(pri,sec);
+      const badge=document.createElement("div"); badge.className="suggest-badge"; badge.textContent=m.badge;
+      el.append(ic,txt,badge);
+      if(withRemove){ const rm=document.createElement("div"); rm.className="suggest-remove"; rm.textContent="×";
+        rm.addEventListener("mousedown", e=>e.preventDefault());
+        rm.addEventListener("click", e=>{ e.stopPropagation(); removeRecent(m.fillValue||m.label); el.remove(); if(!panel()?.querySelector(".suggest-item")){ const p=panel(); if(!p) return; p.innerHTML=""; const empty=document.createElement("div"); empty.className="suggest-empty"; empty.textContent="Sem sugestões"; p.appendChild(empty); }});
+        el.appendChild(rm);
+      }
+      el.addEventListener("mousedown", e=>e.preventDefault());
+      el.addEventListener("click", ()=>apply(m));
+      return el;
+    };
+
+    const render = (models, active=-1) => {
+      const p=panel(); if(!p) return; p.innerHTML="";
+      if(!models.length){ p.hidden=false; const d=document.createElement("div"); d.className="suggest-empty"; d.textContent="Sem sugestões"; p.appendChild(d); return; }
+      models.slice(0,LIMIT).forEach((m,i)=>{ const el=makeEl(m,i,m.type==="recente"); if(i===active) el.setAttribute("aria-selected","true"); p.appendChild(el); });
+      p.hidden=false;
+    };
+
+    let suppressInline=false, active=-1, current=[];
+    const shouldSuppress = i => i.selectionStart!==i.selectionEnd || i.selectionStart!==i.value.length;
+    const inline = (typed, models, byKb=false) => {
+      const i=$(INPUT); if(!i||!typed||byKb||suppressInline||shouldSuppress(i)) return;
+      const c=models.find(m=>(m.fillValue||m.label).toLowerCase().startsWith(typed.toLowerCase())); if(!c) return;
+      const to=c.fillValue||c.label; i.value=to; try{i.setSelectionRange(typed.length,to.length)}catch{}
+    };
+    const debounce = (fn,ms=120) => { let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a),ms); }; };
+
+    const applyShortcuts = q => SHORTCUTS.find(s=>s.re.test(q))?.items ?? [];
+
+    const refresh = async (byKb=false, ev=null) => {
+      const i=$(INPUT), q=(i?.value||"").trim();
+      if (ev?.startsWith?.("delete") || ev?.inputType?.startsWith?.("delete")) suppressInline=true;
+      if (ev?.ctrlKey || ev?.metaKey || ev?.altKey) suppressInline=true;
+
+      const std=stdModels(q), rec=recents(), sh=applyShortcuts(q), remote=q?await googleSuggest(q):[];
+      const pool=q?[...new Set([...sh,...remote,...rec])]:[];
+      let other = pool.map(s=>item(s, sh.includes(s)?"atalho":rec.includes(s)?"recente":"sugestao")).filter(m=>matches(m,q));
+      if (q && looksUrl(q) && !other.concat(std).some(m=>(m.fillValue||m.label).toLowerCase()===q.toLowerCase())) other.unshift(item(q,"sugestao"));
+
+      current = uniqBy([...std, ...other], m => (m.fillValue||m.label).toLowerCase());
+      active = -1;
+      q ? (render(current, active), inline(q,current,byKb)) : hide();
+      suppressInline=false;
+    };
+    const debounced = debounce(refresh,120);
+
+    const handleKeys = e => {
+      const p=$(PANEL), i=$(INPUT); if(e.key==="Backspace"||e.key==="Delete") suppressInline=true; if(e.ctrlKey||e.metaKey||e.altKey) suppressInline=true;
+      if (!p || p.hidden) return;
+      const max=Math.min(LIMIT,current.length)-1;
+      if (e.key==="ArrowDown"||e.key==="ArrowUp") {
+        e.preventDefault(); active = e.key==="ArrowDown" ? (active<max?active+1:0) : (active>0?active-1:max);
+        render(current, active); const m=current[active]; if(m){ const v=m.fillValue||m.label; i.value=v; i.setSelectionRange(v.length,v.length); }
+      } else if (e.key==="Tab") {
+        if (i.selectionStart!==i.selectionEnd && current.length){ e.preventDefault(); i.setSelectionRange(i.value.length, i.value.length); hide(); }
+      } else if (e.key==="Enter"||e.key==="Escape") hide();
+    };
+
+    const submit = e => {
+      const i=$(INPUT), q=(i?.value||"").trim(); if(!q){ e.preventDefault(); return; }
+      saveRecent(q);
+      if (looksUrl(q)){ e.preventDefault(); const url=/^https?:\/\//i.test(q)?q:"https://"+q; location.assign(url); }
+    };
+
+    const focusInput = () => { const el=$(INPUT); if(!el) return; if (document.visibilityState!=="visible"){ document.addEventListener("visibilitychange", focusInput, {once:true}); return; } el.focus({preventScroll:true}); try{el.select()}catch{} };
+    const focusWithRetries = (r=24,d=50) => { focusInput(); let i=1; const id=setInterval(()=>{ const ok=document.activeElement?.matches?.(INPUT); if(ok||i++>=r) clearInterval(id); else focusInput(); }, d); };
+
+    const bindGlobalShortcuts = () => addEventListener("keydown", e => {
+      if (/input|textarea|select/i.test(e.target.tagName)) return;
+      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="k") { e.preventDefault(); focusWithRetries(1,0); }
+      else if (!e.ctrlKey&&!e.metaKey&&!e.altKey && e.key==="/") { e.preventDefault(); focusWithRetries(1,0); }
+    });
+    const bindOutsideClick = () => addEventListener("click", e => { const p=$(PANEL), i=$(INPUT); if(!p||p.hidden) return; if(!p.contains(e.target) && e.target!==i) hide(); });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const input=$(INPUT), p=panel(), form=$(FORM); if(!input||!p||!form) return;
+      focusWithRetries();
+
+      let allowFocusRecents=false;
+      input.addEventListener("pointerdown", ()=> allowFocusRecents=true);
+      input.addEventListener("focus", () => {
+        if (!allowFocusRecents || input.value.trim()) return;
+        const rec = recents().map(s=>item(s,"recente"));
+        if (!rec.length) return;
+        p.innerHTML=""; rec.slice(0,LIMIT).forEach((m,i)=>p.appendChild(makeEl(m,i,true))); p.hidden=false;
+      });
+
+      input.addEventListener("input", ev => debounced(false, ev));
+      input.addEventListener("keydown", handleKeys);
+      input.addEventListener("blur", () => setTimeout(hide,100));
+      form.addEventListener("submit", submit);
+      bindGlobalShortcuts(); bindOutsideClick();
+    });
+  })();
+})();
+</script>
+
   </body>
 </html>
