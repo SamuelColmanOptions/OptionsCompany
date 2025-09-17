@@ -1,339 +1,206 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Benefícios da options</title>
+    <title>Benefícios da Options - Options &amp; Company</title>
+    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon">
+    <meta
+      name="description"
+      content="Conheça os benefícios que a Options &amp; Company oferece para seus funcionários: Medicina Integrativa, Total Pass e Plano de saúde."
+    />
+
+    <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Noto+Serif+JP:wght@600;700&display=swap" rel="stylesheet" />
+
+    <!-- Estilos (single-file). Se preferir, mova para styles.css -->
     <style>
-      /* ===== Paleta (mesmas cores da sua página "Meus Links") ===== */
-      :root {
-        --bg-0: #0f2a29;
-        --bg-1: #154138;
-        --bg-2: #1c5244;
-        --card: #0f1f1d; /* cards escuros */
-        --card-2: #122826; /* variantes */
-        --text: #e6edf3; /* texto principal */
-        --muted: #a4b8b3; /* texto secundário */
-        --brand: #4ade80; /* verde destaque */
-        --ring: #22c55e; /* foco/realce */
+      /* Reset and base styles */
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html:focus-within { scroll-behavior: smooth; }
 
-        /* Derivações de bordas/sombras para o tema escuro */
-        --border: rgba(148, 163, 184, 0.18);
-        --border-strong: rgba(148, 163, 184, 0.28);
-        --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.25);
-        --shadow-2: 0 18px 40px rgba(16, 185, 129, 0.1),
-          0 10px 30px rgba(34, 197, 94, 0.18);
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-      html,
       body {
-        height: 100%;
-      }
-      body {
-        margin: 0;
-        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto,
-          "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji",
-          "Segoe UI Emoji", "Segoe UI Symbol";
-        color: var(--text);
-
-        /* Fundo novo: luzes suaves + gradiente com transição "amaciada" */
-        background:
-    /* brilhos suaves (bem transparentes) */ radial-gradient(
-            1000px 700px at 20% -12%,
-            rgba(74, 222, 128, 0.08),
-            transparent 60%
-          ),
-          radial-gradient(
-            1200px 800px at 82% -18%,
-            rgba(34, 197, 94, 0.06),
-            transparent 65%
-          ),
-          /* gradiente principal com “ponte” entre as cores */
-            linear-gradient(
-              180deg,
-              var(--bg-0) 0%,
-              /* ponte entre bg-0 e bg-1 */ #123432 22%,
-              var(--bg-1) 48%,
-              /* ponte entre bg-1 e bg-2 (evita o salto) */ #18483f 68%,
-              var(--bg-2) 100%
-            );
-
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      /* ===== Topbar com o mesmo estilo translúcido ===== */
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-        background: linear-gradient(
-          180deg,
-          rgba(15, 42, 41, 0.85) 0%,
-          rgba(15, 42, 41, 0.65) 70%,
-          rgba(15, 42, 41, 0) 100%
-        );
-        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-      }
-      .topbar-inner {
-        max-width: 1080px;
-        margin: 0 auto;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      /* ===== Layout ===== */
-      .wrapper {
-        max-width: 1080px;
-        margin: 0 auto;
-        padding: 28px 16px 64px;
-      }
-      .hero {
-        margin: 12px 0 28px;
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-between;
-        gap: 12px;
-      }
-      h1 {
-        font-size: clamp(28px, 4vw, 40px);
-        line-height: 1.15;
-        margin: 0 0 6px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-      }
-      .subtitle {
-        color: var(--muted);
-        font-size: 15px;
-      }
-
-      /* ===== Seções em zigue-zague (cards escuros) ===== */
-      .section {
-        display: grid;
-        grid-template-columns: 1.1fr 1fr;
-        gap: 24px;
-        align-items: center;
-        background: linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.02),
-            rgba(255, 255, 255, 0)
-          ),
-          var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px;
-        margin: 18px 0;
-        box-shadow: var(--shadow-1);
-        transition: box-shadow 0.2s ease, transform 0.2s ease,
-          border-color 0.2s ease;
-      }
-      .section:hover {
-        transform: translateY(-1px);
-        border-color: var(--border-strong);
-        box-shadow: var(--shadow-2);
-      }
-      .section:nth-child(even) .media {
-        order: 2;
-      }
-      .section:nth-child(even) .content {
-        order: 1;
-      }
-
-      .media {
-        width: 100%;
-      }
-      .media > .frame {
-        overflow: hidden;
-        border-radius: 12px;
-        border: 1px solid var(--border);
-        background: #0e1b1a;
-        aspect-ratio: 16/10;
-        display: block;
-        width: 500px;
-        height: auto;
-      }
-      .media img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-        filter: saturate(1.02);
-      }
-
-      .content h2 {
-        margin: 0 0 8px;
-        font-size: clamp(20px, 2.8vw, 28px);
-      }
-      .content p {
-        margin: 0 0 12px;
-        color: var(--muted);
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         line-height: 1.6;
+        color: #ffffff;
+        background-color: #0e2d31;
+        overflow-x: hidden;
       }
 
-      .pill {
-        display: inline-flex;
+      /* Container */
+      .container {
+        position: relative;
+        min-height: 100vh;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
         align-items: center;
-        gap: 8px;
-        padding: 6px 10px;
-        border-radius: 999px;
-        background: linear-gradient(
-          180deg,
-          rgba(74, 222, 128, 0.08),
-          rgba(74, 222, 128, 0.02)
-        );
-        border: 1px solid var(--border);
-        color: #cfe9dc;
-        font-size: 12px;
-        font-weight: 600;
+        padding: 2rem 1rem;
+        max-width: 1400px;
+        margin: 0 auto;
       }
 
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 12px;
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        background: var(--brand);
-        color: #0f1f1d;
-        font-weight: 700;
-        font-size: 14px;
-        cursor: pointer;
-        transition: background 0.15s ease, transform 0.15s ease,
-          box-shadow 0.2s ease;
-      }
-      .btn:hover {
-        background: var(--ring);
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-2);
-      }
-      .btn:focus-visible {
-        outline: none;
-        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.35);
+      /* Background effects */
+      .background-effects { position: absolute; inset: 0; pointer-events: none; z-index: -1; }
+      .light-effect { position: absolute; background: rgba(241,255,255,0.5); border-radius: 50%; filter: blur(200px); opacity: 0.6; }
+      .light-1 { width: min(60vw, 920px); height: min(60vh, 974px); top: 20%; left: -20%; }
+      .light-2 { width: min(50vw, 800px); height: min(50vh, 800px); top: 10%; right: -15%; }
+      .ellipse-effect { position: absolute; width: min(80vw, 1200px); height: min(40vh, 600px); top: 5%; left: 50%; transform: translateX(-50%); background: #0d2d30; border-radius: 50%; filter: blur(150px); opacity: 0.8; }
+
+      /* Header */
+      .header { text-align: center; margin-bottom: 2rem; z-index: 1; position: relative; }
+      .main-title { font-family: "Noto Serif JP", serif; font-weight: 700; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.3; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+      .title-highlight { color: #86d1ac; }
+      .title-normal { color: #ffffff; }
+      .subtitle { font-size: clamp(1rem, 2.5vw, 1.125rem); color: rgba(255,255,253,0.9); max-width: 640px; margin: 0 auto; line-height: 1.5; }
+
+      /* Benefits section */
+      .benefits { display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; align-items: stretch; width: 100%; max-width: 1200px; z-index: 1; position: relative; }
+
+      /* Benefit cards */
+      .benefit-card { background: #184b51; border-radius: 1.5rem; border: 1px solid rgba(134,209,172,0.2); overflow: hidden; display: flex; flex-direction: column; transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease; flex: 1; min-width: 300px; max-width: 380px; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+      .benefit-card:hover { transform: translateY(-8px); box-shadow: 0 16px 48px rgba(0,0,0,0.4); border-color: rgba(134,209,172,0.4); }
+
+      .benefit-image { width: 100%; height: 200px; object-fit: cover; display: block; }
+
+      .benefit-content { padding: 2rem; display: flex; flex-direction: column; flex-grow: 1; }
+      .benefit-title { font-family: "Noto Serif JP", serif; font-weight: 600; font-size: clamp(1.25rem, 3vw, 1.5rem); color: #ffffff; margin-bottom: 1rem; line-height: 1.3; }
+      .benefit-description { font-size: clamp(0.95rem, 2vw, 1rem); color: rgba(255,255,253,0.9); line-height: 1.6; margin-bottom: 2rem; flex-grow: 1; }
+
+      .benefit-button { background: #569677; color: #ffffff; border: 1px solid #86d1ac; border-radius: 0.5rem; padding: 1rem 1.25rem; font-size: 1rem; font-weight: 600; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; align-self: flex-start; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; min-height: 48px; }
+      .benefit-button:hover { background: #4a7c5d; transform: translateY(-2px); box-shadow: 0 4px 16px rgba(86,150,119,0.3); }
+      .benefit-button:focus-visible { outline: 2px solid #86d1ac; outline-offset: 2px; }
+      .benefit-button:active { transform: translateY(0); }
+
+      /* Tablet */
+      @media (max-width: 1024px) {
+        .container { padding: 1.5rem 1rem; }
+        .header { margin-bottom: 3rem; }
+        .benefits { gap: 1.5rem; }
+        .benefit-card { min-width: 280px; max-width: 350px; }
+        .benefit-content { padding: 1.5rem; }
+        .light-1 { width: 70vw; height: 50vh; }
+        .light-2 { width: 60vw; height: 40vh; }
       }
 
-      .brand {
-        display: inline-flex;
-        align-items: center;
-        text-decoration: none;
-        outline: none;
-      }
-      .brand img {
-        height: 50px;
-        width: auto;
-        display: block;
-        margin-top: 10px;
-        margin-left: 25px;
+      /* Mobile */
+      @media (max-width: 768px) {
+        .container { padding: 1rem 0.75rem; }
+        .header { margin-bottom: 2.5rem; }
+        .benefits { flex-direction: column; align-items: center; gap: 1.5rem; }
+        .benefit-card { width: 100%; max-width: 400px; min-width: unset; }
+        .benefit-image { height: 180px; }
+        .benefit-content { padding: 1.25rem; }
+        .benefit-button { width: 100%; justify-content: center; }
+        .light-1 { width: 120vw; height: 40vh; left: -40%; }
+        .light-2 { width: 100vw; height: 35vh; right: -30%; }
+        .ellipse-effect { width: 150vw; height: 30vh; }
       }
 
-      /* ===== Responsivo ===== */
-      @media (max-width: 860px) {
-        .section {
-          grid-template-columns: 1fr;
-        }
-        .section:nth-child(even) .media,
-        .section:nth-child(even) .content {
-          order: initial;
-        }
+      /* Small mobile */
+      @media (max-width: 480px) {
+        .container { padding: 0.75rem 0.5rem; }
+        .header { margin-bottom: 2rem; }
+        .benefit-card { max-width: 100%; }
+        .benefit-image { height: 160px; }
+        .benefit-content { padding: 1rem; }
+      }
+
+      /* Accessibility */
+      @media (prefers-reduced-motion: reduce) {
+        .benefit-card, .benefit-button, .light-effect { transition: none; }
+        .benefit-card:hover, .benefit-button:hover { transform: none; }
+      }
+
+      /* High contrast */
+      @media (prefers-contrast: high) {
+        .benefit-card { border: 2px solid #86d1ac; }
+        .benefit-button { border: 2px solid #86d1ac; }
+      }
+
+      /* Print */
+      @media print {
+        .background-effects { display: none; }
+        .benefit-card { break-inside: avoid; box-shadow: none; border: 1px solid #000; }
+        .benefit-button { display: none; }
       }
     </style>
   </head>
   <body>
-    <header class="site-header" role="banner">
-      <a class="brand" href="/" aria-label="Página inicial">
-        <img src="images/logo_texto_recortado.png" alt="Options & Company" />
-      </a>
-    </header>
-    <header class="topbar" aria-label="Barra de navegação">
-      <div class="topbar-inner">
-        <!-- Você pode inserir sua marca aqui, se quiser -->
+    <main class="container">
+      <!-- Background effects -->
+      <div class="background-effects" aria-hidden="true">
+        <div class="light-effect light-1"></div>
+        <div class="light-effect light-2"></div>
+        <div class="ellipse-effect"></div>
       </div>
-    </header>
 
-    <main class="wrapper">
-      <section class="hero">
-        <div>
-          <h1>Benefícios da Options</h1>
-          <div class="subtitle">
-            Conheça os benefícios que a Options & Company oferece para seus
-            funcionários
-          </div>
-        </div>
-      </section>
+      <!-- Header section -->
+      <header class="header">
+        <h1 class="main-title">
+          <span class="title-highlight">Benefícios</span>
+          <span class="title-normal">da Options</span>
+        </h1>
+        <p class="subtitle">Conheça os benefícios que a Options &amp; Company oferece para seus funcionários</p>
+      </header>
 
-      <!-- Bloco 1: Imagem esquerda / Texto direita -->
-      <section class="section">
-        <div class="media">
-          <div class="frame">
-            <img
-              src="images/medicina-img.webp"
-              alt="Equipe reunida em mesa de trabalho"
-            />
+      <!-- Benefits section -->
+      <section class="benefits" aria-label="Lista de benefícios">
+        <article class="benefit-card">
+          <img
+            class="benefit-image"
+            src="images/medicina-img.webp"
+            alt="Medicina Integrativa - profissional de saúde atendendo paciente"
+            loading="lazy"
+          />
+          <div class="benefit-content">
+            <h2 class="benefit-title">Medicina Integrativa</h2>
+            <p class="benefit-description">
+              Uma abordagem que une o melhor da medicina convencional com terapias complementares e práticas que visam o bem-estar do paciente de forma holística.
+            </p>
+            <a class="benefit-button" href="beneficio-medicina.html" aria-label="Conhecer benefício de Medicina Integrativa" role="button">
+              <span>Conhecer benefício</span>
+            </a>
           </div>
-        </div>
-        <div class="content">
-          <h2>Medicina Integrativa</h2>
-          <p>
-            Uma abordagem que une o melhor da medicina convencional com terapias
-            complementares e práticas que visam o bem-estar do paciente de forma
-            holística
-          </p>
-          <a class="btn" href="beneficio-medicina.html">Conhecer beneício</a>
-        </div>
-      </section>
+        </article>
 
-      <!-- Bloco 2: Texto esquerda / Imagem direita -->
-      <section class="section">
-        <div class="media">
-          <div class="frame">
-            <img src="images/academia-img.png" alt="Apresentação em painel" />
+        <article class="benefit-card">
+          <img
+            class="benefit-image"
+            src="images/academia-img.png"
+            alt="Total Pass - academia e bem-estar corporativo"
+            loading="lazy"
+          />
+          <div class="benefit-content">
+            <h2 class="benefit-title">Total Pass</h2>
+            <p class="benefit-description">
+              Bem-estar corporativo que oferece acesso a academias, estúdios, nutricionistas, psicólogos e outros serviços relacionados ao bem-estar físico e mental.
+            </p>
+            <a class="benefit-button" href="beneficio-total.html" aria-label="Conhecer benefício do Total Pass" role="button">
+              <span>Conhecer benefício</span>
+            </a>
           </div>
-        </div>
-        <div class="content">
-          <h2>Total Pass</h2>
-          <p>
-            bem-estar corporativo que oferece acesso a academias, estúdios,
-            nutricionistas, psicólogos e outros serviços relacionados ao
-            bem-estar físico e mental.
-          </p>
-          <a class="btn" href="beneficio-total.html">Conhecer benefício</a>
-        </div>
-      </section>
+        </article>
 
-      <!-- Bloco 3: Imagem esquerda / Texto direita -->
-      <section class="section">
-        <div class="media">
-          <div class="frame">
-            <img src="images/planodesaude-img.jpg" />
+        <article class="benefit-card">
+          <img
+            class="benefit-image"
+            src="images/planodesaude-img.jpg"
+            alt="Plano de saúde - cobertura médica e hospitalar"
+            loading="lazy"
+          />
+          <div class="benefit-content">
+            <h2 class="benefit-title">Plano de saúde</h2>
+            <p class="benefit-description">
+              Plano de saúde com cobertura médica e hospitalar, consultas, exames, internações e atendimentos de emergência. Rede credenciada ampla e atendimento nacional.
+            </p>
+          <a class="benefit-button" href="teste.html" aria-label="Conhecer benefício do Plano de saúde" role="button">
+            <span>Conhecer benefício</span>
+          </a>
           </div>
-        </div>
-        <div class="content">
-          <h2>Plano de saúde</h2>
-          <p>
-            Plano de saúde com cobertura médica e hospitalar, consultas, exames,
-            internações e atendimentos de urgência/emergência. Rede credenciada
-            ampla e atendimento nacional, garantindo assistência à saúde com
-            qualidade e segurança
-          </p>
-          <a class="btn" href="#">Acompanhar</a>
-        </div>
+        </article>
       </section>
     </main>
   </body>
