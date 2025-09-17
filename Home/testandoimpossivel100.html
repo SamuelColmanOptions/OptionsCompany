@@ -266,81 +266,6 @@
   .shortcut-chip:hover button[type="button"]{opacity:1}
 
   @media (prefers-reduced-motion:reduce){#video-bg.video-bg{display:none}}
-
-  .notice-overlay {
-    position: fixed; inset: 0;
-    background: color-mix(in srgb, var(--bg-0, #000) 65%, transparent);
-    background: var(--overlay-fallback, #000000a6);
-    backdrop-filter: blur(2px);
-    z-index: 9998;
-  }
-
-  .notice-modal {
-    position: fixed; inset: 0; margin: auto;
-    width: min(92vw, 720px); max-height: min(92vh, 90dvh);
-    overflow: hidden; display: grid; grid-template-rows: auto 1fr;
-    background: var(--card, #0c1512); color: var(--text, #e6f6ef);
-    border: 1px solid color-mix(in srgb, var(--ring, #00ffa3) 16%, transparent);
-    border-radius: var(--radius, 16px);
-    box-shadow: var(--shadow-1, 0 10px 30px rgba(0, 0, 0, 0.35)), var(--shadow-2, 0 2px 10px rgba(0, 0, 0, 0.25));
-    z-index: 9999; font-family: inherit;
-    transform: translateY(8px) scale(0.98);
-    opacity: 0; pointer-events: none; isolation: isolate;
-  }
-  .notice-modal[data-open="true"] {
-    opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
-    transition: opacity .2s ease, transform .25s cubic-bezier(.2,.8,.2,1);
-  }
-
-  .notice-close {
-    position: absolute; top: .75rem; right: .75rem;
-    display: grid; place-items: center; width: 36px; height: 36px;
-    border-radius: 999px;
-    border: 1px solid color-mix(in srgb, var(--ring, #00ffa3) 24%, transparent);
-    background: var(--bg-2, #0a0f0d); color: var(--muted, #a7c7bb);
-    box-shadow: var(--shadow-1, 0 10px 30px rgba(0,0,0,.35));
-    cursor: pointer; transition: transform .15s ease, opacity .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
-    z-index: 10; pointer-events: auto;
-  }
-  .notice-close:hover { transform: scale(1.06); color: var(--text, #e6f6ef); }
-  .notice-close:focus-visible {
-    outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring, #00ffa3) 35%, transparent);
-  }
-
-  .notice-media {
-    background: var(--bg-1, #0e1a16);
-    border-bottom: 1px solid color-mix(in srgb, var(--ring, #00ffa3) 12%, transparent);
-    aspect-ratio: 16/9; overflow: hidden;
-  }
-  .notice-media img { width: 100%; height: 100%; object-fit: cover; display: block; filter: saturate(1.05) contrast(1.02); }
-
-  .notice-content {
-    padding: clamp(1rem, 2.5vw, 1.25rem) clamp(1rem, 3vw, 1.5rem) 1.25rem;
-    display: grid; gap: .75rem;
-    background: linear-gradient(180deg,
-      color-mix(in srgb, var(--card, #0c1512) 100%, transparent) 0%,
-      color-mix(in srgb, var(--card-2, #0b130f) 100%, transparent) 100%);
-  }
-  .notice-content h2 { margin: 0; line-height: 1.15; font-size: clamp(1.15rem, 2.2vw, 1.5rem); letter-spacing: .2px; }
-  .notice-content p  { margin: 0; color: var(--muted, #a7c7bb); font-size: clamp(.95rem, 1.8vw, 1rem); }
-
-  .notice-actions { margin-top: .25rem; display: flex; gap: .5rem; flex-wrap: wrap; align-items: center; }
-  .notice-cta {
-    display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
-    padding: .6rem .9rem; border-radius: calc(var(--radius, 16px) - 8px);
-    font-weight: 600; text-decoration: none; color: var(--bg-0, #000);
-    background: linear-gradient(180deg,
-      color-mix(in srgb, var(--brand, #00ffa3) 92%, transparent) 0%,
-      color-mix(in srgb, var(--brand, #00ffa3) 80%, transparent) 100%);
-    border: 1px solid color-mix(in srgb, var(--ring, #00ffa3) 35%, transparent);
-    box-shadow: var(--shadow-2, 0 2px 10px rgba(0,0,0,.25));
-    transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
-  }
-  .notice-cta:hover { transform: translateY(-1px); filter: saturate(1.05); }
-
-  @media (prefers-reduced-motion: reduce) {
-    .notice-modal, .notice-close, .notice-cta { transition: none !important; }
-  }
 </style>
 
 <style>
@@ -469,6 +394,15 @@
         orderBy,
         serverTimestamp,
       } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+      function domReady() {
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    return Promise.resolve();
+  }
+  return new Promise((resolve) => {
+    document.addEventListener("DOMContentLoaded", resolve, { once: true });
+  });
+}
 
       // Oculta a página até confirmar a sessão
       document.documentElement.classList.add("auth-checking");
@@ -865,125 +799,22 @@
         });
       }
 
-      // ========= POPUP: lógica por usuário + versão + TTL + força por query =========
-async function initNotice(user) {
-  // ===== PERMITIR APENAS PARA ALGUNS USUÁRIOS =====
-  const allowedUsers = [
-    "asantana@optionsco.com.br",
-    "ssilva@optionsco.com.br"
-  ];
-  const userEmail = (user.email || "").toLowerCase().trim();
-  if (!allowedUsers.includes(userEmail)) {
-    console.info("[notice] Usuário não está na lista de permitidos:", userEmail);
-    return; // sai sem exibir popup
-  }
-
-  // ===== Remote Config (opcional) =====
-  const rc = getRemoteConfig();
-  rc.settings = { minimumFetchIntervalMillis: 60_000 }; // 1 min p/ testes
-  let rcFetched = false;
-  try { await fetchAndActivate(rc); rcFetched = true; } catch {}
-
-  // Padrão local (se não usar Remote Config)
-  const DEFAULT_VERSION = "2025-09-lancamento"; // mude para reexibir
-  const DEFAULT_TTL_DAYS = 0;                   // 0 = sem expirar
-
-  // Busca valores no RC (se existirem)
-  const rcVersion = rcFetched ? String(getValue(rc, "notice_version").asString() || "") : "";
-  const rcTTLDays = rcFetched ? Number(getValue(rc, "notice_ttl_days").asString() || "0") : 0;
-
-  const NOTICE_VERSION = rcVersion || DEFAULT_VERSION;
-  const TTL_DAYS = Number.isFinite(rcTTLDays) ? rcTTLDays : DEFAULT_TTL_DAYS;
-
-  // Elementos
-  const modal = document.getElementById("notice-modal");
-  const overlay = document.getElementById("notice-overlay");
-  const closeBtn = modal?.querySelector?.(".notice-close");
-  if (!modal || !overlay) { console.warn("[notice] HTML não encontrado"); return; }
-
-  // Estado por usuário
-  const STORAGE_KEY = `notice:${user.uid}`;
-  const TTL_MS = TTL_DAYS > 0 ? TTL_DAYS * 24 * 60 * 60 * 1000 : 0;
-  const now = Date.now();
-
-  const getState = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } };
-  const setState = (s) => localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-
-  const forceByQuery = () => new URL(location.href).searchParams.get("showNotice") === "1";
-
-  const shouldOpen = () => {
-    if (forceByQuery()) return true;
-    const s = getState();
-    if (s.version !== NOTICE_VERSION) return true;       // versão mudou
-    if (!s.dismissed) return true;                       // nunca fechado
-    if (TTL_MS && s.dismissedAt && now - s.dismissedAt >= TTL_MS) return true; // TTL venceu
-    return false;
-  };
-
-  function open() {
-    overlay.hidden = false;
-    modal.hidden = false;
-    void modal.offsetWidth;
-    modal.setAttribute("data-open", "true");
-    closeBtn?.focus?.();
-    document.documentElement.style.overflow = "hidden";
-  }
-
-  function close() {
-    modal.removeAttribute("data-open");
-    setTimeout(() => {
-      overlay.hidden = true;
-      modal.hidden = true;
-      document.documentElement.style.overflow = "";
-    }, 200);
-
-    setState({ version: NOTICE_VERSION, dismissed: true, dismissedAt: Date.now() });
-  }
-
-  // Eventos
-  closeBtn?.addEventListener("click", close);
-  window.addEventListener("keydown", (e) => {
-    if (!modal.hidden && (e.key === "Escape" || e.key === "Esc")) { 
-      e.preventDefault(); 
-      close(); 
-    }
-  });
-
-  // API p/ você testar no console
-  window.notice = {
-    open,
-    close,
-    reset(){ localStorage.removeItem(STORAGE_KEY); },  // limpa estado
-    setVersion(v){ localStorage.removeItem(STORAGE_KEY); console.warn("NOTICE_VERSION ->", v); open(); },
-    state: () => getState(),
-  };
-
-  // Dispara após login validado (só se for um dos permitidos)
-  if (shouldOpen()) open();
-}
-
-
-
       // 🔐 Guarda de rota
-onAuthStateChanged(auth, async (user) => {
-  try {
-    if (!user) return blockAndRedirect();
-    if (!isAllowedEmail(user.email)) return blockAndRedirect();
+      onAuthStateChanged(auth, async (user) => {
+        try {
+          if (!user) return blockAndRedirect();
+          if (!isAllowedEmail(user.email)) return blockAndRedirect();
 
-    allowPage();
-    await loadProfileAndRenderTop(user);
+          allowPage();
+          await loadProfileAndRenderTop(user);
 
-    // favoritos
-    initFavorites(user);
-
-    // 🔔 AVISO (POPUP) — chamar aqui!
-    await initNotice(user);
-
-  } catch (e) {
-    console.error("[auth state]", e);
-    blockAndRedirect();
-  }
-});
+          // ✅ favoritos do usuário → dropdown + chips abaixo da busca
+          initFavorites(user);
+        } catch (e) {
+          console.error("[auth state]", e);
+          blockAndRedirect();
+        }
+      });
     </script>
 
     <!-- Modal dos Favoritos (fora do dropdown para não cortar o overlay) -->
@@ -1107,49 +938,8 @@ onAuthStateChanged(auth, async (user) => {
       </div>
     </div>
 
-    <!-- Notice / Announcement Modal -->
-<div id="notice-overlay" class="notice-overlay" hidden></div>
-
-<div
-  id="notice-modal"
-  class="notice-modal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="notice-title"
-  aria-describedby="notice-desc"
-  hidden
->
-  <button class="notice-close" aria-label="Fechar aviso" title="Fechar">
-    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4Z"
-        fill="currentColor"
-      />
-    </svg>
-  </button>
-
-  <div class="notice-media">
-    <img src="images/academia-img.png" alt="">
-  </div>
-
-  <div class="notice-content">
-    <h2 id="notice-title">Aviso Importante de teste</h2>
-    <p id="notice-desc">
-      Pequeno texto de apoio explicando o anúncio. Você pode incluir links,
-      datas e instruções rápidas.
-    </p>
-
-    <div class="notice-actions">
-      <a href="#" class="notice-cta">Saiba mais</a>
-    </div>
-  </div>
-</div>
-
-
-
-
     <!-- ===== Scripts do UI (dropdown, modal principal, abas, busca) ===== -->
-     
+
 <script>
 (() => {
   /* === Dropdown Ferramentas === */

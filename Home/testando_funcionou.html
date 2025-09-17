@@ -1143,8 +1143,22 @@ await Promise.all([
   waitForEl("#notice-modal"),
   waitForEl("#notice-overlay"),
 ]);
-await initNotice(user);
+// ✅ Somente estes dois e-mails devem ver SEMPRE
+const NOTICE_ALLOWED = [
+  "ssilva@optionsco.com.br",
+  "asantana@optionsco.com.br",
+];
 
+const userEmail = (user.email || "").toLowerCase();
+if (NOTICE_ALLOWED.includes(userEmail)) {
+  await initNotice(user);      // prepara a API window.notice
+  window.notice?.open();       // 🔥 força abrir em toda visita
+} else {
+  const overlay = document.getElementById("notice-overlay");
+  const modal = document.getElementById("notice-modal");
+  if (overlay) overlay.hidden = true;
+  if (modal) { modal.hidden = true; modal.removeAttribute("data-open"); }
+}
         } catch (e) {
           console.error("[auth state]", e);
           blockAndRedirect();
