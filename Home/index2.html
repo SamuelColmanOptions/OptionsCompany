@@ -348,1093 +348,367 @@
 </style>
 
   </head>
-  <body>
-    <video id="video-bg" class="video-bg" autoplay muted loop playsinline poster="images/video-bg.mp4"><source src="images/video-bg.mp4" type="video/mp4">Seu navegador não suporta vídeo em HTML5.</video>
-<div class="container">
-  <header class="header">
-    <div class="header-content">
-      <div class="top-left">
-        <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="sidebar">Menu</button>
-        <div class="google-tools">
-          <span id="welcomeUser" style="margin-left:12px;font-weight:700"></span>
-          <button id="google-button" class="apps-btn" aria-controls="google-dropdown" aria-expanded="false" aria-label="Abrir aplicativos">
-            <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><g fill="currentColor"><circle cx="4" cy="4" r="1.5"></circle><circle cx="10" cy="4" r="1.5"></circle><circle cx="16" cy="4" r="1.5"></circle><circle cx="4" cy="10" r="1.5"></circle><circle cx="10" cy="10" r="1.5"></circle><circle cx="16" cy="10" r="1.5"></circle><circle cx="4" cy="16" r="1.5"></circle><circle cx="10" cy="16" r="1.5"></circle><circle cx="16" cy="16" r="1.5"></circle></g></svg>
-          </button>
-          <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
-            <div class="app-grid" role="list">
-              <a class="app" href="https://www.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_google.ico" alt=""><span>Home</span></a>
-              <a class="app" href="https://calendar.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_calendar.ico" alt=""><span>Agenda</span></a>
-              <a class="app" href="https://mail.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_gmail.ico" alt=""><span>Gmail</span></a>
-              <a class="app" href="https://docs.google.com/spreadsheets/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_sheets.ico" alt=""><span>Planilhas</span></a>
-              <a class="app" href="https://meet.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_meet.ico" alt=""><span>Meet</span></a>
-              <a class="app" href="https://docs.google.com/document/" target="_blank" rel="noopener" role="menuitem"><img src="images/docs.ico" alt=""><span>Docs</span></a>
-              <a class="app" href="https://chat.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/chat.ico" alt=""><span>Chat</span></a>
-              <a class="app" href="https://www.youtube.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/youtube.ico" alt=""><span>YouTube</span></a>
-              <a class="app" href="https://chatgpt.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_chagpt.ico" alt=""><span>ChatGPT</span></a>
-              <a class="app" href="https://gemini.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/gemini.ico" alt=""><span>Gemini</span></a>
-              <a class="app" href="https://plataformafasttrade.com.br/" target="_blank" rel="noopener" role="menuitem"><img src="images/fast_trade.ico" alt=""><span>Fast Trade</span></a>
-              <a class="app" href="https://drive.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/drive.ico" alt=""><span>Drive</span></a>
-              <a class="app" href="https://web.whatsapp.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/WhatsApp-icon.png" alt=""><span>WhatsApp</span></a>
-              <a class="app" href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin" target="_blank" rel="noopener" role="menuitem"><img src="images/linkedin.ico" alt=""><span>LinkedIn</span></a>
+<body>
+  <video id="video-bg" class="video-bg" autoplay muted loop playsinline poster="images/video-bg.mp4">
+    <source src="images/video-bg.mp4" type="video/mp4">Seu navegador não suporta vídeo em HTML5.
+  </video>
+
+  <div class="container">
+    <header class="header">
+      <div class="header-content">
+        <div class="top-left">
+          <button class="menu-btn" id="menu-toggle" aria-expanded="false" aria-controls="sidebar">Menu</button>
+          <div class="google-tools">
+            <span id="welcomeUser" style="margin-left:12px;font-weight:700"></span>
+            <button id="google-button" class="apps-btn" aria-controls="google-dropdown" aria-expanded="false" aria-label="Abrir aplicativos">
+              <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><g fill="currentColor"><circle cx="4" cy="4" r="1.5"/><circle cx="10" cy="4" r="1.5"/><circle cx="16" cy="4" r="1.5"/><circle cx="4" cy="10" r="1.5"/><circle cx="10" cy="10" r="1.5"/><circle cx="16" cy="10" r="1.5"/><circle cx="4" cy="16" r="1.5"/><circle cx="10" cy="16" r="1.5"/><circle cx="16" cy="16" r="1.5"/></g></svg>
+            </button>
+            <div id="google-dropdown" class="dropdown-content" role="menu" aria-hidden="true">
+              <div class="app-grid" role="list">
+                <a class="app" href="https://www.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_google.ico" alt=""><span>Home</span></a>
+                <a class="app" href="https://calendar.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_calendar.ico" alt=""><span>Agenda</span></a>
+                <a class="app" href="https://mail.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_gmail.ico" alt=""><span>Gmail</span></a>
+                <a class="app" href="https://docs.google.com/spreadsheets/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_sheets.ico" alt=""><span>Planilhas</span></a>
+                <a class="app" href="https://meet.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_meet.ico" alt=""><span>Meet</span></a>
+                <a class="app" href="https://docs.google.com/document/" target="_blank" rel="noopener" role="menuitem"><img src="images/docs.ico" alt=""><span>Docs</span></a>
+                <a class="app" href="https://chat.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/chat.ico" alt=""><span>Chat</span></a>
+                <a class="app" href="https://www.youtube.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/youtube.ico" alt=""><span>YouTube</span></a>
+                <a class="app" href="https://chatgpt.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/favicon_chagpt.ico" alt=""><span>ChatGPT</span></a>
+                <a class="app" href="https://gemini.google.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/gemini.ico" alt=""><span>Gemini</span></a>
+                <a class="app" href="https://plataformafasttrade.com.br/" target="_blank" rel="noopener" role="menuitem"><img src="images/fast_trade.ico" alt=""><span>Fast Trade</span></a>
+                <a class="app" href="https://drive.google.com" target="_blank" rel="noopener" role="menuitem"><img src="images/drive.ico" alt=""><span>Drive</span></a>
+                <a class="app" href="https://web.whatsapp.com/" target="_blank" rel="noopener" role="menuitem"><img src="images/WhatsApp-icon.png" alt=""><span>WhatsApp</span></a>
+                <a class="app" href="https://www.linkedin.com/login/pt?fromSignIn=true&trk=guest_homepage-basic_nav-header-signin" target="_blank" rel="noopener" role="menuitem"><img src="images/linkedin.ico" alt=""><span>LinkedIn</span></a>
+              </div>
             </div>
           </div>
         </div>
+
+        <div id="fav-grid" class="app-grid" role="list"></div>
+        <template id="fav-add-card"><button class="app" type="button" data-open-fav-modal><div style="width:32px;height:32px;border-radius:8px;background:#0b5;display:grid;place-items:center;color:#fff;font-weight:900">+</div><span>Atalho</span></button></template>
+        <div class="header-titles-desktop" aria-hidden="true"><img src="images/logo_texto_recortado.png" alt="Logo Options & Company" class="logo"></div>
       </div>
-      <div id="fav-grid" class="app-grid" role="list"></div>
-      <template id="fav-add-card"><button class="app" type="button" data-open-fav-modal><div style="width:32px;height:32px;border-radius:8px;background:#0b5;display:grid;place-items:center;color:#fff;font-weight:900">+</div><span>Atalho</span></button></template>
-      <div class="header-titles-desktop" aria-hidden="true"><img src="images/logo_texto_recortado.png" alt="Logo Options & Company" class="logo"></div>
+    </header>
+
+    <div id="menu-modal" class="menu-modal" aria-hidden="true">
+      <div class="overlay-blur" data-close-modal></div>
+      <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title">
+        <div class="menu-header"><h2 id="menu-modal-title" class="menu-title">Opções</h2><button class="menu-close" type="button" aria-label="Fechar" data-close-modal>×</button></div>
+        <nav class="menu-grid">
+          <a class="menu-item" href="#home" data-tab-target="home"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Início</div><div class="menu-item-sub">Voltar para a tela principal</div></div></a>
+          <a class="menu-item" href="https://indicadoresmesaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 13v7h4v-7H4Zm6-6v13h4V7h-4Zm6 3v10h4V10h-4Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Indicadores</div><div class="menu-item-sub">Looker Studio</div></div></a>
+          <a class="menu-item" href="https://chamadoadm.netlify.app" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v6m0 12a9 9 0 1 0-9-9h9v9Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Suporte</div><div class="menu-item-sub">Abrir chamado de TI</div></div></a>
+          <a class="menu-item" href="login.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Liderança</div><div class="menu-item-sub">Área restrita</div></div></a>
+          <a class="menu-item" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Biblioteca</div><div class="menu-item-sub">Documentos e materiais</div></div></a>
+          <a class="menu-item" href="beneficios.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Benefícios</div><div class="menu-item-sub">Guias e políticas</div></div></a>
+        </nav>
+      </div>
     </div>
-  </header>
 
-  <div id="menu-modal" class="menu-modal" aria-hidden="true">
-    <div class="overlay-blur" data-close-modal></div>
-    <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="menu-modal-title">
-      <div class="menu-header"><h2 id="menu-modal-title" class="menu-title">Opções</h2><button class="menu-close" type="button" aria-label="Fechar" data-close-modal>×</button></div>
-      <nav class="menu-grid">
-        <a class="menu-item" href="#home" data-tab-target="home"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-9.5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Início</div><div class="menu-item-sub">Voltar para a tela principal</div></div></a>
-        <a class="menu-item" href="https://indicadoresmesaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 13v7h4v-7H4Zm6-6v13h4V7h-4Zm6 3v10h4V10h-4Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Indicadores</div><div class="menu-item-sub">Looker Studio</div></div></a>
-        <a class="menu-item" href="https://chamadoadm.netlify.app" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v6m0 12a9 9 0 1 0-9-9h9v9Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Suporte</div><div class="menu-item-sub">Abrir chamado de TI</div></div></a>
-        <a class="menu-item" href="login.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4 0-7 2-7 5v1h14v-1c0-3-3-5-7-5Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Liderança</div><div class="menu-item-sub">Área restrita</div></div></a>
-        <a class="menu-item" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Biblioteca</div><div class="menu-item-sub">Documentos e materiais</div></div></a>
-        <a class="menu-item" href="beneficios.html" target="_blank" rel="noopener"><div class="menu-item-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M7 4h10a1 1 0 0 1 1 1v14l-6-3-6 3V5a1 1 0 0 1 1-1Z" stroke="currentColor" stroke-width="1.5"/></svg></div><div><div class="menu-item-title">Benefícios</div><div class="menu-item-sub">Guias e políticas</div></div></a>
-      </nav>
-    </div>
-  </div>
-
-  <section class="google-hero" role="region" aria-label="Página inicial">
-    <div class="hero-inner">
-      <img class="hero-logo" src="images/logo_texto_recortado.png" alt="Options & Company">
-      <form class="site-search" role="search" aria-label="Pesquisar na web" action="https://www.google.com/search" method="GET" target="_self" id="search-form">
-        <div class="search-wrap"><img src="images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true"><input id="q" name="q" type="search" placeholder="Pesquisar no Google…" autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions"><div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div></div>
-        <button type="submit" aria-label="Pesquisar">Buscar</button>
-      </form>
-      <nav id="quick-shortcuts" class="quick-shortcuts" aria-label="Atalhos rápidos"><div id="quick-chip-row" class="chip-row" role="list"></div></nav>
-    </div>
-  </section>
-
-  <main class="main-content" id="tab-root" role="region" aria-live="polite">
-    <section id="tab-home" class="tab-panel active" role="tabpanel" aria-labelledby="tablink-home">
-      <div class="tab-media-wrap"><img src="images/WhatsApp Image 2025-09-15 at 08.42.39.jpeg" alt="Mesa de operação - Options & Company" loading="eager" fetchpriority="high"></div>
-    </section>
-    <section id="tab-indicadores" class="tab-panel" role="tabpanel" aria-labelledby="tablink-indicadores">
-      <div class="frame-wrap"><iframe title="Dashboard Looker Studio" src="https://indicadoresmesaco.netlify.app/" style="width:100%;height:70vh;border:0" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
-    </section>
-  </main>
-</div>
-
-<aside class="sidebar" id="sidebar" aria-hidden="true">
-  <div class="sidebar-header"><h2>Menu</h2><button class="close-btn" id="close-sidebar" aria-label="Fechar menu">×</button></div>
-  <nav class="sidebar-links">
-    <a href="#home" id="tablink-home" data-tab-target="home" aria-controls="tab-home">Início</a>
-    <a id="link-biblioteca" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener">Biblioteca</a>
-    <a href="https://indicadoresmesaco.netlify.app/" id="link-indicadores" target="_blank" rel="noopener">Indicadores</a>
-    <a href="https://chamadoadm.netlify.app" id="link-chamado-ti" target="_blank" rel="noopener">Suporte</a>
-    <a id="link-website" href="login.html" target="_blank" rel="noopener">Liderança</a>
-    <a id="link-beneficios" href="beneficios.html" target="_blank" rel="noopener">Beneficios</a>
-  </nav>
-</aside>
-<div class="overlay" id="overlay" hidden></div>
-
-<!-- Modal dos Favoritos (fora do dropdown para não cortar o overlay) -->
-    <div id="fav-modal" class="menu-modal" aria-hidden="true">
-      <div class="overlay-blur" data-close-fav></div>
-      <div
-        class="menu-card"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="fav-modal-title"
-      >
-        <div class="menu-header">
-          <h2 id="fav-modal-title" class="menu-title">Atalho</h2>
-          <button
-            class="menu-close"
-            type="button"
-            aria-label="Fechar"
-            data-close-fav
-          >
-            ×
-          </button>
-        </div>
-        <div style="display: grid; gap: 10px; padding: 10px 6px">
-          <label style="display: grid; gap: 6px">
-            <span>Nome</span>
-            <input
-              id="fav-name"
-              type="text"
-              placeholder="Ex.: Planilhas"
-              style="
-                padding: 10px;
-                border-radius: 10px;
-                border: 1px solid #ccc;
-                background: #fff;
-                color: #111;
-              "
-            />
-          </label>
-          <label style="display: grid; gap: 6px">
-            <span>URL</span>
-            <input
-              id="fav-url"
-              type="url"
-              placeholder="Ex.: https://docs.google.com/spreadsheets/"
-              style="
-                padding: 10px;
-                border-radius: 10px;
-                border: 1px solid #ccc;
-                background: #fff;
-                color: #111;
-              "
-            />
-          </label>
-          <div
-            style="
-              display: flex;
-              justify-content: flex-end;
-              gap: 8px;
-              margin-top: 6px;
-            "
-          >
-            <button type="button" class="menu-btn" data-close-fav>
-              Cancelar
-            </button>
-            <button
-              id="fav-save"
-              type="button"
-              class="menu-btn"
-              style="background: #418d75; border-color: #418d75"
-            >
-              Concluir
-            </button>
+    <section class="google-hero" role="region" aria-label="Página inicial">
+      <div class="hero-inner">
+        <img class="hero-logo" src="images/logo_texto_recortado.png" alt="Options & Company">
+        <form class="site-search" role="search" aria-label="Pesquisar na web" action="https://www.google.com/search" method="GET" target="_self" id="search-form">
+          <div class="search-wrap">
+            <img src="images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true">
+            <input id="q" name="q" type="search" placeholder="Pesquisar no Google…" autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions">
+            <div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div>
           </div>
+          <button type="submit" aria-label="Pesquisar">Buscar</button>
+        </form>
+        <nav id="quick-shortcuts" class="quick-shortcuts" aria-label="Atalhos rápidos"><div id="quick-chip-row" class="chip-row" role="list"></div></nav>
+      </div>
+    </section>
+
+    <main class="main-content" id="tab-root" role="region" aria-live="polite">
+      <section id="tab-home" class="tab-panel active" role="tabpanel" aria-labelledby="tablink-home">
+        <div class="tab-media-wrap"><img src="images/WhatsApp Image 2025-09-15 at 08.42.39.jpeg" alt="Mesa de operação - Options & Company" loading="eager" fetchpriority="high"></div>
+      </section>
+      <section id="tab-indicadores" class="tab-panel" role="tabpanel" aria-labelledby="tablink-indicadores">
+        <div class="frame-wrap"><iframe title="Dashboard Looker Studio" src="https://indicadoresmesaco.netlify.app/" style="width:100%;height:70vh;border:0" sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe></div>
+      </section>
+    </main>
+  </div>
+
+  <aside class="sidebar" id="sidebar" aria-hidden="true">
+    <div class="sidebar-header"><h2>Menu</h2><button class="close-btn" id="close-sidebar" aria-label="Fechar menu">×</button></div>
+    <nav class="sidebar-links">
+      <a href="#home" id="tablink-home" data-tab-target="home" aria-controls="tab-home">Início</a>
+      <a id="link-biblioteca" href="https://bibliotecaco.netlify.app/" target="_blank" rel="noopener">Biblioteca</a>
+      <a href="https://indicadoresmesaco.netlify.app/" id="link-indicadores" target="_blank" rel="noopener">Indicadores</a>
+      <a href="https://chamadoadm.netlify.app" id="link-chamado-ti" target="_blank" rel="noopener">Suporte</a>
+      <a id="link-website" href="login.html" target="_blank" rel="noopener">Liderança</a>
+      <a id="link-beneficios" href="beneficios.html" target="_blank" rel="noopener">Beneficios</a>
+    </nav>
+  </aside>
+  <div class="overlay" id="overlay" hidden></div>
+
+  <!-- Modal Favoritos -->
+  <div id="fav-modal" class="menu-modal" aria-hidden="true">
+    <div class="overlay-blur" data-close-fav></div>
+    <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="fav-modal-title">
+      <div class="menu-header">
+        <h2 id="fav-modal-title" class="menu-title">Atalho</h2>
+        <button class="menu-close" type="button" aria-label="Fechar" data-close-fav>×</button>
+      </div>
+      <div style="display:grid;gap:10px;padding:10px 6px">
+        <label style="display:grid;gap:6px"><span>Nome</span><input id="fav-name" type="text" placeholder="Ex.: Planilhas" style="padding:10px;border-radius:10px;border:1px solid #ccc;background:#fff;color:#111"/></label>
+        <label style="display:grid;gap:6px"><span>URL</span><input id="fav-url" type="url" placeholder="Ex.: https://docs.google.com/spreadsheets/" style="padding:10px;border-radius:10px;border:1px solid #ccc;background:#fff;color:#111"/></label>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
+          <button type="button" class="menu-btn" data-close-fav>Cancelar</button>
+          <button id="fav-save" type="button" class="menu-btn" style="background:#418d75;border-color:#418d75">Concluir</button>
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Modal genérico de confirmação -->
-    <div id="confirm-modal" class="menu-modal" aria-hidden="true">
-      <div class="overlay-blur" data-confirm-cancel></div>
-      <div
-        class="menu-card"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="confirm-title"
-      >
-        <div class="menu-header">
-          <h2 id="confirm-title" class="menu-title">Confirmar ação</h2>
-          <button
-            class="menu-close"
-            type="button"
-            aria-label="Fechar"
-            data-confirm-cancel
-          >
-            ×
-          </button>
-        </div>
-        <div style="display: grid; gap: 12px; padding: 10px 6px">
-          <p id="confirm-message" style="opacity: 0.9"></p>
-          <div
-            style="
-              display: flex;
-              justify-content: flex-end;
-              gap: 8px;
-              margin-top: 6px;
-            "
-          >
-            <button type="button" class="menu-btn" data-confirm-cancel>
-              Cancelar
-            </button>
-            <button
-              type="button"
-              class="menu-btn"
-              id="confirm-ok"
-              style="background: #d24b4b; border-color: #d24b4b"
-            >
-              Remover
-            </button>
-          </div>
+  <!-- Modal confirmação -->
+  <div id="confirm-modal" class="menu-modal" aria-hidden="true">
+    <div class="overlay-blur" data-confirm-cancel></div>
+    <div class="menu-card" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="menu-header">
+        <h2 id="confirm-title" class="menu-title">Confirmar ação</h2>
+        <button class="menu-close" type="button" aria-label="Fechar" data-confirm-cancel>×</button>
+      </div>
+      <div style="display:grid;gap:12px;padding:10px 6px">
+        <p id="confirm-message" style="opacity:.9"></p>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:6px">
+          <button type="button" class="menu-btn" data-confirm-cancel>Cancelar</button>
+          <button type="button" class="menu-btn" id="confirm-ok" style="background:#d24b4b;border-color:#d24b4b">Remover</button>
         </div>
       </div>
     </div>
-
-    <!-- Notice / Announcement Modal -->
-<div id="notice-overlay" class="notice-overlay" hidden></div>
-
-<div
-  id="notice-modal"
-  class="notice-modal"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="notice-title"
-  aria-describedby="notice-desc"
-  hidden
->
-  <button class="notice-close" aria-label="Fechar aviso" title="Fechar">
-    <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-      <path
-        d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4Z"
-        fill="currentColor"
-      />
-    </svg>
-  </button>
-
-  <div class="notice-media">
-    <img src="images/academia-img.png" alt="">
   </div>
 
-  <div class="notice-content">
-    <h2 id="notice-title">Aviso Importante de teste</h2>
-    <p id="notice-desc">
-      Pequeno texto de apoio explicando o anúncio. Você pode incluir links,
-      datas e instruções rápidas.
-    </p>
-
-    <div class="notice-actions">
-      <a href="#" class="notice-cta">Saiba mais</a>
+  <!-- Notice -->
+  <div id="notice-overlay" class="notice-overlay" hidden></div>
+  <div id="notice-modal" class="notice-modal" role="dialog" aria-modal="true" aria-labelledby="notice-title" aria-describedby="notice-desc" hidden>
+    <button class="notice-close" aria-label="Fechar aviso" title="Fechar">
+      <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4Z" fill="currentColor"/></svg>
+    </button>
+    <div class="notice-media"><img src="images/academia-img.png" alt=""></div>
+    <div class="notice-content">
+      <h2 id="notice-title">Aviso Importante de teste</h2>
+      <p id="notice-desc">Pequeno texto de apoio explicando o anúncio. Você pode incluir links, datas e instruções rápidas.</p>
+      <div class="notice-actions"><a href="#" class="notice-cta">Saiba mais</a></div>
     </div>
   </div>
-</div>
 
+  <!-- Firebase + Auth + Favoritos -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import { getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence,signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+    import { getRemoteConfig,fetchAndActivate,getValue } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-remote-config.js";
+    import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,updateDoc,deleteDoc,onSnapshot,orderBy,serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
-    <!-- Firebase + Auth + Favoritos -->
-    <script type="module">
-      /* ===== Firebase SDKs ===== */
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-      import {
-        getAuth,
-        onAuthStateChanged,
-        setPersistence,
-        browserLocalPersistence,
-        signOut,
-      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
-      import {
-        getRemoteConfig,
-        fetchAndActivate,
-        getValue,
-      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-remote-config.js";
+    const ready=new Promise(r=>{document.readyState.match(/complete|interactive/)?r():document.addEventListener("DOMContentLoaded",r,{once:true})});
+    const wait=(sel,t=3e3)=>new Promise((res,rej)=>{const f=()=>document.querySelector(sel);if(f())return res(f());const m=new MutationObserver(()=>f()&&(m.disconnect(),res(f())));m.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>{m.disconnect();rej(Error("Elemento não encontrado: "+sel))},t)});
+    document.documentElement.classList.add("auth-checking");
 
-      /* Firestore */
-      import {
-        getFirestore,
-        doc,
-        getDoc,
-        collection,
-        query,
-        where,
-        getDocs,
-        limit,
-        addDoc,
-        updateDoc,
-        deleteDoc,
-        onSnapshot,
-        orderBy,
-        serverTimestamp,
-      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+    const cfg={apiKey:"AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",authDomain:"login-intranet-96213.firebaseapp.com",projectId:"login-intranet-96213",storageBucket:"login-intranet-96213.firebasestorage.app",messagingSenderId:"492024716317",appId:"1:492024716317:web:17dd14c4b8decc8a86faf4",measurementId:"G-1KB77SBJ7L"};
+    const app=initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+    const LOGIN_URL="index.html";
+    await setPersistence(auth,browserLocalPersistence);
 
-      const domReady = new Promise((resolve) => {
-  if (document.readyState === "complete" || document.readyState === "interactive") resolve();
-  else document.addEventListener("DOMContentLoaded", resolve, { once: true });
-});
+    const allow=()=>document.documentElement.classList.remove("auth-checking");
+    const block=async()=>{try{await signOut(auth)}catch{};location.replace(LOGIN_URL)};
+    const okEmail=e=>(e||"").toLowerCase().split("@").pop()?.trim()==="optionsco.com.br";
 
-const waitForEl = (selector, timeout = 3000) =>
-  new Promise((resolve, reject) => {
-    const el = document.querySelector(selector);
-    if (el) return resolve(el);
-    const obs = new MutationObserver(() => {
-      const n = document.querySelector(selector);
-      if (n) { obs.disconnect(); resolve(n); }
-    });
-    obs.observe(document.documentElement, { childList: true, subtree: true });
-    setTimeout(() => { obs.disconnect(); reject(new Error(`Elemento não encontrado: ${selector}`)); }, timeout);
-  });
-
-      // Oculta a página até confirmar a sessão
-      document.documentElement.classList.add("auth-checking");
-
-      // ===== Config =====
-      const firebaseConfig = {
-        apiKey: "AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",
-        authDomain: "login-intranet-96213.firebaseapp.com",
-        projectId: "login-intranet-96213",
-        storageBucket: "login-intranet-96213.firebasestorage.app",
-        messagingSenderId: "492024716317",
-        appId: "1:492024716317:web:17dd14c4b8decc8a86faf4",
-        measurementId: "G-1KB77SBJ7L",
-      };
-
-      const LOGIN_URL = "index.html";
-
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
-
-      // Mantém login entre recarregamentos
-      await setPersistence(auth, browserLocalPersistence);
-
-      // Permite apenas o domínio corporativo
-      const isAllowedEmail = (email) => {
-        const domain = (email || "").toLowerCase().split("@").pop()?.trim();
-        return domain === "optionsco.com.br";
-      };
-
-      const allowPage = () =>
-        document.documentElement.classList.remove("auth-checking");
-      const blockAndRedirect = async () => {
-        try {
-          await signOut(auth);
-        } catch {}
-        window.location.replace(LOGIN_URL);
-      };
-
-      // 🔎 Tenta achar displayName por UID; se não existir, tenta por email
-      async function fetchNiceName(user) {
-        const uid = user.uid;
-        const email = user.email || "";
-
-        // 1) por UID
-        try {
-          const ref = doc(db, "users", uid);
-          const snap = await getDoc(ref);
-          if (snap.exists()) {
-            const d = snap.data();
-            if (d?.displayName) return String(d.displayName);
-          }
-        } catch (e) {
-          console.warn("[fetch by uid] erro:", e);
-        }
-
-        // 2) por email (primeiro resultado)
-        try {
-          if (email) {
-            const q = query(
-              collection(db, "users"),
-              where("email", "==", email),
-              limit(1)
-            );
-            const qs = await getDocs(q);
-            if (!qs.empty) {
-              const d = qs.docs[0].data();
-              if (d?.displayName) return String(d.displayName);
-            }
-          }
-        } catch (e) {
-          console.warn("[fetch by email] erro:", e);
-        }
-
-        // 3) fallback
-        return user.displayName || (email ? email.split("@")[0] : "Usuário");
-      }
-
-      // ✅ Busca nome e renderiza "Olá, ..."
-      async function loadProfileAndRenderTop(user) {
-        const el = document.getElementById("welcomeUser");
-        try {
-          let niceName = await fetchNiceName(user);
-          if (typeof niceName === "string") {
-            niceName = niceName
-              .replace(/^[“”"']+|[“”"']+$/g, "")
-              .replace(/\s+/g, " ")
-              .trim();
-          }
-          if (el) el.textContent = `Olá, ${niceName}`;
-        } catch (err) {
-          console.error("[loadProfileAndRenderTop]", err);
-          if (el) el.textContent = "Olá!";
-        }
-      }
-
-      // ===== Utilitários visuais (injeta container + estilos dos chips) =====
-      function ensureQuickShortcutsContainer() {
-        let chipRow = document.getElementById("quick-chip-row");
-        if (chipRow) return chipRow;
-
-        const form = document.querySelector(".site-search");
-        if (!form || !form.parentElement) return null;
-
-        const nav = document.createElement("nav");
-        nav.id = "quick-shortcuts";
-        nav.className = "quick-shortcuts";
-        nav.setAttribute("aria-label", "Atalhos rápidos");
-
-        chipRow = document.createElement("div");
-        chipRow.id = "quick-chip-row";
-        chipRow.className = "chip-row";
-        chipRow.setAttribute("role", "list");
-
-        nav.appendChild(chipRow);
-        form.parentElement.insertBefore(nav, form.nextSibling);
-        return chipRow;
-      }
-
-      function injectQuickShortcutStyles() {
-        if (document.getElementById("quick-shortcuts-styles")) return;
-        const css = `
-            .quick-shortcuts{width:100%;max-width:640px;margin-top:10px}
-            .chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:4px;overflow-x:auto}
-            .shortcut-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;text-decoration:none;color:#fff;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(4px);transition:background .2s,transform .06s,border-color .2s;white-space:nowrap}
-            .shortcut-chip:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}
-            .shortcut-chip:active{transform:translateY(1px)}
-            .shortcut-chip img{width:18px;height:18px;border-radius:4px;display:block}
-            .shortcut-add{font-weight:700;border-style:dashed;border-color:rgba(255,255,255,.22);cursor:pointer;background:transparent}
-            @media (max-width:640px){.quick-shortcuts{max-width:90vw}}
-          `;
-        const style = document.createElement("style");
-        style.id = "quick-shortcuts-styles";
-        style.textContent = css;
-        document.head.appendChild(style);
-      }
-
-      // ====== FAVORITOS (users/{uid}/favorites) ======
-      function faviconFor(url) {
-        try {
-          const u = new URL(/^https?:\/\//i.test(url) ? url : "https://" + url);
-          return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`;
-        } catch {
-          return "images/favicon_google.ico";
-        }
-      }
-      function normalizeUrl(url) {
-        const t = (url || "").trim();
-        if (!t) return "";
-        if (/^https?:\/\//i.test(t)) return t;
-        return "https://" + t;
-      }
-
-      function renderFavCard(docData) {
-        const a = document.createElement("a");
-        a.className = "app";
-        a.href = docData.url;
-        a.target = "_blank";
-        a.rel = "noopener";
-        a.role = "menuitem";
-
-        const img = document.createElement("img");
-        img.src = docData.icon || faviconFor(docData.url);
-        img.alt = "";
-        img.referrerPolicy = "no-referrer";
-
-        const span = document.createElement("span");
-        span.textContent = docData.name || docData.url;
-
-        // botão remover (canto)
-        const rm = document.createElement("button");
-        rm.type = "button";
-        rm.title = "Remover";
-        rm.style.cssText =
-          "position:absolute; top:6px; right:6px; border:0; background:rgba(0,0,0,.2); color:#fff; width:22px; height:22px; border-radius:6px; cursor:pointer;";
-        rm.textContent = "×";
-        rm.addEventListener("click", async (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          if (!confirm(`Remover "${docData.name}"?`)) return;
-          await deleteDoc(docData._ref);
-        });
-
-        const wrap = document.createElement("div");
-        wrap.style.position = "relative";
-        wrap.appendChild(img);
-        wrap.appendChild(rm);
-
-        a.append(wrap, span);
-        return a;
-      }
-
-      // Modal de confirmação que retorna uma Promise<boolean>
-      function confirmPopup({
-        title = "Confirmar ação",
-        message = "Tem certeza?",
-        confirmText = "OK",
-      } = {}) {
-        return new Promise((resolve) => {
-          const modal = document.getElementById("confirm-modal");
-          const titleEl = modal.querySelector("#confirm-title");
-          const msgEl = modal.querySelector("#confirm-message");
-          const okBtn = modal.querySelector("#confirm-ok");
-          const cancelEls = modal.querySelectorAll("[data-confirm-cancel]");
-
-          let lastFocused = document.activeElement;
-          const open = () => {
-            titleEl.textContent = title;
-            msgEl.textContent = message;
-            okBtn.textContent = confirmText;
-
-            modal.classList.add("is-open");
-            modal.setAttribute("aria-hidden", "false");
-            document.body.style.overflow = "hidden";
-            setTimeout(() => okBtn?.focus?.(), 0);
-            document.addEventListener("keydown", onKeydown);
-          };
-          const close = (answer) => {
-            modal.classList.remove("is-open");
-            modal.setAttribute("aria-hidden", "true");
-            document.body.style.overflow = "";
-            document.removeEventListener("keydown", onKeydown);
-            if (lastFocused && lastFocused.focus) lastFocused.focus();
-            resolve(answer);
-          };
-          const onKeydown = (e) => {
-            if (e.key === "Escape") close(false);
-            if (e.key === "Enter") close(true);
-          };
-
-          okBtn.onclick = () => close(true);
-          cancelEls.forEach((el) => (el.onclick = () => close(false)));
-
-          open();
-        });
-      }
-
-      function bindFavModal(favsCol) {
-        const modal = document.getElementById("fav-modal");
-        const inputName = document.getElementById("fav-name");
-        const inputUrl = document.getElementById("fav-url");
-        const btnSave = document.getElementById("fav-save");
-
-        const open = () => {
-          modal.classList.add("is-open");
-          modal.setAttribute("aria-hidden", "false");
-          inputName.value = "";
-          inputUrl.value = "";
-          setTimeout(() => inputName?.focus?.(), 0);
-          document.body.style.overflow = "hidden";
-        };
-        const close = () => {
-          modal.classList.remove("is-open");
-          modal.setAttribute("aria-hidden", "true");
-          document.body.style.overflow = "";
-        };
-
-        // Delegação para qualquer [data-open-fav-modal]
-        document.addEventListener("click", (e) => {
-          const btn = e.target.closest("[data-open-fav-modal]");
-          if (btn) open();
-          if (e.target.matches("[data-close-fav]")) close();
-        });
-        document.addEventListener("keydown", (e) => {
-          if (e.key === "Escape" && modal.classList.contains("is-open"))
-            close();
-        });
-
-        btnSave?.addEventListener("click", async () => {
-          const name = inputName.value.trim();
-          const url = normalizeUrl(inputUrl.value);
-          if (!name || !url) return alert("Preencha Nome e URL.");
-          try {
-            await addDoc(favsCol, {
-              name,
-              url,
-              icon: faviconFor(url),
-              createdAt: serverTimestamp(),
-            });
-            close();
-          } catch (e) {
-            console.error("Erro ao salvar favorito:", e);
-            alert("Não foi possível salvar o atalho.");
-          }
-        });
-      }
-
-      // ===== NOVO: renderização dos favoritos também como "chips" abaixo da busca =====
-      // ===== NOVO: favoritos só como "chips" abaixo da busca =====
-      function initFavorites(user) {
-        const chipRow = ensureQuickShortcutsContainer(); // abaixo da busca
-        injectQuickShortcutStyles();
-        if (!chipRow) return;
-
-        const favsCol = collection(db, "users", user.uid, "favorites");
-        bindFavModal(favsCol); // mantém o modal para "+ Atalho"
-
-        // helper: cria um <a> chip
-        function renderChip(docData) {
-          const a = document.createElement("a");
-          a.className = "shortcut-chip";
-          a.href = docData.url;
-          a.target = "_blank";
-          a.rel = "noopener";
-          a.role = "listitem";
-          a.style.position = "relative"; // para posicionar o botão "×"
-
-          const img = document.createElement("img");
-          img.src = docData.icon || faviconFor(docData.url);
-          img.alt = "";
-          img.referrerPolicy = "no-referrer";
-
-          const span = document.createElement("span");
-          span.textContent = docData.name || docData.url;
-
-          // --- Botão remover (pequeno "×") ---
-          const rm = document.createElement("button");
-          rm.type = "button";
-          rm.title = "Remover atalho";
-          rm.textContent = "×";
-          rm.style.cssText = `
-      position:absolute; top:-6px; right:-6px;
-      width:20px; height:20px; border-radius:50%;
-      border:0; cursor:pointer;
-      background: rgba(0,0,0,.55); color:#fff;
-      display:grid; place-items:center; line-height:1;
-    `;
-          rm.addEventListener("click", async (e) => {
-            e.preventDefault(); // não abre o link
-            e.stopPropagation();
-
-            const ok = await confirmPopup({
-              title: "Remover atalho",
-              message: `Tem certeza que deseja remover "${
-                docData.name || docData.url
-              }"?`,
-              confirmText: "Remover",
-            });
-            if (!ok) return;
-
-            try {
-              await deleteDoc(docData._ref);
-            } catch (err) {
-              console.error("Erro ao remover favorito:", err);
-              alert("Não foi possível remover o atalho.");
-            }
-          });
-
-          a.append(img, span, rm);
-          return a;
-        }
-
-        // chip de adicionar (“+ Atalho”) → abre o mesmo modal
-        function renderAddChip() {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "shortcut-chip shortcut-add";
-          btn.setAttribute("data-open-fav-modal", "");
-          btn.textContent = "+ Atalho";
-          return btn;
-        }
-
-        // Defaults quando o usuário ainda não tem favoritos
-        const DEFAULT_CHIPS = [
-          { name: "Google", url: "https://www.google.com" },
-          { name: "ChatGPT", url: "https://chatgpt.com" },
-        ];
-
-        const qFavs = query(favsCol, orderBy("createdAt", "asc"));
-        onSnapshot(qFavs, (snap) => {
-          chipRow.innerHTML = "";
-
-          const docs = snap.docs.map((d) => ({
-            id: d.id,
-            ...d.data(),
-            _ref: d.ref,
-          }));
-
-          if (docs.length) {
-            docs.forEach((d) => chipRow.appendChild(renderChip(d)));
-            chipRow.appendChild(renderAddChip());
-          } else {
-            DEFAULT_CHIPS.forEach((d) => {
-              chipRow.appendChild(
-                renderChip({
-                  name: d.name,
-                  url: d.url,
-                  icon: faviconFor(d.url),
-                })
-              );
-            });
-            chipRow.appendChild(renderAddChip());
-          }
-        });
-      }
-
-      // ========= POPUP: lógica por usuário + versão + TTL + força por query =========
-async function initNotice(user) {
-  // Remote Config (opcional, já importado no topo)
-  const rc = getRemoteConfig();
-  rc.settings = { minimumFetchIntervalMillis: 60_000 }; // 1 min p/ testes
-  let rcFetched = false;
-  try { await fetchAndActivate(rc); rcFetched = true; } catch {}
-
-  // Padrão local (se não usar Remote Config)
-  const DEFAULT_VERSION = "2025-09-lancamento"; // mude para reexibir
-  const DEFAULT_TTL_DAYS = 0;                   // 0 = sem expirar
-
-  // Busca valores no RC (se existirem)
-  const rcVersion = rcFetched ? String(getValue(rc, "notice_version").asString() || "") : "";
-  const rcTTLDays = rcFetched ? Number(getValue(rc, "notice_ttl_days").asString() || "0") : 0;
-
-  const NOTICE_VERSION = rcVersion || DEFAULT_VERSION;
-  const TTL_DAYS = Number.isFinite(rcTTLDays) ? rcTTLDays : DEFAULT_TTL_DAYS;
-
-  // Elementos
-  const modal = document.getElementById("notice-modal");
-  const overlay = document.getElementById("notice-overlay");
-  const closeBtn = modal?.querySelector?.(".notice-close");
-  if (!modal || !overlay) { console.warn("[notice] HTML não encontrado"); return; }
-
-  // Estado por usuário
-  const STORAGE_KEY = `notice:${user.uid}`;
-  const TTL_MS = TTL_DAYS > 0 ? TTL_DAYS * 24 * 60 * 60 * 1000 : 0;
-  const now = Date.now();
-
-  const getState = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; } };
-  const setState = (s) => localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-
-  const forceByQuery = () => new URL(location.href).searchParams.get("showNotice") === "1";
-
-  const shouldOpen = () => {
-    if (forceByQuery()) return true;
-    const s = getState();
-    if (s.version !== NOTICE_VERSION) return true;       // versão mudou
-    if (!s.dismissed) return true;                       // nunca fechado
-    if (TTL_MS && s.dismissedAt && now - s.dismissedAt >= TTL_MS) return true; // TTL venceu
-    return false;
+    const fetchNiceName=async u=>{
+      const uid=u.uid,email=u.email||"";
+      try{const s=await getDoc(doc(db,"users",uid)); if(s.exists()&&s.data()?.displayName)return String(s.data().displayName)}catch{}
+      try{ if(email){const qs=await getDocs(query(collection(db,"users"),where("email","==",email),limit(1))); if(!qs.empty){const d=qs.docs[0].data(); if(d?.displayName)return String(d.displayName)}}}catch{}
+      return u.displayName || (email?email.split("@")[0]:"Usuário");
     };
 
-  function open() {
-    overlay.hidden = false;
-    modal.hidden = false;
-    void modal.offsetWidth;
-    modal.setAttribute("data-open", "true");
-    closeBtn?.focus?.();
-    document.documentElement.style.overflow = "hidden";
-  }
+    const renderWelcome=async u=>{
+      const el=document.getElementById("welcomeUser");
+      try{let n=(await fetchNiceName(u))||""; n=String(n).replace(/^[“”"']+|[“”"']+$/g,"").replace(/\s+/g," ").trim(); el&&(el.textContent="Olá, "+n)}catch{el&&(el.textContent="Olá!")}
+    };
 
-  function close() {
-    modal.removeAttribute("data-open");
-    setTimeout(() => {
-      overlay.hidden = true;
-      modal.hidden = true;
-      document.documentElement.style.overflow = "";
-    }, 200);
+    const ensureChips=()=>{
+      let row=document.getElementById("quick-chip-row"); if(row) return row;
+      const form=document.querySelector(".site-search"); if(!form||!form.parentElement) return null;
+      const nav=document.createElement("nav"); nav.id="quick-shortcuts"; nav.className="quick-shortcuts"; nav.setAttribute("aria-label","Atalhos rápidos");
+      row=document.createElement("div"); row.id="quick-chip-row"; row.className="chip-row"; row.setAttribute("role","list");
+      nav.appendChild(row); form.parentElement.insertBefore(nav,form.nextSibling); return row;
+    };
 
-    setState({ version: NOTICE_VERSION, dismissed: true, dismissedAt: Date.now() });
-  }
+    const injectChipCSS=()=>{
+      if(document.getElementById("quick-shortcuts-styles"))return;
+      const css=`.quick-shortcuts{width:100%;max-width:640px;margin-top:10px}.chip-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;padding:4px;overflow-x:auto}.shortcut-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;text-decoration:none;color:#fff;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(4px);transition:background .2s,transform .06s,border-color .2s;white-space:nowrap}.shortcut-chip:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.22)}.shortcut-chip:active{transform:translateY(1px)}.shortcut-chip img{width:18px;height:18px;border-radius:4px;display:block}.shortcut-add{font-weight:700;border-style:dashed;border-color:rgba(255,255,255,.22);cursor:pointer;background:transparent}@media (max-width:640px){.quick-shortcuts{max-width:90vw}}`;
+      const s=document.createElement("style"); s.id="quick-shortcuts-styles"; s.textContent=css; document.head.appendChild(s);
+    };
 
-  // Eventos
-  closeBtn?.addEventListener("click", close);
-  window.addEventListener("keydown", (e) => {
-    if (!modal.hidden && (e.key === "Escape" || e.key === "Esc")) { e.preventDefault(); close(); }
-  });
+    const favIcon=u=>{try{const x=new URL(/^https?:\/\//i.test(u)?u:"https://"+u);return`https://www.google.com/s2/favicons?domain=${x.hostname}&sz=32`}catch{return"images/favicon_google.ico"}};
+    const normUrl=u=>{u=(u||"").trim(); return u?(/^https?:\/\//i.test(u)?u:"https://"+u):""};
 
-  // API p/ você testar no console
-  window.notice = {
-    open,
-    close,
-    reset(){ localStorage.removeItem(STORAGE_KEY); },  // limpa estado
-    setVersion(v){ localStorage.removeItem(STORAGE_KEY); console.warn("NOTICE_VERSION ->", v); open(); },
-    state: () => getState(),
-  };
+    const confirmPopup=({title="Confirmar ação",message="Tem certeza?",confirmText="OK"}={})=>new Promise(r=>{
+      const modal=document.getElementById("confirm-modal"),t=modal.querySelector("#confirm-title"),m=modal.querySelector("#confirm-message"),ok=modal.querySelector("#confirm-ok"),c=modal.querySelectorAll("[data-confirm-cancel]");
+      let last=document.activeElement;
+      const close=v=>{modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");document.body.style.overflow="";document.removeEventListener("keydown",k);last?.focus?.();r(v)};
+      const k=e=>{if(e.key==="Escape")close(false);if(e.key==="Enter")close(true)};
+      t.textContent=title; m.textContent=message; ok.textContent=confirmText;
+      modal.classList.add("is-open"); modal.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden"; setTimeout(()=>ok?.focus?.(),0);
+      document.addEventListener("keydown",k);
+      ok.onclick=()=>close(true); c.forEach(el=>el.onclick=()=>close(false));
+    });
 
-  // Dispara após login validado
-  if (shouldOpen()) open();
-}
-
-
-      // 🔐 Guarda de rota
-      onAuthStateChanged(auth, async (user) => {
-        try {
-          if (!user) return blockAndRedirect();
-          if (!isAllowedEmail(user.email)) return blockAndRedirect();
-
-          allowPage();
-await domReady;                         // garante DOM pronto
-
-// garante que o container dos chips existe antes de montar favoritos
-await waitForEl(".site-search");       
-initFavorites(user);
-
-// garante que o HTML do popup existe antes de abrir
-await Promise.all([
-  waitForEl("#notice-modal"),
-  waitForEl("#notice-overlay"),
-]);
-// ✅ Somente estes dois e-mails devem ver SEMPRE
-const NOTICE_ALLOWED = [
-  "ssilva@optionsco.com.br",
-  "asantana@optionsco.com.br",
-];
-
-const userEmail = (user.email || "").toLowerCase();
-if (NOTICE_ALLOWED.includes(userEmail)) {
-  await initNotice(user);      // prepara a API window.notice
-  window.notice?.open();       // 🔥 força abrir em toda visita
-} else {
-  const overlay = document.getElementById("notice-overlay");
-  const modal = document.getElementById("notice-modal");
-  if (overlay) overlay.hidden = true;
-  if (modal) { modal.hidden = true; modal.removeAttribute("data-open"); }
-}
-        } catch (e) {
-          console.error("[auth state]", e);
-          blockAndRedirect();
-        }
+    const bindFavModal=col=>{
+      const modal=document.getElementById("fav-modal"),name=document.getElementById("fav-name"),url=document.getElementById("fav-url"),save=document.getElementById("fav-save");
+      const open=()=>{modal.classList.add("is-open");modal.setAttribute("aria-hidden","false");name.value="";url.value="";setTimeout(()=>name?.focus?.(),0);document.body.style.overflow="hidden"};
+      const close=()=>{modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");document.body.style.overflow=""};
+      document.addEventListener("click",e=>{const b=e.target.closest("[data-open-fav-modal]"); if(b) open(); if(e.target.matches("[data-close-fav]")) close()});
+      document.addEventListener("keydown",e=>{if(e.key==="Escape"&&modal.classList.contains("is-open")) close()});
+      save?.addEventListener("click",async()=>{
+        const n=name.value.trim(), u=normUrl(url.value);
+        if(!n||!u) return alert("Preencha Nome e URL.");
+        try{ await addDoc(col,{name:n,url:u,icon:favIcon(u),createdAt:serverTimestamp()}); close(); }catch{ alert("Não foi possível salvar o atalho."); }
       });
-    </script>
-
-    
-
-
-
-
-    <!-- ===== Scripts do UI (dropdown, modal principal, abas, busca) ===== -->
-     
-<script>
-(() => {
-  /* === Dropdown Ferramentas === */
-  const btn = document.querySelector("#google-button"), dd = document.querySelector("#google-dropdown");
-  if (btn && dd) {
-    const set = v => { dd.classList.toggle("show", v); btn.setAttribute("aria-expanded", v?"true":"false"); dd.setAttribute("aria-hidden", v?"false":"true"); };
-    btn.addEventListener("click", e => { e.stopPropagation(); set(!dd.classList.contains("show")); });
-    document.addEventListener("click", e => dd.classList.contains("show") && !dd.contains(e.target) && e.target !== btn && set(false));
-    document.addEventListener("keydown", e => e.key === "Escape" && set(false));
-  }
-
-  /* === Modal do Menu === */
-  const openBtn = document.querySelector("#menu-toggle"), modal = document.querySelector("#menu-modal");
-  if (openBtn && modal) {
-    let lastFocused = null;
-    const setOpen = v => {
-      if (v) {
-        lastFocused = document.activeElement;
-        modal.classList.add("is-open"); modal.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
-        setTimeout(() => modal.querySelector("#menu-modal-title")?.focus?.(), 0);
-      } else {
-        modal.classList.remove("is-open"); modal.setAttribute("aria-hidden","true"); document.body.style.overflow="";
-        lastFocused?.focus?.();
-      }
-    };
-    openBtn.addEventListener("click", e => { e.preventDefault(); setOpen(true); openBtn.setAttribute("aria-expanded","true"); });
-    modal.addEventListener("click", e => e.target.closest("[data-close-modal]") && (setOpen(false), openBtn.setAttribute("aria-expanded","false"))); // delegação p/ todos os botões de fechar
-    document.addEventListener("keydown", e => e.key==="Escape" && modal.classList.contains("is-open") && (setOpen(false), openBtn.setAttribute("aria-expanded","false")));
-    modal.addEventListener("keydown", e => { if (e.key!=="Tab") return; const f = [...modal.querySelectorAll('a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null); if(!f.length) return; const [first,last]=[f[0],f.at(-1)]; if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()} else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()} });
-    modal.querySelectorAll("[data-tab-target]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); const t=a.getAttribute("data-tab-target"); if (t && window.openTab) window.openTab(t); setOpen(false); openBtn.setAttribute("aria-expanded","false"); }));
-  }
-
-  /* === Sistema de Abas === */
-  (() => {
-    const KEY="lastTab_v1", panels={ home:document.querySelector("#tab-home") };
-    const aria = (p, on) => { const id=p?.getAttribute("aria-labelledby"); id && document.getElementById(id)?.setAttribute("aria-current", on?"page":"false"); };
-    const activate = tab => {
-      Object.keys(panels).forEach(k => { const p=panels[k]; p?.classList.toggle("active", k===tab); aria(p, k===tab); });
-      try{ localStorage.setItem(KEY, tab); }catch{}
-      if (tab==="home") history.replaceState(null,"","#home");
-    };
-    document.querySelectorAll("[data-tab-target]").forEach(a => a.addEventListener("click", e => { e.preventDefault(); const t=a.getAttribute("data-tab-target"); t && panels[t] && activate(t); }));
-    const fromHashOrStorage = () => {
-      const h=(location.hash||"").replace("#","").toLowerCase();
-      if (h && panels[h]) return activate(h);
-      try{ const s=localStorage.getItem(KEY); if (s && panels[s]) return activate(s);}catch{}
-      activate("home");
-    };
-    addEventListener("hashchange", () => { const h=(location.hash||"").replace("#","").toLowerCase(); h && panels[h] && activate(h); });
-    fromHashOrStorage();
-    window.openTab = activate;
-  })();
-
-  /* === Autocomplete + recentes === */
-  (() => {
-    const INPUT="#q", PANEL="#suggestions", FORM="#search-form";
-    const RECENTS="recentSearches_v1", MAX_R=10, LIMIT=10;
-    const STANDARD_SITES=[{name:"Google",domain:"google.com" ,category:"Busca"},
-      {name:"YouTube","domain":"youtube.com",category:"Vídeos"},
-      {name:"Facebook","domain":"facebook.com",category:"Rede social"},
-      {name:"Instagram","domain":"instagram.com",category:"Rede social"},
-      {name:"ChatGPT","domain":"chatgpt.com",category:"Inteligência artificial"},
-      {name:"X","domain":"x.com",category:"Rede social"},
-      {name:"Amazon","domain":"amazon.com",category:"Comércio eletrônico"},
-      {name:"LinkedIn","domain":"linkedin.com",category:"Rede social profissional"},
-      {name:"Netflix","domain":"netflix.com",category:"Streaming de filmes e séries"},
-      {name:"Gemini","domain":"gemini.google.com",category:"IA do Google"},
-      {name:"InfoMoney","domain":"infomoney.com.br",category:"Finanças"},
-      {name:"CNN","domain":"cnn.com",category:"Notícias gerais e economia"},
-      {name:"Looker Studio","domain":"lookerstudio.google.com",category:"Análise de dados"},
-      {name:"Google Sheets","domain":"sheets.google.com",category:"Planilhas"},
-      {name:"WhatsApp Web","domain":"web.whatsapp.com",category:"Mensagens"},
-      {name:"Formulários Google","domain":"forms.google.com",category:"Formulários"},
-      {name:"Canva","domain":"canva.com",category:"Design gráfico"},
-      {name:"Wikipedia","domain":"wikipedia.org",category:"Enciclopédia"},
-      {name:"Pinterest","domain":"pinterest.com",category:"Rede social"},
-      {name:"Globo","domain":"globo.com",category:"Portal / Notícias"},
-      {name:"Telegram","domain":"t.me",category:"Mensagens"},
-      {name:"The New York Times","domain":"nytimes.com",category:"Portal / Notícias"},
-      {name:"AliExpress","domain":"aliexpress.com",category:"Comércio eletrônico"},
-      {name:"Discord","domain":"discord.com",category:"Comunicação / Voz e texto"},
-      {name:"BBC","domain":"bbc.com",category:"Notícias internacionais"},
-      {name:"Speedtest by Ookla","domain":"speedtest.net",category:"Teste de velocidade"},
-      {name:"Gmail","domain":"mail.google.com",category:"E-mail"},
-      {name:"Google Drive","domain":"drive.google.com",category:"Armazenamento em nuvem"},
-      {name:"Google Docs","domain":"docs.google.com",category:"Documentos"},
-      {name:"Google Slides","domain":"slides.google.com",category:"Apresentações"},
-      {name:"Google Keep","domain":"keep.google.com",category:"Anotações"},
-      {name:"Google Calendar","domain":"calendar.google.com",category:"Agenda"},
-      {name:"Google Meet","domain":"meet.google.com",category:"Videoconferência"},
-      {name:"Google Chat","domain":"chat.google.com",category:"Mensagens"},
-      {name:"Google Maps","domain":"maps.google.com",category:"Mapas e navegação"},
-      {name:"Google Earth","domain":"earth.google.com",category:"Mapas e visualização 3D"},
-      {name:"Google Translate","domain":"translate.google.com",category:"Tradução"},
-      {name:"Google Photos","domain":"photos.google.com",category:"Fotos e álbuns"},
-      {name:"Google News","domain":"news.google.com",category:"Notícias"},
-      {name:"Google Finance","domain":"google.com/finance",category:"Finanças"},
-      {name:"Google Flights","domain":"google.com/flights",category:"Viagens"},
-      {name:"Google Books","domain":"books.google.com",category:"Livros"},
-      {name:"Google Play","domain":"play.google.com",category:"Loja de apps e mídia"},
-      {name:"Google Podcasts","domain":"podcasts.google.com",category:"Podcasts"},
-      {name:"Google Classroom","domain":"classroom.google.com",category:"Educação"},
-      {name:"Google Arts & Culture","domain":"artsandculture.google.com",category:"Arte e cultura"},
-      {name:"Google Ads","domain":"ads.google.com",category:"Publicidade"},
-      {name:"Google Analytics","domain":"analytics.google.com",category:"Métricas e estatísticas"},
-      {name:"Google Tag Manager","domain":"tagmanager.google.com",category:"Gerenciamento de tags"},
-      {name:"Google Cloud","domain":"cloud.google.com",category:"Serviços em nuvem"},
-      {name:"Google Colab","domain":"colab.research.google.com",category:"Notebooks de IA"},
-      {name:"Spotify","domain":"spotify.com",category:"Streaming de música"},
-      {name:"YouTube Music","domain":"music.youtube.com",category:"Streaming de música"},
-      {name:"Tryd","domain":"tryd.com.br",category:"Tryd"},
-      {name:"Fast trade","domain":"plataformafasttrade.com.br",category:"Fast Trade"},
-      {name:"Chat Guru","domain":"chatguru.com.br",category:"Chat Guru"},
-      {name:"Brasil Jornal","domain":"braziljournal.com",category:"Notícias"},
-      {name:"Flex Scan","domain":"login.flexscan.com.br",category:"Flexscan"},
-      {name:"Git Hub","domain":"github.com",category:"Git Hub"}];
-    const SHORTCUTS=[{re:/^y(t|o|outube)?$/i,items:["YouTube","youtube.com"]},{re:/^g(mail)?$/i,items:["Gmail","mail.google.com"]},{re:/^c(al|alendar)?$/i,items:["Google Calendar","calendar.google.com"]},{re:/^m(eet)?$/i,items:["Google Meet","meet.google.com"]},{re:/^(d|drive)$/i,items:["Google Drive","drive.google.com"]},{re:/^(s|sheets?)$/i,items:["Google Sheets","docs.google.com/spreadsheets/"]}];
-
-    const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
-    const norm = s => (s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
-    const toks = q => norm(q).split(/\s+/).filter(t=>t.length>=2);
-    const looksUrl = t => (t=t.trim(), /\./.test(t) && !/\s/.test(t));
-    const hostFrom = t => { try{ const u=/^https?:\/\//i.test(t)?t:"https://"+t; return new URL(u).hostname; }catch{ return null; } };
-    const favicon = v => { const h = hostFrom(v); return h?`https://www.google.com/s2/favicons?domain=${h}&sz=32`:null; };
-    const uniqBy = (arr, key) => { const s=new Set, out=[]; for (const v of arr){ const k=key(v); if(!s.has(k)){s.add(k); out.push(v);} } return out; };
-
-    const recents = () => { try{ return JSON.parse(localStorage.getItem(RECENTS)||"[]"); }catch{ return []; } };
-    const saveRecent = q => { const t=q.trim(); if(!t) return; let a=recents().filter(v=>v.toLowerCase()!==t.toLowerCase()); a.unshift(t); if(a.length>MAX_R) a=a.slice(0,MAX_R); localStorage.setItem(RECENTS, JSON.stringify(a)); };
-    const removeRecent = lbl => { const tgt=(lbl||"").trim().toLowerCase(); localStorage.setItem(RECENTS, JSON.stringify(recents().filter(v=>v.toLowerCase()!==tgt))); };
-
-    const googleSuggest = async q => {
-      if (!q) return [];
-      try{ const r=await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`,{mode:"cors"}); if(!r.ok) return []; const d=await r.json(); return Array.isArray(d?.[1])?d[1]:[]; }catch{ return []; }
     };
 
-    const item = (label, type="sugestao", opt={}) => {
-      const isUrl = opt.fillValue ? looksUrl(opt.fillValue) : looksUrl(label);
-      return {
-        label,
-        subtitle: opt.subtitleOverride ?? (isUrl ? (opt.fillValue||label).replace(/^https?:\/\//i,"") : type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão"),
-        badge: type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão",
-        icon: opt.iconOverride ?? (isUrl ? (favicon(opt.fillValue||label)||"") : "images/favicon_google.ico"),
-        type, isUrl, fillValue: opt.fillValue||label
+    const initFavorites=u=>{
+      const row=ensureChips(); injectChipCSS(); if(!row) return;
+      const col=collection(db,"users",u.uid,"favorites"); bindFavModal(col);
+      const chip=d=>{
+        const a=document.createElement("a"); a.className="shortcut-chip"; a.href=d.url; a.target="_blank"; a.rel="noopener"; a.role="listitem"; a.style.position="relative";
+        const img=new Image(); img.src=d.icon||favIcon(d.url); img.alt=""; img.referrerPolicy="no-referrer";
+        const span=document.createElement("span"); span.textContent=d.name||d.url;
+        const rm=document.createElement("button"); rm.type="button"; rm.title="Remover atalho"; rm.textContent="×"; rm.style.cssText="position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:0;cursor:pointer;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;line-height:1";
+        rm.addEventListener("click",async e=>{
+          e.preventDefault(); e.stopPropagation();
+          if(!await confirmPopup({title:"Remover atalho",message:`Remover "${d.name||d.url}"?`,confirmText:"Remover"})) return;
+          try{ await deleteDoc(d._ref) }catch{ alert("Não foi possível remover o atalho.") }
+        });
+        a.append(img,span,rm); return a;
       };
-    };
-
-    const stdModels = q => !q?[]:STANDARD_SITES.filter(s=>{
-      const n=norm(s.name), d=norm(s.domain), S=norm(q);
-      return S.length===1 ? n.startsWith(S) : toks(q).every(t=>(n+" "+d).includes(t));
-    }).map(s=>item(s.name,"atalho",{subtitleOverride:`${s.domain}`,iconOverride:favicon(s.domain),fillValue:s.domain}));
-
-    const matches = (m,q) => { const s=norm(q||""); if(!s) return false; const base=norm(`${m.fillValue||m.label} ${m.subtitle||""}`); if(s.length===1){ const dom=norm((m.subtitle||"").split(" — ")[0]||""); return base.startsWith(s)||dom.startsWith(s); } return s.split(/\s+/).filter(Boolean).every(t=>base.includes(t)); };
-
-    const panel = () => $(PANEL);
-    const apply = m => { const i=$(INPUT); if(!i) return; i.value = m.fillValue||m.label; i.setSelectionRange(i.value.length, i.value.length); hide(); };
-    const hide = () => { const p=panel(); p && (p.hidden=true); };
-
-    const makeEl = (m, idx, withRemove=false) => {
-      const el=document.createElement("div"); el.className="suggest-item"; el.setAttribute("role","option"); el.dataset.index=idx;
-      const ic=document.createElement("img"); ic.className="suggest-icon"; ic.alt=""; ic.referrerPolicy="no-referrer"; m.icon?ic.src=m.icon:ic.style.visibility="hidden";
-      const txt=document.createElement("div"); txt.className="suggest-text";
-      const pri=document.createElement("div"); pri.className="suggest-primary"; pri.textContent=m.label;
-      const sec=document.createElement("div"); sec.className="suggest-secondary"; sec.textContent=m.subtitle;
-      txt.append(pri,sec);
-      const badge=document.createElement("div"); badge.className="suggest-badge"; badge.textContent=m.badge;
-      el.append(ic,txt,badge);
-      if(withRemove){ const rm=document.createElement("div"); rm.className="suggest-remove"; rm.textContent="×";
-        rm.addEventListener("mousedown", e=>e.preventDefault());
-        rm.addEventListener("click", e=>{ e.stopPropagation(); removeRecent(m.fillValue||m.label); el.remove(); if(!panel()?.querySelector(".suggest-item")){ const p=panel(); if(!p) return; p.innerHTML=""; const empty=document.createElement("div"); empty.className="suggest-empty"; empty.textContent="Sem sugestões"; p.appendChild(empty); }});
-        el.appendChild(rm);
-      }
-      el.addEventListener("mousedown", e=>e.preventDefault());
-      el.addEventListener("click", ()=>apply(m));
-      return el;
-    };
-
-    const render = (models, active=-1) => {
-      const p=panel(); if(!p) return; p.innerHTML="";
-      if(!models.length){ p.hidden=false; const d=document.createElement("div"); d.className="suggest-empty"; d.textContent="Sem sugestões"; p.appendChild(d); return; }
-      models.slice(0,LIMIT).forEach((m,i)=>{ const el=makeEl(m,i,m.type==="recente"); if(i===active) el.setAttribute("aria-selected","true"); p.appendChild(el); });
-      p.hidden=false;
-    };
-
-    let suppressInline=false, active=-1, current=[];
-    const shouldSuppress = i => i.selectionStart!==i.selectionEnd || i.selectionStart!==i.value.length;
-    const inline = (typed, models, byKb=false) => {
-      const i=$(INPUT); if(!i||!typed||byKb||suppressInline||shouldSuppress(i)) return;
-      const c=models.find(m=>(m.fillValue||m.label).toLowerCase().startsWith(typed.toLowerCase())); if(!c) return;
-      const to=c.fillValue||c.label; i.value=to; try{i.setSelectionRange(typed.length,to.length)}catch{}
-    };
-    const debounce = (fn,ms=120) => { let id; return (...a)=>{ clearTimeout(id); id=setTimeout(()=>fn(...a),ms); }; };
-
-    const applyShortcuts = q => SHORTCUTS.find(s=>s.re.test(q))?.items ?? [];
-
-    const refresh = async (byKb=false, ev=null) => {
-      const i=$(INPUT), q=(i?.value||"").trim();
-      if (ev?.startsWith?.("delete") || ev?.inputType?.startsWith?.("delete")) suppressInline=true;
-      if (ev?.ctrlKey || ev?.metaKey || ev?.altKey) suppressInline=true;
-
-      const std=stdModels(q), rec=recents(), sh=applyShortcuts(q), remote=q?await googleSuggest(q):[];
-      const pool=q?[...new Set([...sh,...remote,...rec])]:[];
-      let other = pool.map(s=>item(s, sh.includes(s)?"atalho":rec.includes(s)?"recente":"sugestao")).filter(m=>matches(m,q));
-      if (q && looksUrl(q) && !other.concat(std).some(m=>(m.fillValue||m.label).toLowerCase()===q.toLowerCase())) other.unshift(item(q,"sugestao"));
-
-      current = uniqBy([...std, ...other], m => (m.fillValue||m.label).toLowerCase());
-      active = -1;
-      q ? (render(current, active), inline(q,current,byKb)) : hide();
-      suppressInline=false;
-    };
-    const debounced = debounce(refresh,120);
-
-    const handleKeys = e => {
-      const p=$(PANEL), i=$(INPUT); if(e.key==="Backspace"||e.key==="Delete") suppressInline=true; if(e.ctrlKey||e.metaKey||e.altKey) suppressInline=true;
-      if (!p || p.hidden) return;
-      const max=Math.min(LIMIT,current.length)-1;
-      if (e.key==="ArrowDown"||e.key==="ArrowUp") {
-        e.preventDefault(); active = e.key==="ArrowDown" ? (active<max?active+1:0) : (active>0?active-1:max);
-        render(current, active); const m=current[active]; if(m){ const v=m.fillValue||m.label; i.value=v; i.setSelectionRange(v.length,v.length); }
-      } else if (e.key==="Tab") {
-        if (i.selectionStart!==i.selectionEnd && current.length){ e.preventDefault(); i.setSelectionRange(i.value.length, i.value.length); hide(); }
-      } else if (e.key==="Enter"||e.key==="Escape") hide();
-    };
-
-    const submit = e => {
-      const i=$(INPUT), q=(i?.value||"").trim(); if(!q){ e.preventDefault(); return; }
-      saveRecent(q);
-      if (looksUrl(q)){ e.preventDefault(); const url=/^https?:\/\//i.test(q)?q:"https://"+q; location.assign(url); }
-    };
-
-    const focusInput = () => { const el=$(INPUT); if(!el) return; if (document.visibilityState!=="visible"){ document.addEventListener("visibilitychange", focusInput, {once:true}); return; } el.focus({preventScroll:true}); try{el.select()}catch{} };
-    const focusWithRetries = (r=24,d=50) => { focusInput(); let i=1; const id=setInterval(()=>{ const ok=document.activeElement?.matches?.(INPUT); if(ok||i++>=r) clearInterval(id); else focusInput(); }, d); };
-
-    const bindGlobalShortcuts = () => addEventListener("keydown", e => {
-      if (/input|textarea|select/i.test(e.target.tagName)) return;
-      if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="k") { e.preventDefault(); focusWithRetries(1,0); }
-      else if (!e.ctrlKey&&!e.metaKey&&!e.altKey && e.key==="/") { e.preventDefault(); focusWithRetries(1,0); }
-    });
-    const bindOutsideClick = () => addEventListener("click", e => { const p=$(PANEL), i=$(INPUT); if(!p||p.hidden) return; if(!p.contains(e.target) && e.target!==i) hide(); });
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const input=$(INPUT), p=panel(), form=$(FORM); if(!input||!p||!form) return;
-      focusWithRetries();
-
-      let allowFocusRecents=false;
-      input.addEventListener("pointerdown", ()=> allowFocusRecents=true);
-      input.addEventListener("focus", () => {
-        if (!allowFocusRecents || input.value.trim()) return;
-        const rec = recents().map(s=>item(s,"recente"));
-        if (!rec.length) return;
-        p.innerHTML=""; rec.slice(0,LIMIT).forEach((m,i)=>p.appendChild(makeEl(m,i,true))); p.hidden=false;
+      const addBtn=()=>{const b=document.createElement("button"); b.type="button"; b.className="shortcut-chip shortcut-add"; b.setAttribute("data-open-fav-modal",""); b.textContent="+ Atalho"; return b};
+      const DEF=[{name:"Google",url:"https://www.google.com"},{name:"ChatGPT",url:"https://chatgpt.com"}];
+      onSnapshot(query(col,orderBy("createdAt","asc")),snap=>{
+        row.innerHTML="";
+        const docs=snap.docs.map(x=>({id:x.id,...x.data(),_ref:x.ref}));
+        (docs.length?docs:DEF.map(d=>({...d,icon:favIcon(d.url)}))).forEach(d=>row.appendChild(chip(d)));
+        row.appendChild(addBtn());
       });
+    };
 
-      input.addEventListener("input", ev => debounced(false, ev));
-      input.addEventListener("keydown", handleKeys);
-      input.addEventListener("blur", () => setTimeout(hide,100));
-      form.addEventListener("submit", submit);
-      bindGlobalShortcuts(); bindOutsideClick();
+    const initNotice=async u=>{
+      const rc=getRemoteConfig(); rc.settings={minimumFetchIntervalMillis:6e4}; let fetched=false; try{await fetchAndActivate(rc);fetched=true}catch{}
+      const DEF_VER="2025-09-lancamento", DEF_TTL=0;
+      const ver=fetched?String(getValue(rc,"notice_version").asString()||""):"";
+      const ttl=fetched?Number(getValue(rc,"notice_ttl_days").asString()||"0"):0;
+      const VERSION=ver||DEF_VER, TTL=Number.isFinite(ttl)?ttl:DEF_TTL;
+      const modal=document.getElementById("notice-modal"),overlay=document.getElementById("notice-overlay"),close=modal?.querySelector?.(".notice-close");
+      if(!modal||!overlay) return;
+      const KEY=`notice:${u.uid}`, TTLMS=TTL>0?TTL*864e5:0, now=Date.now();
+      const get=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}};
+      const set=s=>localStorage.setItem(KEY,JSON.stringify(s));
+      const force=()=>new URL(location.href).searchParams.get("showNotice")==="1";
+      const should=()=>{if(force())return true;const s=get(); if(s.version!==VERSION) return true; if(!s.dismissed) return true; if(TTLMS&&s.dismissedAt&&now-s.dismissedAt>=TTLMS) return true; return false};
+      const open=()=>{overlay.hidden=false;modal.hidden=false;void modal.offsetWidth;modal.setAttribute("data-open","true");close?.focus?.();document.documentElement.style.overflow="hidden"};
+      const hide=()=>{modal.removeAttribute("data-open");setTimeout(()=>{overlay.hidden=true;modal.hidden=true;document.documentElement.style.overflow=""},200); set({version:VERSION,dismissed:true,dismissedAt:Date.now()})};
+      close?.addEventListener("click",hide); addEventListener("keydown",e=>{if(!modal.hidden&&(e.key==="Escape"||e.key==="Esc")){e.preventDefault();hide()}});
+      window.notice={open,close:hide,reset(){localStorage.removeItem(KEY)},setVersion(v){localStorage.removeItem(KEY);open()},state:()=>get()};
+      if(should()) open();
+    };
+
+    onAuthStateChanged(auth,async u=>{
+      try{
+        if(!u||!okEmail(u.email)) return block();
+        allow(); await ready; await wait(".site-search");
+        await renderWelcome(u); initFavorites(u);
+        await Promise.all([wait("#notice-modal"),wait("#notice-overlay")]);
+        const ALLOW=["ssilva@optionsco.com.br","asantana@optionsco.com.br"], em=(u.email||"").toLowerCase();
+        if(ALLOW.includes(em)){ await initNotice(u); window.notice?.open(); }
+        else{ const ov=document.getElementById("notice-overlay"), md=document.getElementById("notice-modal"); ov&&(ov.hidden=true); if(md){md.hidden=true;md.removeAttribute("data-open")} }
+      }catch(e){ console.error("[auth state]",e); block(); }
     });
-  })();
-})();
-</script>
+  </script>
 
-  </body>
+  <!-- UI Scripts -->
+  <script>
+  (()=>{const $=s=>document.querySelector(s);
+    const btn=$("#google-button"),dd=$("#google-dropdown");
+    if(btn&&dd){const t=v=>{dd.classList.toggle("show",v);btn.setAttribute("aria-expanded",v?"true":"false");dd.setAttribute("aria-hidden",v?"false":"true")};
+      btn.addEventListener("click",e=>{e.stopPropagation();t(!dd.classList.contains("show"))});
+      document.addEventListener("click",e=>dd.classList.contains("show")&&!dd.contains(e.target)&&e.target!==btn&&t(false));
+      document.addEventListener("keydown",e=>e.key==="Escape"&&t(false));
+    }
+
+    const openBtn=$("#menu-toggle"),modal=$("#menu-modal");
+    if(openBtn&&modal){let last=null; const open=v=>{if(v){last=document.activeElement;modal.classList.add("is-open");modal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";setTimeout(()=>$("#menu-modal-title")?.focus?.(),0)}else{modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");document.body.style.overflow="";last?.focus?.();}};
+      openBtn.addEventListener("click",e=>{e.preventDefault();open(true);openBtn.setAttribute("aria-expanded","true")});
+      modal.addEventListener("click",e=>e.target.closest("[data-close-modal]")&&(open(false),openBtn.setAttribute("aria-expanded","false")));
+      document.addEventListener("keydown",e=>e.key==="Escape"&&modal.classList.contains("is-open")&&(open(false),openBtn.setAttribute("aria-expanded","false")));
+      modal.addEventListener("keydown",e=>{if(e.key!=="Tab")return;const f=[...modal.querySelectorAll('a[href],button:not([disabled]),textarea,input,select,[tabindex]:not([tabindex="-1"])')].filter(x=>x.offsetParent!==null);if(!f.length)return;const[first,last]=[f[0],f.at(-1)];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}});
+      modal.querySelectorAll("[data-tab-target]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();const t=a.getAttribute("data-tab-target");t&&window.openTab&&window.openTab(t);open(false);openBtn.setAttribute("aria-expanded","false")}));
+    }
+
+    (()=>{const KEY="lastTab_v1",panels={home:$("#tab-home")},aria=(p,on)=>{const id=p?.getAttribute("aria-labelledby"); id&&document.getElementById(id)?.setAttribute("aria-current",on?"page":"false")};
+      const activate=t=>{Object.keys(panels).forEach(k=>{const p=panels[k];p?.classList.toggle("active",k===t);aria(p,k===t)});try{localStorage.setItem(KEY,t)}catch{};if(t==="home")history.replaceState(null,"","#home")};
+      document.querySelectorAll("[data-tab-target]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();const t=a.getAttribute("data-tab-target");t&&panels[t]&&activate(t)}));
+      const from=()=>{const h=(location.hash||"").replace("#","").toLowerCase(); if(h&&panels[h])return activate(h); try{const s=localStorage.getItem(KEY); if(s&&panels[s])return activate(s)}catch{} activate("home")};
+      addEventListener("hashchange",()=>{const h=(location.hash||"").replace("#","").toLowerCase(); h&&panels[h]&&activate(h)});
+      from(); window.openTab=activate;
+    })();
+
+    (()=>{const INPUT="#q",PANEL="#suggestions",FORM="#search-form",REC="recentSearches_v1",MAX=10,LIM=10;
+      const $=s=>document.querySelector(s),norm=s=>(s||"").toString().normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+      const toks=q=>norm(q).split(/\s+/).filter(t=>t.length>=2), looks=t=>(t=t.trim(),/\./.test(t)&&!/\s/.test(t));
+      const host=t=>{try{const u=/^https?:\/\//i.test(t)?t:"https://"+t; return new URL(u).hostname}catch{return null}};
+      const icon=v=>{const h=host(v);return h?`https://www.google.com/s2/favicons?domain=${h}&sz=32`:""};
+      const uniq=(a,k)=>{const s=new Set,o=[];for(const v of a){const kk=k(v);if(!s.has(kk)){s.add(kk);o.push(v)}}return o};
+      const rec=()=>{try{return JSON.parse(localStorage.getItem(REC)||"[]")}catch{return[]}}, save=q=>{q=q.trim(); if(!q)return; let a=rec().filter(v=>v.toLowerCase()!==q.toLowerCase()); a.unshift(q); if(a.length>MAX)a=a.slice(0,MAX); localStorage.setItem(REC,JSON.stringify(a))}, rm=l=>localStorage.setItem(REC,JSON.stringify(rec().filter(v=>v.toLowerCase()!==(l||"").trim().toLowerCase())));
+      const suggest=async q=>{if(!q)return[];try{const r=await fetch(`https://suggestqueries.google.com/complete/search?client=firefox&hl=pt-BR&q=${encodeURIComponent(q)}`,{mode:"cors"}); if(!r.ok)return[]; const d=await r.json(); return Array.isArray(d?.[1])?d[1]:[]}catch{return[]}};
+      const item=(label,type="sugestao",o={})=>{const fill=o.fillValue||label,isUrl=looks(fill||label);return{label,subtitle:o.subtitleOverride??(isUrl?(fill||label).replace(/^https?:\/\//i,""):type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão"),badge:type==="atalho"?"Atalho":type==="recente"?"Recente":"Sugestão",icon:o.iconOverride??(isUrl?icon(fill||label):"images/favicon_google.ico"),type,isUrl,fillValue:fill}};
+      const SITES=[{name:"Google",domain:"google.com"},{name:"YouTube",domain:"youtube.com"},{name:"Facebook",domain:"facebook.com"},{name:"Instagram",domain:"instagram.com"},{name:"ChatGPT",domain:"chatgpt.com"},{name:"X",domain:"x.com"},{name:"Amazon",domain:"amazon.com"},{name:"LinkedIn",domain:"linkedin.com"},{name:"Netflix",domain:"netflix.com"},{name:"Gemini",domain:"gemini.google.com"},{name:"InfoMoney",domain:"infomoney.com.br"},{name:"CNN",domain:"cnn.com"},{name:"Looker Studio",domain:"lookerstudio.google.com"},{name:"Google Sheets",domain:"sheets.google.com"},{name:"WhatsApp Web",domain:"web.whatsapp.com"},{name:"Formulários Google",domain:"forms.google.com"},{name:"Canva",domain:"canva.com"},{name:"Wikipedia",domain:"wikipedia.org"},{name:"Pinterest",domain:"pinterest.com"},{name:"Globo",domain:"globo.com"},{name:"Telegram",domain:"t.me"},{name:"The New York Times",domain:"nytimes.com"},{name:"AliExpress",domain:"aliexpress.com"},{name:"Discord",domain:"discord.com"},{name:"BBC",domain:"bbc.com"},{name:"Speedtest by Ookla",domain:"speedtest.net"},{name:"Gmail",domain:"mail.google.com"},{name:"Google Drive",domain:"drive.google.com"},{name:"Google Docs",domain:"docs.google.com"},{name:"Google Slides",domain:"slides.google.com"},{name:"Google Keep",domain:"keep.google.com"},{name:"Google Calendar",domain:"calendar.google.com"},{name:"Google Meet",domain:"meet.google.com"},{name:"Google Chat",domain:"chat.google.com"},{name:"Google Maps",domain:"maps.google.com"},{name:"Google Earth",domain:"earth.google.com"},{name:"Google Translate",domain:"translate.google.com"},{name:"Google Photos",domain:"photos.google.com"},{name:"Google News",domain:"news.google.com"},{name:"Google Finance",domain:"google.com/finance"},{name:"Google Flights",domain:"google.com/flights"},{name:"Google Books",domain:"books.google.com"},{name:"Google Play",domain:"play.google.com"},{name:"Google Colab",domain:"colab.research.google.com"},{name:"Spotify",domain:"spotify.com"},{name:"YouTube Music",domain:"music.youtube.com"},{name:"Tryd",domain:"tryd.com.br"},{name:"Fast trade",domain:"plataformafasttrade.com.br"},{name:"Chat Guru",domain:"chatguru.com.br"},{name:"Brasil Jornal",domain:"braziljournal.com"},{name:"Flex Scan",domain:"login.flexscan.com.br"},{name:"Git Hub",domain:"github.com"}];
+      const std=q=>!q?[]:SITES.filter(s=>{const n=norm(s.name),d=norm(s.domain),S=norm(q);return S.length===1?n.startsWith(S):toks(q).every(t=>(n+" "+d).includes(t))}).map(s=>item(s.name,"atalho",{subtitleOverride:s.domain,iconOverride:icon(s.domain),fillValue:s.domain}));
+      const m=(x,q)=>{const s=norm(q||""); if(!s)return false; const base=norm(`${x.fillValue||x.label} ${x.subtitle||""}`); if(s.length===1){const dom=norm((x.subtitle||"").split(" — ")[0]||""); return base.startsWith(s)||dom.startsWith(s)} return s.split(/\s+/).every(t=>base.includes(t))};
+      const p=()=>$ (PANEL), apply=x=>{const i=$(INPUT); if(!i)return; i.value=x.fillValue||x.label; i.setSelectionRange(i.value.length,i.value.length); hide()}, hide=()=>{const y=p(); y&&(y.hidden=true)};
+      const el=(x,i,rem=false)=>{const d=document.createElement("div"); d.className="suggest-item"; d.setAttribute("role","option"); d.dataset.index=i;
+        const ic=new Image(); ic.className="suggest-icon"; ic.alt=""; ic.referrerPolicy="no-referrer"; x.icon?ic.src=x.icon:ic.style.visibility="hidden";
+        const t=document.createElement("div"); t.className="suggest-text"; const a=document.createElement("div"); a.className="suggest-primary"; a.textContent=x.label; const b=document.createElement("div"); b.className="suggest-secondary"; b.textContent=x.subtitle; t.append(a,b);
+        const badge=document.createElement("div"); badge.className="suggest-badge"; badge.textContent=x.badge;
+        d.append(ic,t,badge);
+        if(rem){const r=document.createElement("div"); r.className="suggest-remove"; r.textContent="×"; r.addEventListener("mousedown",e=>e.preventDefault()); r.addEventListener("click",e=>{e.stopPropagation(); rm(x.fillValue||x.label); d.remove(); if(!p()?.querySelector(".suggest-item")){const y=p(); if(!y)return; y.innerHTML=""; const z=document.createElement("div"); z.className="suggest-empty"; z.textContent="Sem sugestões"; y.appendChild(z)}}); d.appendChild(r)}
+        d.addEventListener("mousedown",e=>e.preventDefault()); d.addEventListener("click",()=>apply(x));
+        return d;
+      };
+      const render=(xs,a=-1)=>{const y=p(); if(!y)return; y.innerHTML=""; if(!xs.length){y.hidden=false; const d=document.createElement("div"); d.className="suggest-empty"; d.textContent="Sem sugestões"; y.appendChild(d); return} xs.slice(0,LIM).forEach((x,i)=>{const e=el(x,i,x.type==="recente"); if(i===a)e.setAttribute("aria-selected","true"); y.appendChild(e)}); y.hidden=false};
+      let sup=false, active=-1, cur=[];
+      const should=i=>i.selectionStart!==i.selectionEnd||i.selectionStart!==i.value.length;
+      const inline=(typed,xs,kb=false)=>{const i=$(INPUT); if(!i||!typed||kb||sup||should(i))return; const c=xs.find(x=>(x.fillValue||x.label).toLowerCase().startsWith(typed.toLowerCase())); if(!c)return; const v=c.fillValue||c.label; i.value=v; try{i.setSelectionRange(typed.length,v.length)}catch{}};
+      const deb=(fn,ms=120)=>{let id; return(...a)=>{clearTimeout(id); id=setTimeout(()=>fn(...a),ms)}};
+      const SHORT=[{re:/^y(t|o|outube)?$/i,items:["YouTube","youtube.com"]},{re:/^g(mail)?$/i,items:["Gmail","mail.google.com"]},{re:/^c(al|alendar)?$/i,items:["Google Calendar","calendar.google.com"]},{re:/^m(eet)?$/i,items:["Google Meet","meet.google.com"]},{re:/^(d|drive)$/i,items:["Google Drive","drive.google.com"]},{re:/^(s|sheets?)$/i,items:["Google Sheets","docs.google.com/spreadsheets/"]}];
+      const applyShort=q=>SHORT.find(s=>s.re.test(q))?.items??[];
+      const refresh=async(kb=false,ev=null)=>{const i=$(INPUT),q=(i?.value||"").trim(); if(ev?.startsWith?.("delete")||ev?.inputType?.startsWith?.("delete")) sup=true; if(ev?.ctrlKey||ev?.metaKey||ev?.altKey) sup=true;
+        const stds=std(q), r=rec(), sh=applyShort(q), remote=q?await suggest(q):[];
+        const pool=q?[...new Set([...sh,...remote,...r])]:[];
+        let other=pool.map(s=>item(s,sh.includes(s)?"atalho":r.includes(s)?"recente":"sugestao")).filter(x=>m(x,q));
+        if(q&&looks(q)&&!other.concat(stds).some(x=>(x.fillValue||x.label).toLowerCase()===q.toLowerCase())) other.unshift(item(q,"sugestao"));
+        cur=uniq([...stds,...other], x=>(x.fillValue||x.label).toLowerCase()); active=-1; q?(render(cur,active),inline(q,cur,kb)):hide(); sup=false;
+      };
+      const debounced=deb(refresh,120);
+      const keys=e=>{const y=p(),i=$(INPUT); if(e.key==="Backspace"||e.key==="Delete")sup=true; if(e.ctrlKey||e.metaKey||e.altKey)sup=true; if(!y||y.hidden)return;
+        const max=Math.min(LIM,cur.length)-1;
+        if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault(); active=e.key==="ArrowDown"?(active<max?active+1:0):(active>0?active-1:max); render(cur,active); const m=cur[active]; if(m){const v=m.fillValue||m.label; i.value=v; i.setSelectionRange(v.length,v.length)}}
+        else if(e.key==="Tab"){ if(i.selectionStart!==i.selectionEnd&&cur.length){e.preventDefault(); i.setSelectionRange(i.value.length,i.value.length); hide()} }
+        else if(e.key==="Enter"||e.key==="Escape") hide();
+      };
+      const submit=e=>{const i=$(INPUT),q=(i?.value||"").trim(); if(!q){e.preventDefault();return} save(q); if(looks(q)){e.preventDefault(); location.assign(/^https?:\/\//i.test(q)?q:"https://"+q)}};
+      const focus=()=>{const i=$(INPUT); if(!i)return; if(document.visibilityState!=="visible"){document.addEventListener("visibilitychange",focus,{once:true}); return} i.focus({preventScroll:true}); try{i.select()}catch{}};
+      const retries=(r=24,d=50)=>{focus(); let c=1; const id=setInterval(()=>{const ok=document.activeElement?.matches?.(INPUT); if(ok||c++>=r)clearInterval(id); else focus()},d)};
+      addEventListener("keydown",e=>{if(/input|textarea|select/i.test(e.target.tagName))return; if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();retries(1,0)} else if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&e.key==="/"){e.preventDefault();retries(1,0)}});
+      addEventListener("click",e=>{const y=p(),i=$(INPUT); if(!y||y.hidden)return; if(!y.contains(e.target)&&e.target!==i) hide()});
+
+      document.addEventListener("DOMContentLoaded",()=>{const i=$(INPUT),y=p(),f=$(FORM); if(!i||!y||!f)return; retries();
+        let allow=false; i.addEventListener("pointerdown",()=>allow=true);
+        i.addEventListener("focus",()=>{ if(!allow||i.value.trim())return; const r=rec().map(s=>item(s,"recente")); if(!r.length)return; y.innerHTML=""; r.slice(0,LIM).forEach((x,j)=>y.appendChild(el(x,j,true))); y.hidden=false; });
+        i.addEventListener("input",ev=>debounced(false,ev)); i.addEventListener("keydown",keys); i.addEventListener("blur",()=>setTimeout(hide,100)); f.addEventListener("submit",submit);
+      });
+    })();
+  })();
+  </script>
+</body>
+
 </html>
