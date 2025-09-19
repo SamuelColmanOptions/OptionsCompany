@@ -42,34 +42,104 @@
     #login-msg{margin-top:14px;font-size:14px;text-align:center;color:var(--muted);min-height:20px}
     .hint{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
     label[for="email"]{margin-top:0}
+
+    /* Splash ocupa tela inteira */
+    .splash{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      background:#000;
+      text-align:center;
+      padding:24px;
+    }
+
+    /* ====== TEXTO DO SPLASH ====== */
+    .font-logo{
+      font-family: serif;
+      line-height:1;
+      font-weight:700;
+      font-size: clamp(36px, 6vw, 72px);
+      color:#418D75;
+      /* Neon atrás do texto */
+      filter: drop-shadow(0 0 5px #418d75a8)
+              drop-shadow(0 0 10px #418d75b0)
+              drop-shadow(0 0 20px #418d75b6)
+              drop-shadow(0 0 40px #418d75a8);
+      animation: neonPulse 1.8s ease-in-out infinite;
+      letter-spacing:.5px;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 5px #418d7580)
+                drop-shadow(0 0 10px #418d7580)
+                drop-shadow(0 0 20px #418d7580)
+                drop-shadow(0 0 40px #418d7580);
+        opacity: .9;
+      }
+      50% {
+        filter: drop-shadow(0 0 10px #418D75)
+                drop-shadow(0 0 20px #418D75)
+                drop-shadow(0 0 30px #418D75)
+                drop-shadow(0 0 60px #418D75);
+        opacity: 1;
+      }
+    }
+
+    /* Tamanhos responsivos para o logo de texto */
+    .splash .font-logo{
+      font-weight:700;
+      font-size: clamp(36px, 6vw, 72px);
+      animation:pulse 1.2s ease-in-out infinite;
+      letter-spacing:.5px;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.04); opacity:1}
+      100%{transform:scale(1); opacity:.9}
+    }
+
+    /* Evita "flash" do card até a checagem da sessão */
+    .hidden{ display:none }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Acesso Restrito</h1>
-
-    <form id="login-form" autocomplete="off">
-      <label for="email">E-mail corporativo</label>
-      <input type="email" id="email" required placeholder="seu@optionsco.com.br" inputmode="email"/>
-
-      <label for="password">Senha</label>
-      <input type="password" id="password" required placeholder="********"/>
-
-      <div class="row">
-        <button type="submit" id="btn-login">Entrar</button>
-        <button type="button" id="btn-voltar" class="btn-secondary">Voltar</button>
-      </div>
-    </form>
-
-    <p id="login-msg"></p>
-    <p class="hint">Somente e-mails @optionsco.com.br são aceitos.</p>
+  <!-- Splash / Loader: visível por padrão (cobre tudo) -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>
   </div>
+
+  <!-- Ponto de montagem do formulário -->
+  <div id="mount"></div>
+
+  <!-- Template do login (só entra no DOM se precisar) -->
+  <template id="login-tpl">
+    <div class="card hidden" id="login-card">
+      <h1>Acesso Restrito</h1>
+
+      <form id="login-form" autocomplete="off">
+        <label for="email">E-mail corporativo</label>
+        <input type="email" id="email" required placeholder="seu@optionsco.com.br" inputmode="email"/>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" required placeholder="********"/>
+
+        <div class="row">
+          <button type="submit" id="btn-login">Entrar</button>
+          <button type="button" id="btn-voltar" class="btn-secondary">Voltar</button>
+        </div>
+      </form>
+
+      <p id="login-msg"></p>
+      <p class="hint">Somente e-mails @optionsco.com.br são aceitos.</p>
+    </div>
+  </template>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
     import {
       getAuth, signInWithEmailAndPassword, onAuthStateChanged,
-      setPersistence, browserLocalPersistence,
+      setPersistence, browserLocalPersistence, signOut
     } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
     // ===== CONFIG =====
@@ -84,17 +154,17 @@
     };
 
     // ===== INIT =====
-    const app = initializeApp(firebaseConfig);
+    const app  = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     await setPersistence(auth, browserLocalPersistence);
 
-    // ===== DOM =====
+    // ===== DOM base =====
     const $ = s => document.querySelector(s);
-    const MSG = $("#login-msg");
-    const EMAIL = $("#email");
-    const PASS = $("#password");
-    const BTN_LOGIN = $("#btn-login");
-    const BTN_VOLTAR = $("#btn-voltar");
+    const SPLASH = $("#splash");
+    const MOUNT  = $("#mount");
+    const TPL    = $("#login-tpl");
+
+    let CARD, MSG, EMAIL, PASS, BTN_LOGIN, BTN_VOLTAR;
 
     const TARGET_AFTER_LOGIN = "index2.html";
 
@@ -104,7 +174,42 @@
     const clean = v => (v||"").trim();
     const isAllowed = e => (e||"").toLowerCase().split("@").pop()?.trim() === "optionsco.com.br";
 
-    // Mapa de erros -> mensagens amigáveis
+    const showFormHideSplash = () => {
+      setTimeout(() => { // mínimo de 0,5s de splash (efeito)
+        SPLASH.style.display = "none";
+        CARD?.classList.remove("hidden");
+      }, 500);
+    };
+
+    const hideFormShowSplash = async () => {
+      CARD?.classList.add("hidden");
+      SPLASH.style.display = "flex";
+      await new Promise(r => setTimeout(r, 500));
+    };
+
+    // Monta o formulário de login apenas uma vez
+    function mountFormOnce(){
+      if (CARD) return; // já montado
+      const frag = TPL.content.cloneNode(true);
+      MOUNT.appendChild(frag);
+
+      // Captura nós após montar
+      CARD       = $("#login-card");
+      MSG        = $("#login-msg");
+      EMAIL      = $("#email");
+      PASS       = $("#password");
+      BTN_LOGIN  = $("#btn-login");
+      BTN_VOLTAR = $("#btn-voltar");
+
+      // Eventos
+      $("#login-form").addEventListener("submit", e => {
+        e.preventDefault();
+        login(EMAIL.value, PASS.value);
+      });
+      BTN_VOLTAR.addEventListener("click", () => { location.href = "index.html"; });
+    }
+
+    // ===== Mapa de erros =====
     const ERR_MAP = {
       "auth/invalid-credential":"E-mail ou senha incorretos.",
       "auth/wrong-password":"E-mail ou senha incorretos.",
@@ -113,17 +218,19 @@
       "auth/invalid-email":"E-mail inválido."
     };
 
+    // ===== Login manual =====
     async function login(email, password){
       email = clean(email).toLowerCase();
       if(!email || !password) return setErr("Preencha e-mail e senha.");
-      if(!isAllowed(email)) return setErr("Use um e-mail @optionsco.com.br.");
+      if(!isAllowed(email))   return setErr("Use um e-mail @optionsco.com.br.");
 
       try{
         BTN_LOGIN.disabled = true;
         BTN_LOGIN.textContent = "Entrando...";
         await signInWithEmailAndPassword(auth, email, password);
-        setMsg("Login ok. Redirecionando...", true);
-        setTimeout(()=>location.href = TARGET_AFTER_LOGIN, 300);
+
+        await hideFormShowSplash();
+        location.replace(TARGET_AFTER_LOGIN);
       }catch(err){
         console.error(err);
         setErr(ERR_MAP[err?.code] || "Não foi possível entrar agora. Tente novamente.");
@@ -133,26 +240,30 @@
       }
     }
 
-    // Submit
-    $("#login-form").addEventListener("submit", e => {
-      e.preventDefault();
-      login(EMAIL.value, PASS.value);
+    // ===== Auto-login / Gate =====
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const email = (user.email || "").toLowerCase();
+        if (isAllowed(email)) {
+          // Usuário OK → sem form no DOM → sem flash
+          await hideFormShowSplash();
+          return location.replace(TARGET_AFTER_LOGIN);
+        }
+        // Logado mas domínio inválido → força signOut e segue fluxo normal
+        await signOut(auth).catch(()=>{});
+      }
+
+      // Não autenticado → cria o form e só então revela
+      mountFormOnce();
+      showFormHideSplash();
     });
 
-    // Se já autenticado, redireciona
-    onAuthStateChanged(auth, user => { if(user) location.replace(TARGET_AFTER_LOGIN); });
-
-    // Voltar
-    BTN_VOLTAR.addEventListener("click", () => { location.href = "index.html"; });
-
-    // Bloqueios de atalhos/inspeção
+    // ===== Bloqueios de atalhos/inspeção (mantidos) =====
     document.addEventListener("keydown", e => {
       const k = (e.key||"").toUpperCase();
       const altGr = e.ctrlKey && e.altKey;
       const combo = (keys) => keys.includes(k);
-
       if (k==="F12") return e.preventDefault();
-
       if ((e.ctrlKey && e.shiftKey && combo(["I","J","C"])) ||
           (e.metaKey && e.altKey && combo(["I","J","C"])) ||
           (e.ctrlKey && !altGr && combo(["U","S"])) ||
@@ -160,7 +271,6 @@
         e.preventDefault();
       }
     });
-
     document.addEventListener("contextmenu", e => e.preventDefault());
   </script>
 </body>

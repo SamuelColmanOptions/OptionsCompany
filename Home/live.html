@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live</title>
+  <link rel="shortcut icon" href="logo.png" type="image/x-icon">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: "#0F2A29",
+            brand2: "#0F2A29",
+            brand3: "#223739",
+            texto: "#FFFFFF"
+          },
+          boxShadow: {
+            soft: "0 20px 40px rgba(0,0,0,.18)",
+          }
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    html,
+    body {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .header {
+      width: 100%;
+      padding-top: 1rem;
+      background: var(--brand, #0F2A29);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1rem;
+      gap: 12px;
+    }
+
+    .header-line {
+      max-width: 1100px;
+      margin: 6px auto 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .header-logo img.logo-right {
+      height: 50px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      border: 0;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .2s;
+      background: linear-gradient(180deg, #1da08d 0%, #128573 100%);
+      color: #fff;
+      line-height: 1;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .0) inset;
+    }
+
+    .btn:hover {
+      filter: brightness(1.05);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, .2);
+    }
+
+    .btn-icon .icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    #logoutBtn {
+      background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%);
+      border: 1px solid rgba(255, 255, 255, .2);
+      color: #fff;
+    }
+
+    #logoutBtn:hover {
+      filter: brightness(1.1);
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+      font-family: "Playfair Display", serif;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 1.2;
+      text-align: right;
+    }
+
+    .logo-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .logo-sub {
+      font-size: 20px;
+      font-weight: normal;
+    }
+
+    .live-indicator::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      background-color: #ef4444;
+      border-radius: 9999px;
+      animation: pulse 2s infinite;
+      z-index: -1;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: .7;
+      }
+
+      70% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+      }
+    }
+
+    footer {
+      max-width: 1100px;
+      margin: 20px auto 40px;
+      padding: 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+      opacity: .8;
+      width: 100%;
+    }
+  </style>
+
+</head>
+
+<body class="bg-brand2 text-texto antialiased min-h-screen flex flex-col">
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-content">
+        <div class="header-logo">
+          <img src="logo-portal.png" alt="Logo Samuel" class="logo-right">
+        </div>
+
+        <div class="header-actions">
+          <button id="homeBtn" class="btn btn-icon btn-outline" title="Ir para o Hub">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 3.172 3 10v10a1 1 0 0 0 1 1h6v-6h4v6h6a1 1 0 0 0 1-1V10l-9-6.828Z" />
+            </svg>
+            Home
+          </button>
+
+          <button id="adminBtn" class="btn btn-icon btn-outline" style="display:none" title="Admin">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5Zm0 2c-4.418 0-8 2.239-8 5v1h16v-1c0-2.761-3.582-5-8-5Z" />
+            </svg>
+            Admin
+          </button>
+
+          <button id="logoutBtn" class="btn btn-icon" title="Sair da conta">
+            <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M4 3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v4h-2V4H6v16h6v-3h2v4a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V3z" />
+              <path d="M21 12l-4-4v3h-7v2h7v3l4-4z" />
+            </svg>
+            Sair
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="header-line"></div>
+  </header>
+
+  <main class="flex-1">
+    <div class="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+
+      <div class="bg-brand3 rounded-2xl shadow-soft p-6 border border-white/10">
+        <div class="aspect-video bg-black rounded-xl overflow-hidden">
+          <iframe id="liveFrame" class="w-full h-full" src="about:blank" title="YouTube live player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Options &amp; Company — Todos os direitos reservados.
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAFRVLZ3D61q8ZPg8Rc4vsW2M2HBvsgjVI",
+      authDomain: "linklive-21263.firebaseapp.com",
+      projectId: "linklive-21263",
+      storageBucket: "linklive-21263.firebasestorage.app",
+      messagingSenderId: "844610005512",
+      appId: "1:844610005512:web:e961547220843b6e063fbd",
+      measurementId: "G-2CX1GPW3B8"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    const auth = firebase.auth();
+
+    const DOC_PATH = 'linkdata/Lms6k3L6gIKOMmwUSKIU';
+
+    function toYouTubeEmbed(u) {
+      try {
+        const url = new URL(u);
+        const host = url.hostname.replace('www.', '');
+        if (host === 'youtu.be') {
+          const id = url.pathname.slice(1);
+          return `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`;
+        }
+        if (host.endsWith('youtube.com')) {
+          const v = url.searchParams.get('v');
+          if (v) return `https://www.youtube-nocookie.com/embed/${v}?rel=0&modestbranding=1`;
+          const liveMatch = url.pathname.match(/\/live\/([A-Za-z0-9_-]{6,})/);
+          if (liveMatch) return `https://www.youtube-nocookie.com/embed/${liveMatch[1]}?rel=0&modestbranding=1`;
+          if (url.pathname.startsWith('/embed/')) {
+            return `https://www.youtube-nocookie.com${url.pathname}?rel=0&modestbranding=1`;
+          }
+        }
+      } catch (e) { }
+      return u;
+    }
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function setPlayer(url) {
+      const frame = document.getElementById('liveFrame');
+      const embed = toYouTubeEmbed(url);
+      frame.src = embed;
+      window._currentLiveURL = url;
+    }
+
+    db.doc(DOC_PATH).onSnapshot((doc) => {
+      if (doc.exists) {
+        const data = doc.data();
+        if (data?.url) setPlayer(data.url);
+      }
+    });
+
+    function copyLink() {
+      const url = window._currentLiveURL || '';
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      const buttonText = document.getElementById('copyButtonText');
+      if (buttonText) {
+        const original = buttonText.innerText;
+        buttonText.innerText = 'Link Copiado!';
+        setTimeout(() => { buttonText.innerText = original; }, 2000);
+      }
+    }
+    window.copyLink = copyLink;
+
+    document.getElementById('homeBtn').onclick = () => {
+      window.location.href = 'transicao.html';
+    };
+    document.getElementById('logoutBtn').onclick = () => {
+      auth.signOut().finally(() => {
+        window.location.href = 'index.html';
+      });
+    };
+
+    document.addEventListener('keydown', (e) => {
+      const k = (e.key || '').toUpperCase();
+      const isAltGr = e.ctrlKey && e.altKey;
+
+      if (e.key === 'F12') { e.preventDefault(); return; }
+
+      if (e.ctrlKey && e.shiftKey && ['I', 'J', 'C'].includes(k)) {
+        e.preventDefault(); return;
+      }
+
+      if (e.metaKey && e.altKey && ['I', 'J', 'C'].includes(k)) {
+        e.preventDefault(); return;
+      }
+
+      if (e.ctrlKey && !isAltGr && ['U', 'S'].includes(k)) {
+        e.preventDefault(); return;
+      }
+
+      if (e.metaKey && ['U', 'S'].includes(k)) {
+        e.preventDefault(); return;
+      }
+    });
+
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
+
+  </script>
+</body>
+
+</html>

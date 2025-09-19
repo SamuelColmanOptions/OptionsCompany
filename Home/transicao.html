@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Transição</title>
+    <link rel="shortcut icon" href="./images/logo.png" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0f2a29; --bg2: #122d32; --card: rgba(255,255,255,.06);
+        --border: rgba(255,255,255,.08); --text:#fff; --muted:#c9d3d2;
+        --accent:#1b8a79; --accent2:#27c1a5; --radius:22px;
+        --shadow:0 18px 55px rgba(0,0,0,.35);
+      }
+      *{ box-sizing:border-box; font-family:"Noto Serif", serif }
+      html,body{ height:100% }
+      body{
+        margin:0; color:var(--text);
+        background:
+          radial-gradient(1200px 600px at 10% -10%, rgba(39,193,165,.1), transparent 60%),
+          radial-gradient(1000px 600px at 110% 10%, rgba(27,138,121,.12), transparent 60%),
+          linear-gradient(135deg, var(--bg), var(--bg2));
+        min-height:100svh; display:flex; flex-direction:column;
+      }
+      .center-wrapper{ flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:20px }
+      .topbar{
+        display:flex; align-items:center; justify-content:space-between;
+        padding:16px 22px; border-bottom:1px solid var(--border);
+        backdrop-filter: blur(6px);
+        background: linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,0));
+        position:sticky; top:0; z-index:10;
+      }
+      .brand{ display:flex; align-items:center; gap:14px }
+      .avatar{
+        width:40px; height:40px; border-radius:50%;
+        background:linear-gradient(135deg,#245f58,#1b8a79);
+        display:grid; place-items:center; font-weight:800;
+        box-shadow:0 8px 20px rgba(0,0,0,.25);
+        user-select:none;
+      }
+      .hello small{ color:var(--muted); display:block; line-height:1 }
+      .hello strong{ font-size:16px }
+      .logout{
+        appearance:none; border:0; cursor:pointer; padding:10px 16px; border-radius:12px;
+        background:rgba(255,255,255,.08); color:#fff; font-weight:600; transition:.2s transform, .2s background;
+      }
+      .logout:hover{ background:rgba(255,255,255,.12); transform:translateY(-1px) }
+      .logout.danger{
+        background:linear-gradient(180deg,#e74c3c 0%, #c0392b 100%);
+        color:#fff; display:inline-flex; align-items:center; gap:6px; font-weight:600;
+      }
+      .logout.danger:hover{ filter:brightness(1.1); transform:translateY(-1px) }
+      .icon-logout{ width:18px; height:18px }
+
+      .hero{ max-width:1100px; margin:0 auto 100px; padding:0 18px; text-align:center }
+      .hero h1{ margin:0; font-size:28px; letter-spacing:.2px }
+      .hero p{ margin:6px 0 0; color:var(--muted) }
+
+      .grid{
+        max-width:1100px; margin:0 auto; padding:0 18px;
+        display:grid; grid-template-columns:repeat(3, minmax(260px, 1fr));
+        gap:22px; width:100%;
+      }
+      @media (max-width:1060px){ .grid{ grid-template-columns:repeat(2, minmax(260px,1fr)) } }
+      @media (max-width:820px){ .grid{ grid-template-columns:1fr } }
+
+      .card{
+        position:relative; overflow:hidden; background:var(--card); border:1px solid var(--border);
+        border-radius:var(--radius); padding:28px; box-shadow:var(--shadow);
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+        isolation:isolate;
+      }
+      .card::after{
+        content:""; position:absolute; inset:-100px -40px auto auto; width:240px; height:240px;
+        background:radial-gradient(closest-side, rgba(39,193,165,.18), transparent 0%); transform:rotate(25deg); z-index:-1;
+      }
+      .card:hover{ transform:translateY(-4px); box-shadow:0 26px 70px rgba(0,0,0,.45); border-color:rgba(255,255,255,.14) }
+      .card-header{ display:flex; align-items:center; gap:16px; margin-bottom:10px }
+      .icon{
+        width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, var(--accent), var(--accent2));
+        display:grid; place-items:center; flex:0 0 auto; box-shadow:0 10px 25px rgba(39,193,165,.35);
+      }
+      .card h3{ margin:0; font-size:22px }
+      .card p{ margin:6px 0 18px; color:var(--muted) }
+
+      .cta{
+        width:100%; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+        border:0; cursor:pointer; font-weight:800; letter-spacing:.3px; padding:14px 18px; border-radius:14px; color:#fff;
+        background:linear-gradient(90deg, var(--accent), var(--accent2));
+        transition: filter .15s ease, transform .15s ease;
+      }
+      .cta:hover{ filter:brightness(1.06); transform:translateY(-1px) }
+      .cta:active{ transform:translateY(0) }
+      .spinner{
+        width:18px; height:18px; border:3px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%;
+        animation:spin 1s linear infinite; display:none;
+      }
+      .loading .label{ display:none } .loading .spinner{ display:inline-block }
+      @keyframes spin{ to{ transform:rotate(360deg) } }
+
+      footer{ max-width:1100px; margin:20px auto 40px; padding:0 18px; color:var(--muted); font-size:13px; text-align:center; opacity:.8; width:100% }
+      @media (max-width:820px){ body{ background:linear-gradient(135deg, var(--bg), var(--bg2)) } .card::after{ display:none } }
+
+      /* Evita flash antes da checagem de sessão */
+      html{ visibility:hidden }
+    </style>
+  </head>
+
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <div class="avatar" aria-hidden="true"></div>
+        <div class="hello">
+          <small>Bem-vindo</small>
+          <strong id="username">Usuário</strong>
+        </div>
+      </div>
+    </header>
+
+    <div class="center-wrapper">
+      <section class="hero">
+        <h1>Escolha onde deseja continuar</h1>
+        <p>Acompanhe a live em tempo real ou avance nos cursos gravados.</p>
+      </section>
+
+      <main class="grid">
+        <!-- LIVE -->
+        <article class="card">
+          <div class="card-header">
+            <div class="icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M15 10.5V7a2 2 0 0 0-2-2H5A2 2 0 0 0 3 7v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-3.5l6 4.5V6l-6 4.5Z"
+                      stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Área Live</h3>
+              <p>Acompanhe a transmissão.</p>
+            </div>
+          </div>
+          <button class="cta" id="btnLive" type="button" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label">Acessar Live</span>
+          </button>
+        </article>
+
+        <!-- CURSOS -->
+        <article class="card">
+          <div class="card-header">
+            <div class="icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M4 19a2 2 0 0 0 2 2h12M4 5v12m0-12a2 2 0 0 1 2-2h12v14M8 7h8M8 11h6"
+                      stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Curso de Valuation</h3>
+              <p>Curso Bônus.</p>
+            </div>
+          </div>
+          <button class="cta" id="btnCursos" type="button" aria-live="polite">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label">Acessar Cursos</span>
+          </button>
+        </article>
+
+        <!-- EM BREVE -->
+        <article class="card">
+          <div class="card-header">
+            <div class="icon" aria-hidden="true">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+                <path d="M9 11l3 3L22 4M3 7h9M3 12h5M3 17h9"
+                      stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3>Curso de Equity derivative</h3>
+              <p></p>
+            </div>
+          </div>
+          <button
+            style="background-color: rgb(165, 33, 33); width:100%; display:inline-flex; align-items:center; justify-content:center; gap:10px; border:0; cursor:not-allowed; font-weight:800; letter-spacing:.3px; padding:14px 18px; border-radius:14px; color:#fff; transition:filter .15s ease, transform .15s ease;"
+            type="button" disabled>
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="label">Em Breve</span>
+          </button>
+        </article>
+      </main>
+    </div>
+
+    <footer>
+      © <span id="year"></span> Options &amp; Company — Todos os direitos reservados.
+    </footer>
+
+    <script type="module">
+      // ==== Firebase (MESMO PROJETO DO LOGIN) ====
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import {
+        getAuth, onAuthStateChanged, setPersistence, browserLocalPersistence, signOut
+      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+      // Firestore (para pegar displayName)
+      import {
+        getFirestore, doc, getDoc, collection, query, where, getDocs
+      } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+      // === Config do login ===
+      const firebaseConfig = {
+        apiKey:"AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",
+        authDomain:"login-intranet-96213.firebaseapp.com",
+        projectId:"login-intranet-96213",
+        storageBucket:"login-intranet-96213.firebasestorage.app",
+        messagingSenderId:"492024716317",
+        appId:"1:492024716317:web:17dd14c4b8decc8a86faf4",
+        measurementId:"G-1KB77SBJ7L",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      await setPersistence(auth, browserLocalPersistence);
+
+      // Evita flash antes da verificação
+      document.documentElement.style.visibility = "hidden";
+
+      const YEAR = document.getElementById("year");
+      const USERNAME = document.getElementById("username");
+      const AVATAR = document.querySelector(".avatar");
+      const btnLive = document.getElementById("btnLive");
+      const btnCursos = document.getElementById("btnCursos");
+
+      const isAllowed = (email) => (email||"").toLowerCase().split("@").pop()?.trim() === "optionsco.com.br";
+
+      function goWithLoading(btn, url){
+        btn.classList.add("loading");
+        btn.disabled = true;
+        setTimeout(() => { window.location.href = url; }, 600);
+      }
+      function resetButtons(){
+        document.querySelectorAll(".cta").forEach((b) => { b.classList.remove("loading"); b.disabled = false; });
+      }
+
+      window.addEventListener("pageshow", resetButtons);
+      document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") resetButtons(); });
+      window.addEventListener("popstate", resetButtons);
+
+      // Utilitário: formata um "nome" a partir do email (fallback)
+      function nameFromEmail(email){
+        const local = (email || "").split("@")[0] || "Usuário";
+        return local
+          .replace(/[._-]+/g, " ")
+          .replace(/\b\w/g, c => c.toUpperCase());
+      }
+
+      // Busca o melhor nome disponível (Firestore > Auth > email)
+      async function getPreferredName(user) {
+        // 1) Firestore: /users/{uid}
+        try {
+          const ref = doc(db, "users", user.uid);
+          const snap = await getDoc(ref);
+          if (snap.exists()) {
+            const d = snap.data();
+            const n = (d.displayName || d.nome || "").trim();
+            if (n) return n;
+          }
+        } catch {}
+
+        // 2) Firestore: procurar por email (caso a chave do doc não seja uid)
+        try {
+          const q = query(collection(db, "users"), where("email", "==", (user.email || "").toLowerCase()));
+          const qs = await getDocs(q);
+          for (const docSnap of qs.docs) {
+            const data = docSnap.data();
+            const n = (data.displayName || data.nome || "").trim();
+            if (n) return n;
+          }
+        } catch {}
+
+        // 3) Auth displayName
+        if (user.displayName && user.displayName.trim()) return user.displayName.trim();
+
+        // 4) Fallback pelo email
+        return nameFromEmail(user.email);
+      }
+
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          // sem sessão → volta para o login
+          const next = encodeURIComponent(location.pathname + location.search);
+          location.replace(`index.html?next=${next}`);
+          return;
+        }
+        // domínio permitido?
+        const email = (user.email || "").toLowerCase();
+        if (!isAllowed(email)) {
+          try { await signOut(auth); } catch {}
+          location.href = "login.html";
+          return;
+        }
+
+        // sessão ok → mostra página
+        document.documentElement.style.visibility = "visible";
+        YEAR.textContent = new Date().getFullYear();
+
+        // nome preferido (Firestore > Auth > email formatado)
+        const name = await getPreferredName(user);
+        USERNAME.textContent = name;
+
+        // inicial no avatar
+        AVATAR.textContent = (name || "U").trim().charAt(0).toUpperCase();
+      });
+
+      // Ações
+      btnLive.addEventListener("click", () => goWithLoading(btnLive, "live.html"));
+      btnCursos.addEventListener("click", () => goWithLoading(btnCursos, "cursos.html"));
+
+      // (Opcional) bloqueios leves — pode remover se atrapalhar acessibilidade
+      document.addEventListener("keydown", (e) => {
+        const k = (e.key || "").toUpperCase();
+        const altGr = e.ctrlKey && e.altKey;
+        if (k === "F12") return e.preventDefault();
+        if ((e.ctrlKey && e.shiftKey && ["I","J","C"].includes(k)) ||
+            (e.metaKey && e.altKey && ["I","J","C"].includes(k)) ||
+            (e.ctrlKey && !altGr && ["U","S"].includes(k)) ||
+            (e.metaKey && ["U","S"].includes(k))) {
+          e.preventDefault();
+        }
+      });
+      document.addEventListener("contextmenu", (e) => e.preventDefault());
+    </script>
+  </body>
+</html>
