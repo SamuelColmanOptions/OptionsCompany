@@ -487,11 +487,11 @@
     <button class="notice-close" aria-label="Fechar aviso" title="Fechar">
       <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.3 5.71a1 1 0 0 0-1.41 0L12 10.59 7.11 5.7A1 1 0 0 0 5.7 7.11L10.59 12l-4.9 4.89a1 1 0 1 0 1.41 1.42L12 13.41l4.89 4.9a1 1 0 0 0 1.42-1.41L13.41 12l4.9-4.89a1 1 0 0 0-.01-1.4Z" fill="currentColor"/></svg>
     </button>
-    <div class="notice-media"><img src="images/academia-img.png" alt=""></div>
+    <div class="notice-media"><img src="images/planodesaude-img.jpg" alt=""></div>
     <div class="notice-content">
-      <h2 id="notice-title">Aviso Importante de teste</h2>
-      <p id="notice-desc">Pequeno texto de apoio explicando o anúncio. Você pode incluir links, datas e instruções rápidas.</p>
-      <div class="notice-actions"><a href="#" class="notice-cta">Saiba mais</a></div>
+      <h2 id="notice-title">Beneficios da Options</h2>
+      <p id="notice-desc">Acesse os benefícios através da aba menu</p>
+      <div class="notice-actions"><a href="beneficios.html" class="notice-cta">Saiba mais</a></div>
     </div>
   </div>
 
@@ -500,8 +500,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
     import { getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence,signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
     import { getRemoteConfig,fetchAndActivate,getValue } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-remote-config.js";
-    import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,updateDoc,deleteDoc,onSnapshot,orderBy,serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
-
+import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,updateDoc,deleteDoc,onSnapshot,orderBy,serverTimestamp,runTransaction,setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
     const ready=new Promise(r=>{document.readyState.match(/complete|interactive/)?r():document.addEventListener("DOMContentLoaded",r,{once:true})});
     const wait=(sel,t=3e3)=>new Promise((res,rej)=>{const f=()=>document.querySelector(sel);if(f())return res(f());const m=new MutationObserver(()=>f()&&(m.disconnect(),res(f())));m.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>{m.disconnect();rej(Error("Elemento não encontrado: "+sel))},t)});
     document.documentElement.classList.add("auth-checking");
@@ -593,25 +592,132 @@
       });
     };
 
-    const initNotice=async u=>{
-      const rc=getRemoteConfig(); rc.settings={minimumFetchIntervalMillis:6e4}; let fetched=false; try{await fetchAndActivate(rc);fetched=true}catch{}
-      const DEF_VER="2025-09-lancamento", DEF_TTL=0;
-      const ver=fetched?String(getValue(rc,"notice_version").asString()||""):"";
-      const ttl=fetched?Number(getValue(rc,"notice_ttl_days").asString()||"0"):0;
-      const VERSION=ver||DEF_VER, TTL=Number.isFinite(ttl)?ttl:DEF_TTL;
-      const modal=document.getElementById("notice-modal"),overlay=document.getElementById("notice-overlay"),close=modal?.querySelector?.(".notice-close");
-      if(!modal||!overlay) return;
-      const KEY=`notice:${u.uid}`, TTLMS=TTL>0?TTL*864e5:0, now=Date.now();
-      const get=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{}}catch{return{}}};
-      const set=s=>localStorage.setItem(KEY,JSON.stringify(s));
-      const force=()=>new URL(location.href).searchParams.get("showNotice")==="1";
-      const should=()=>{if(force())return true;const s=get(); if(s.version!==VERSION) return true; if(!s.dismissed) return true; if(TTLMS&&s.dismissedAt&&now-s.dismissedAt>=TTLMS) return true; return false};
-      const open=()=>{overlay.hidden=false;modal.hidden=false;void modal.offsetWidth;modal.setAttribute("data-open","true");close?.focus?.();document.documentElement.style.overflow="hidden"};
-      const hide=()=>{modal.removeAttribute("data-open");setTimeout(()=>{overlay.hidden=true;modal.hidden=true;document.documentElement.style.overflow=""},200); set({version:VERSION,dismissed:true,dismissedAt:Date.now()})};
-      close?.addEventListener("click",hide); addEventListener("keydown",e=>{if(!modal.hidden&&(e.key==="Escape"||e.key==="Esc")){e.preventDefault();hide()}});
-      window.notice={open,close:hide,reset(){localStorage.removeItem(KEY)},setVersion(v){localStorage.removeItem(KEY);open()},state:()=>get()};
-      if(should()) open();
+const initNoticesPerUser = async (u) => {
+  // --- Remote Config ---
+  const rc = getRemoteConfig();
+  rc.settings = { minimumFetchIntervalMillis: 60_000 };
+  let arr = [];
+  try {
+    await fetchAndActivate(rc);
+    const raw = getValue(rc, "notices").asString();
+    try { arr = JSON.parse(raw); } catch { arr = []; }
+  } catch { arr = []; }
+
+  // Fallback: se não houver RC, usa 1 aviso fixo com seu conteúdo atual do HTML
+  const modal   = document.getElementById("notice-modal");
+  const overlay = document.getElementById("notice-overlay");
+  const close   = modal?.querySelector(".notice-close");
+  const imgEl   = modal?.querySelector(".notice-media img");
+  const titleEl = modal?.querySelector("#notice-title");
+  const descEl  = modal?.querySelector("#notice-desc");
+  const ctaEl   = modal?.querySelector(".notice-cta");
+
+  if (!modal || !overlay || !close || !imgEl || !titleEl || !descEl || !ctaEl) return;
+
+  if (!Array.isArray(arr) || arr.length === 0) {
+    arr = [{
+      id: "default-v1",
+      title: titleEl.textContent || "Aviso",
+      desc:  descEl.textContent  || "",
+      image: imgEl.getAttribute("src") || "",
+      cta:   { label: ctaEl.textContent || "OK", url: ctaEl.getAttribute("href") || "#" }
+    }];
+  }
+
+  // Forçar abertura para testes
+  const force = new URL(location.href).searchParams.get("showNotice") === "1";
+
+  // --- Firestore: doc onde marcamos o que já foi visto ---
+  const seenRef = doc(db, "users", u.uid, "meta", "notice");
+  let seen = {};
+  try {
+    const snap = await getDoc(seenRef);
+    seen = snap.exists() ? (snap.data()?.seenVersions || {}) : {};
+  } catch {}
+
+  // Fila de avisos ainda não vistos
+  const queue = arr.filter(n => force || !seen[n.id]).map(n => ({
+    id: String(n.id || "").trim(),
+    title: n.title || "",
+    desc: n.desc || "",
+    image: n.image || "",
+    cta: { label: n?.cta?.label || "Saiba mais", url: n?.cta?.url || "#" }
+  }));
+
+  if (queue.length === 0) return;
+
+  // Helpers UI
+  const open = () => {
+    overlay.hidden = false;
+    modal.hidden = false;
+    void modal.offsetWidth;
+    modal.setAttribute("data-open", "true");
+    close?.focus?.();
+    document.documentElement.style.overflow = "hidden";
+  };
+  const hide = () => {
+    modal.removeAttribute("data-open");
+    setTimeout(() => {
+      overlay.hidden = true;
+      modal.hidden = true;
+      document.documentElement.style.overflow = "";
+    }, 200);
+  };
+
+  // Exibe um aviso, grava "visto" ao fechar, e chama o próximo
+  const showNext = async () => {
+    const n = queue.shift();
+    if (!n) return;
+
+    // Preenche conteúdo do modal
+    if (n.title) titleEl.textContent = n.title;
+    if (n.desc)  descEl.textContent  = n.desc;
+    if (n.image) imgEl.src           = n.image;
+    if (n.cta?.label) ctaEl.textContent = n.cta.label;
+    if (n.cta?.url)   ctaEl.href        = n.cta.url;
+
+    const dismiss = async () => {
+      hide();
+      try {
+        // merge incremental do map seenVersions
+        await setDoc(seenRef, { seenVersions: { [n.id]: serverTimestamp() } }, { merge: true });
+        seen[n.id] = true;
+      } catch {}
+      // Próximo aviso (se houver)
+      if (queue.length) {
+        // pequena pausa para animação/UX
+        setTimeout(showNext, 150);
+      }
     };
+
+    // Bind únicos por abertura
+    const onKey = (e) => {
+      if (!modal.hidden && (e.key === "Escape" || e.key === "Esc")) {
+        e.preventDefault();
+        cleanup();
+        dismiss();
+      }
+    };
+    const onClose = () => { cleanup(); dismiss(); };
+    const onOverlay = () => { cleanup(); dismiss(); };
+
+    const cleanup = () => {
+      close.removeEventListener("click", onClose);
+      overlay.removeEventListener("click", onOverlay);
+      removeEventListener("keydown", onKey);
+    };
+
+    close.addEventListener("click", onClose, { once: true });
+    overlay.addEventListener("click", onOverlay, { once: true });
+    addEventListener("keydown", onKey);
+
+    open();
+  };
+
+  showNext();
+};
+
+
 
     onAuthStateChanged(auth,async u=>{
       try{
@@ -619,9 +725,7 @@
         allow(); await ready; await wait(".site-search");
         await renderWelcome(u); initFavorites(u);
         await Promise.all([wait("#notice-modal"),wait("#notice-overlay")]);
-        const ALLOW=["ssilva@optionsco.com.br","asantana@optionsco.com.br"], em=(u.email||"").toLowerCase();
-        if(ALLOW.includes(em)){ await initNotice(u); window.notice?.open(); }
-        else{ const ov=document.getElementById("notice-overlay"), md=document.getElementById("notice-modal"); ov&&(ov.hidden=true); if(md){md.hidden=true;md.removeAttribute("data-open")} }
+        await initNoticesPerUser(u)
       }catch(e){ console.error("[auth state]",e); block(); }
     });
   </script>
@@ -709,7 +813,10 @@
       });
     })();
   })();
-  </script>
+
+/*   [   {     "id": "2025-10-campanha-a-v1",     "title": "Primeiro aviso",     "desc": "Texto do aviso A.",     "image": "images/academia-img.png",     "cta": { "label": "Saiba mais", "url": "https://exemplo.com/a" }   },   {     "id": "2025-10-campanha-b-v2",     "title": "Segundo aviso",     "desc": "Texto do aviso B.",     "image": "images/academia-img.png",     "cta": { "label": "Abrir", "url": "https://exemplo.com/b" }   },   {     "id": "2025-10-campanha-c-v3",     "title": "Aviso 3",     "desc": "Texto do aviso C.",     "image": "images/academia-img.png",     "cta": { "label": "Detalhes", "url": "https://exemplo.com/c" }   } ]
+ */  
+ </script>
 </body>
 
 </html>
