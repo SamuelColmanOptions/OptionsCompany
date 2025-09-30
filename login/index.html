@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="shortcut icon" href="images/logo.png" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root{
+      --h:44px;--bg0:#0f2a29;--bg1:#154138;--bg2:#1c5244;--card:#0f1f1d;--card2:#122826;
+      --text:#e6edf3;--muted:#a4b8b3;--brand:#4ade80;--ring:#22c55e
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:Inter,system-ui,Arial,sans-serif;color:var(--text);
+      background:
+        radial-gradient(1200px 800px at 50% -10%,rgba(34,197,94,.12),transparent 60%),
+        linear-gradient(180deg,var(--bg0),var(--bg1) 55%,var(--bg2));
+      min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px
+    }
+    .card{
+      width:100%;max-width:380px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent),var(--card);
+      border:1px solid rgba(148,163,184,.15);border-radius:18px;padding:28px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);backdrop-filter:blur(6px)
+    }
+    h1{text-align:center;font-size:24px;font-weight:700;margin-bottom:20px}
+    label{font-size:14px;color:var(--muted);display:block;margin:10px 0 4px}
+    input,button{width:100%;border-radius:12px;font-size:14px}
+    input{
+      height:var(--h);padding:0 14px;border:1px solid rgba(148,163,184,.25);
+      background:var(--card2);color:var(--text)
+    }
+    input:focus{outline:0;border-color:var(--ring);box-shadow:0 0 0 3px rgba(34,197,94,.25)}
+    button{
+      padding:12px;border:0;background:var(--brand);color:#0f1f1d;font-weight:600;cursor:pointer;transition:.2s
+    }
+    button:hover{background:var(--ring)}
+    .btn-secondary{background:transparent;color:var(--muted);border:1px solid rgba(148,163,184,.25)}
+    .btn-secondary:hover{background:rgba(74,222,128,.08);color:var(--text);border-color:rgba(148,163,184,.35)}
+    .row{display:grid;gap:10px;margin-top:10px}
+    #login-msg{margin-top:14px;font-size:14px;text-align:center;color:var(--muted);min-height:20px}
+    .hint{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
+    label[for="email"]{margin-top:0}
+
+    /* Splash ocupa tela inteira */
+    .splash{
+      position:fixed; inset:0; z-index:9999;
+      display:flex; align-items:center; justify-content:center;
+      background:#000;
+      text-align:center;
+      padding:24px;
+    }
+
+    /* ====== TEXTO DO SPLASH ====== */
+    .font-logo{
+      font-family: serif;
+      line-height:1;
+      font-weight:700;
+      font-size: clamp(36px, 6vw, 72px);
+      color:#418D75;
+      /* Neon atrás do texto */
+      filter: drop-shadow(0 0 5px #418d75a8)
+              drop-shadow(0 0 10px #418d75b0)
+              drop-shadow(0 0 20px #418d75b6)
+              drop-shadow(0 0 40px #418d75a8);
+      animation: neonPulse 1.8s ease-in-out infinite;
+      letter-spacing:.5px;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 5px #418d7580)
+                drop-shadow(0 0 10px #418d7580)
+                drop-shadow(0 0 20px #418d7580)
+                drop-shadow(0 0 40px #418d7580);
+        opacity: .9;
+      }
+      50% {
+        filter: drop-shadow(0 0 10px #418D75)
+                drop-shadow(0 0 20px #418D75)
+                drop-shadow(0 0 30px #418D75)
+                drop-shadow(0 0 60px #418D75);
+        opacity: 1;
+      }
+    }
+
+    /* Tamanhos responsivos para o logo de texto */
+    .splash .font-logo{
+      font-weight:700;
+      font-size: clamp(36px, 6vw, 72px);
+      animation:pulse 1.2s ease-in-out infinite;
+      letter-spacing:.5px;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1); opacity:.9}
+      50%{transform:scale(1.04); opacity:1}
+      100%{transform:scale(1); opacity:.9}
+    }
+
+    /* Evita "flash" do card até a checagem da sessão */
+    .hidden{ display:none }
+  </style>
+</head>
+<body>
+  <!-- Splash / Loader: visível por padrão (cobre tudo) -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <h1 class="font-logo">Options<br><span class="e-comercial">&</span> Company</h1>
+  </div>
+
+  <!-- Ponto de montagem do formulário -->
+  <div id="mount"></div>
+
+  <!-- Template do login (só entra no DOM se precisar) -->
+  <template id="login-tpl">
+    <div class="card hidden" id="login-card">
+      <h1>Acesso Restrito</h1>
+
+      <form id="login-form" autocomplete="off">
+        <label for="email">E-mail corporativo</label>
+        <input type="email" id="email" required placeholder="seu@optionsco.com.br" inputmode="email"/>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" required placeholder="********"/>
+
+        <div class="row">
+          <button type="submit" id="btn-login">Entrar</button>
+          <button type="button" id="btn-voltar" class="btn-secondary">Voltar</button>
+        </div>
+      </form>
+
+      <p id="login-msg"></p>
+      <p class="hint">Somente e-mails @optionsco.com.br são aceitos.</p>
+    </div>
+  </template>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+    import {
+      getAuth, signInWithEmailAndPassword, onAuthStateChanged,
+      setPersistence, browserLocalPersistence, signOut
+    } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+    // ===== CONFIG =====
+    const firebaseConfig = {
+      apiKey:"AIzaSyDGyYza9iwZwc2k4yV9jNQqxa6sQxs-usI",
+      authDomain:"login-intranet-96213.firebaseapp.com",
+      projectId:"login-intranet-96213",
+      storageBucket:"login-intranet-96213.firebasestorage.app",
+      messagingSenderId:"492024716317",
+      appId:"1:492024716317:web:17dd14c4b8decc8a86faf4",
+      measurementId:"G-1KB77SBJ7L",
+    };
+
+    // ===== INIT =====
+    const app  = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    await setPersistence(auth, browserLocalPersistence);
+
+    // ===== DOM base =====
+    const $ = s => document.querySelector(s);
+    const SPLASH = $("#splash");
+    const MOUNT  = $("#mount");
+    const TPL    = $("#login-tpl");
+
+    let CARD, MSG, EMAIL, PASS, BTN_LOGIN, BTN_VOLTAR;
+
+    const TARGET_AFTER_LOGIN = "./../homepage/";
+
+    // ===== Utils =====
+    const setMsg = (t, ok=false) => { MSG.textContent = t || ""; MSG.style.color = ok ? "var(--brand)" : "var(--muted)"; };
+    const setErr = (t="Ocorreu um erro.") => { MSG.textContent = t; MSG.style.color = "tomato"; };
+    const clean = v => (v||"").trim();
+    const isAllowed = e => (e||"").toLowerCase().split("@").pop()?.trim() === "optionsco.com.br";
+
+    const showFormHideSplash = () => {
+      setTimeout(() => { // mínimo de 0,5s de splash (efeito)
+        SPLASH.style.display = "none";
+        CARD?.classList.remove("hidden");
+      }, 500);
+    };
+
+    const hideFormShowSplash = async () => {
+      CARD?.classList.add("hidden");
+      SPLASH.style.display = "flex";
+      await new Promise(r => setTimeout(r, 500));
+    };
+
+    // Monta o formulário de login apenas uma vez
+    function mountFormOnce(){
+      if (CARD) return; // já montado
+      const frag = TPL.content.cloneNode(true);
+      MOUNT.appendChild(frag);
+
+      // Captura nós após montar
+      CARD       = $("#login-card");
+      MSG        = $("#login-msg");
+      EMAIL      = $("#email");
+      PASS       = $("#password");
+      BTN_LOGIN  = $("#btn-login");
+      BTN_VOLTAR = $("#btn-voltar");
+
+      // Eventos
+      $("#login-form").addEventListener("submit", e => {
+        e.preventDefault();
+        login(EMAIL.value, PASS.value);
+      });
+      BTN_VOLTAR.addEventListener("click", () => { location.href = "index.html"; });
+    }
+
+    // ===== Mapa de erros =====
+    const ERR_MAP = {
+      "auth/invalid-credential":"E-mail ou senha incorretos.",
+      "auth/wrong-password":"E-mail ou senha incorretos.",
+      "auth/user-not-found":"Usuário não encontrado.",
+      "auth/too-many-requests":"Muitas tentativas. Tente novamente mais tarde.",
+      "auth/invalid-email":"E-mail inválido."
+    };
+
+    // ===== Login manual =====
+    async function login(email, password){
+      email = clean(email).toLowerCase();
+      if(!email || !password) return setErr("Preencha e-mail e senha.");
+      if(!isAllowed(email))   return setErr("Use um e-mail @optionsco.com.br.");
+
+      try{
+        BTN_LOGIN.disabled = true;
+        BTN_LOGIN.textContent = "Entrando...";
+        await signInWithEmailAndPassword(auth, email, password);
+
+        await hideFormShowSplash();
+        location.replace(TARGET_AFTER_LOGIN);
+      }catch(err){
+        console.error(err);
+        setErr(ERR_MAP[err?.code] || "Não foi possível entrar agora. Tente novamente.");
+      }finally{
+        BTN_LOGIN.disabled = false;
+        BTN_LOGIN.textContent = "Entrar";
+      }
+    }
+
+    // ===== Auto-login / Gate =====
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const email = (user.email || "").toLowerCase();
+        if (isAllowed(email)) {
+          // Usuário OK → sem form no DOM → sem flash
+          await hideFormShowSplash();
+          return location.replace(TARGET_AFTER_LOGIN);
+        }
+        // Logado mas domínio inválido → força signOut e segue fluxo normal
+        await signOut(auth).catch(()=>{});
+      }
+
+      // Não autenticado → cria o form e só então revela
+      mountFormOnce();
+      showFormHideSplash();
+    });
+
+    // ===== Bloqueios de atalhos/inspeção (mantidos) =====
+    document.addEventListener("keydown", e => {
+      const k = (e.key||"").toUpperCase();
+      const altGr = e.ctrlKey && e.altKey;
+      const combo = (keys) => keys.includes(k);
+      if (k==="F12") return e.preventDefault();
+      if ((e.ctrlKey && e.shiftKey && combo(["I","J","C"])) ||
+          (e.metaKey && e.altKey && combo(["I","J","C"])) ||
+          (e.ctrlKey && !altGr && combo(["U","S"])) ||
+          (e.metaKey && combo(["U","S"]))) {
+        e.preventDefault();
+      }
+    });
+    document.addEventListener("contextmenu", e => e.preventDefault());
+  </script>
+</body>
+</html>

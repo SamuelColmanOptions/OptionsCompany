@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Pedro Rocha - Medicina Integrativa</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/noto-serif" rel="stylesheet">
+                
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/noto-serif');
+        /* Estilo para aplicar a fonte Inter em todo o corpo */
+        body {
+            font-family: 'Noto Serif', sans-serif;
+            background-color: #1a3a3a; /* Cor de fundo principal escura, similar à da imagem */
+        }
+        
+        /* Cor de destaque para botões e elementos */
+        .accent-color {
+            background-color: #5a8a82;
+        }
+        .accent-color:hover {
+            background-color: #6aa39a;
+        }
+        /* Cor para os painéis de destaque */
+        .panel-color {
+            background-color: #2a5252;
+        }
+        .hero-bg {
+            background-image: url('./../../images/pedro-rocha-hero.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Seção Hero -->
+    <header class="relative hero-bg pt-52">
+        <!-- Overlay escuro para melhorar a legibilidade do texto -->
+        <div class="absolute inset-0 bg-black opacity-40"></div>
+        <div class="relative max-w-4xl mx-auto px-4 py-32 sm:py-40 lg:py-20 text-center">
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl tracking-tight">
+                Cuidando da Saúde de <br> Forma Completa
+            </h1>
+            <p style="color: #93CBB2;" class="mt-6 text-lg font-bold sm:text-xl max-w-2xl mx-auto text-gray-300">
+                A Options cobre 100% da sua consulta.
+            </p>
+            <div class="mt-10">
+                <a href="https://linktr.ee/docpedrorochaa?fbclid=PAZXh0bgNhZW0CMTEAAacFKbD4C77nFN5SQbNGBXnY4ecsnjzZzb7L6tXjVx-G0kNtVM846ZbOew1GFg_aem_ycDV6hgQPwRkZAYA78iaEw" style="background-color: #569777; font-family: Arial, Helvetica, sans-serif;" class="inline-block accent-color text-white font-semibold px-10 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                    MARCAR CONSULTA
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Seção Medicina Integrativa -->
+        <section class="py-16 sm:py-24">
+            <div class="max-w-5xl mx-auto px-4 text-center">
+                <h2 class="text-3xl sm:text-4xl font-bold">
+                    O que é a <span class="text-[#81CAA7]">Medicina Integrativa?</span>
+                </h2>
+                <p class="mt-4 max-w-3xl mx-auto text-gray-300">
+                    A medicina integrativa é uma abordagem que vai além do tratamento de sintomas. Seu foco está em enxergar o indivíduo como um todo — corpo, mente e estilo de vida.
+                </p>
+                <p class="mt-8 text-lg font-semibold text-[#81CAA7]">Seus benefícios são:</p>
+
+                <!-- Grid de Benefícios -->
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    <!-- Card Prevenção -->
+                    <div class="panel-color p-8 rounded-lg">
+                        <div class="items-center gap-4">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-[#81CAA7] mb-5" width="35" height="35">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+                          </svg>
+                           <h3 class="text-xl font-bold text-[#81CAA7]">Prevenção</h3>
+                        </div>
+                        <p class="mt-4 text-gray-300">
+                            O foco não está apenas em tratar, mas em fortalecer o organismo e reduzir riscos futuros.
+                        </p>
+                    </div>
+
+                    <!-- Card Visão Global -->
+                    <div class="panel-color p-8 rounded-lg">
+                        <div class="items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="text-[#81CAA7] mb-5" stroke-linejoin="round"><path d="M3 7h18M8 7v10m8-10v10M5 17h14"></path></svg>
+                            <h3 class="text-xl font-bold text-[#81CAA7]">Visão global</h3>
+                        </div>
+                        <p class="mt-4 text-gray-300">
+                            O médico avalia além da doença — avaliando também hábitos de vida, níveis de estresse, sono e alimentação.
+                        </p>
+                    </div>
+
+                    <!-- Card Personalização -->
+                    <div class="panel-color p-8 rounded-lg">
+                        <div class="items-center gap-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#81CAA7] mb-5"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>
+                           <h3 class="text-xl font-bold text-[#81CAA7]">Personalização</h3>
+                        </div>
+                        <p class="mt-4 text-gray-300">
+                            Cada plano é adaptado às necessidades do paciente, considerando seu contexto físico, emocional e social.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção Sobre Mim -->
+        <section class="py-16 sm:py-24">
+            <div class="max-w-5xl mx-auto px-4">
+                <div class="panel-color rounded-lg grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10 items-center p-8 sm:p-0 p-4">
+                    <!-- Imagem -->
+                    <div class="lg:col-span-2">
+                        <img src="./../../images/doc-bio.png" alt="Retrato do Dr. Pedro Rocha" class="rounded-lg object-cover w-80 h-full shadow-lg scale-150">
+                    </div>
+                    <!-- Texto -->
+                    <div class="lg:col-span-3">
+                        <h2 class="text-3xl sm:text-4xl text-[#81CAA7] pl-20 pt-10">Dr. Pedro Rocha</h2>
+                        <div class="mt-6 space-y-4 text-gray-300 pl-20 pr-20 pb-10">
+                            <p>
+                                Sou médico apaixonado por uma abordagem que valoriza a individualidade de cada paciente. Minha trajetória começou da insatisfação com tratamentos padronizados, que pouco olhavam para as causas reais dos problemas.
+                            </p>
+                            <p>
+                                Busquei formação sólida em Medicina Funcional e Longevidade, com aprofundamento em hormônios, performance e emagrecimento, compreendendo a saúde como algo integral — corpo e mente.
+                            </p>
+                            <p>
+                                Hoje, aplico esse conhecimento em tratamentos personalizados, focados em prevenção, equilíbrio e bem-estar, com o objetivo de guiar meus pacientes a uma vida plena, livre de excessos e com mais vitalidade.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer com CTA Final -->
+    <footer class="text-center py-16 sm:py-24">
+        <div class="max-w-7xl mx-auto px-4">
+             <a href="https://linktr.ee/docpedrorochaa?fbclid=PAZXh0bgNhZW0CMTEAAacFKbD4C77nFN5SQbNGBXnY4ecsnjzZzb7L6tXjVx-G0kNtVM846ZbOew1GFg_aem_ycDV6hgQPwRkZAYA78iaEw" style="font-family: Arial, Helvetica, sans-serif;" class="inline-block bg-[#569777] accent-color text-white font-semibold px-10 py-3 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                MARCAR CONSULTA
+            </a>
+        </div>
+    </footer>
+
+</body>
+</html>
