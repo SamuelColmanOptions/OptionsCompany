@@ -531,6 +531,128 @@
     flex-shrink: 0;
   }
 
+  /* --- NOVOS ESTILOS PARA RESULTADOS DA BUSCA --- */
+  #search-results-container {
+    padding-top: 1rem;
+    width: 100%;
+    flex-grow: 1;
+  }
+  .results-content {
+      max-width: 720px;
+      margin: 1rem auto;
+      padding: 0 1rem;
+  }
+  #search-results-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 4rem;
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(15, 42, 41, 0.8);
+      backdrop-filter: blur(4px);
+  }
+  #results-logo {
+      height: 32px;
+      width: auto;
+  }
+  #results-search-form {
+      flex-grow: 1;
+      position: relative;
+  }
+  #results-search-form input {
+      width: 100%;
+      padding: 10px 14px 10px 40px;
+      border: 1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.28);
+      color: #fff;
+      border-radius: 999px;
+      outline: none;
+  }
+   #results-search-form .search-icon {
+    position:absolute;left:12px;top:50%;transform:translateY(-50%);width:18px;height:18px;opacity:.9;pointer-events:none;z-index:2
+   }
+
+
+  .search-result {
+    margin-bottom: 1.75rem;
+  }
+  .search-result a {
+    text-decoration: none;
+    display: block;
+  }
+  .result-url {
+    font-size: 0.875rem;
+    color: #2e6b56;
+    margin-bottom: 0.25rem;
+    word-break: break-all;
+  }
+  .result-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #8ab4f8;
+    margin-bottom: 0.35rem;
+    text-decoration: none;
+  }
+  .result-title:hover {
+      text-decoration: underline;
+  }
+  .result-snippet {
+    color: #bdc1c6;
+    line-height: 1.6;
+    font-size: 0.95rem;
+  }
+
+  #pagination-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+      padding: 1rem;
+  }
+  .pagination-btn {
+      background-color: #2e6b56;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+  }
+  .pagination-btn:hover:not(:disabled) {
+      background-color: #418d75;
+  }
+  .pagination-btn:disabled {
+      background-color: #333;
+      cursor: not-allowed;
+      opacity: 0.6;
+  }
+
+  .search-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .search-loader .spinner {
+    width: 48px;
+    height: 48px;
+    border: 5px solid rgba(255,255,255,0.2);
+    border-bottom-color: #418d75;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  @keyframes rotation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+
 </style>
 
 <style>
@@ -599,16 +721,40 @@
     <section class="google-hero" role="region" aria-label="Página inicial">
       <div class="hero-inner">
         <img class="hero-logo" src="./../images/logo_texto_recortado.png" alt="Options & Company">
-        <form class="site-search" role="search" aria-label="Pesquisar na web" action="https://www.google.com/search" method="GET" target="_self" id="search-form">
+        <!-- O action foi removido para ser controlado pelo Javascript -->
+        <form class="site-search" role="search" aria-label="Pesquisar na web" id="search-form">
           <div class="search-wrap">
             <img src="./../images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true">
-            <input id="q" name="q" type="search" placeholder="Pesquisar no Google…" autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions">
+            <input id="q" name="q" type="search" placeholder="Pesquisar com Google..." autocomplete="off" inputmode="search" spellcheck="false" aria-controls="suggestions">
             <div id="suggestions" class="suggest-panel" role="listbox" aria-label="Sugestões" hidden></div>
           </div>
           <button type="submit" aria-label="Pesquisar">Buscar</button>
         </form>
         <nav id="quick-shortcuts" class="quick-shortcuts" aria-label="Atalhos rápidos"><div id="quick-chip-row" class="chip-row" role="list"></div></nav>
       </div>
+    </section>
+
+    <!-- NOVA SEÇÃO PARA EXIBIR OS RESULTADOS -->
+    <section id="search-results-container" hidden>
+        <div id="search-results-header">
+            <a href="#" data-tab-target="home">
+              <img src="./../images/logo_texto_recortado.png" alt="Options & Company" id="results-logo">
+            </a>
+            <form id="results-search-form">
+                <div class="search-wrap">
+                    <img src="./../images/favicon_google.ico" alt="" class="search-icon" aria-hidden="true">
+                    <input id="q-results" name="q" type="search" autocomplete="off" inputmode="search" spellcheck="false">
+                </div>
+            </form>
+        </div>
+        <div class="results-content">
+            <div id="results-list">
+                <!-- Os resultados serão inseridos aqui -->
+            </div>
+            <div id="pagination-controls">
+                <!-- Controles de paginação aqui -->
+            </div>
+        </div>
     </section>
 
     <main class="main-content" id="tab-root" role="region" aria-live="polite">
@@ -720,7 +866,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
     import { getAuth,onAuthStateChanged,setPersistence,browserLocalPersistence,signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
     import { getRemoteConfig,fetchAndActivate,getValue } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-remote-config.js";
-import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,updateDoc,deleteDoc,onSnapshot,orderBy,serverTimestamp,runTransaction,setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+    import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,updateDoc,deleteDoc,onSnapshot,orderBy,serverTimestamp,runTransaction,setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
     const ready=new Promise(r=>{document.readyState.match(/complete|interactive/)?r():document.addEventListener("DOMContentLoaded",r,{once:true})});
     const wait=(sel,t=3e3)=>new Promise((res,rej)=>{const f=()=>document.querySelector(sel);if(f())return res(f());const m=new MutationObserver(()=>f()&&(m.disconnect(),res(f())));m.observe(document.documentElement,{childList:true,subtree:true});setTimeout(()=>{m.disconnect();rej(Error("Elemento não encontrado: "+sel))},t)});
     document.documentElement.classList.add("auth-checking");
@@ -812,138 +958,352 @@ import { getFirestore,doc,getDoc,collection,query,where,getDocs,limit,addDoc,upd
       });
     };
 
-const initNoticesPerUser = async (u) => {
-  // --- Remote Config ---
-  const rc = getRemoteConfig();
-  rc.settings = { minimumFetchIntervalMillis: 60_000 };
-  let arr = [];
-  try {
-    await fetchAndActivate(rc);
-    const raw = getValue(rc, "notices").asString();
-    try { arr = JSON.parse(raw); } catch { arr = []; }
-  } catch { arr = []; }
-
-  // Fallback: se não houver RC, usa 1 aviso fixo com seu conteúdo atual do HTML
-  const modal    = document.getElementById("notice-modal");
-  const overlay = document.getElementById("notice-overlay");
-  const close   = modal?.querySelector(".notice-close");
-  const imgEl   = modal?.querySelector(".notice-media img");
-  const titleEl = modal?.querySelector("#notice-title");
-  const descEl  = modal?.querySelector("#notice-desc");
-  const ctaEl   = modal?.querySelector(".notice-cta");
-
-  if (!modal || !overlay || !close || !imgEl || !titleEl || !descEl || !ctaEl) return;
-
-  if (!Array.isArray(arr) || arr.length === 0) {
-    arr = [{
-      id: "default-v1",
-      title: titleEl.textContent || "Aviso",
-      desc:  descEl.textContent  || "",
-      image: imgEl.getAttribute("src") || "",
-      cta:   { label: ctaEl.textContent || "OK", url: ctaEl.getAttribute("href") || "#" }
-    }];
-  }
-
-  // Forçar abertura para testes
-  const force = new URL(location.href).searchParams.get("showNotice") === "1";
-
-  // --- Firestore: doc onde marcamos o que já foi visto ---
-  const seenRef = doc(db, "users", u.uid, "meta", "notice");
-  let seen = {};
-  try {
-    const snap = await getDoc(seenRef);
-    seen = snap.exists() ? (snap.data()?.seenVersions || {}) : {};
-  } catch {}
-
-  // Fila de avisos ainda não vistos
-  const queue = arr.filter(n => force || !seen[n.id]).map(n => ({
-    id: String(n.id || "").trim(),
-    title: n.title || "",
-    desc: n.desc || "",
-    image: n.image || "",
-    cta: { label: n?.cta?.label || "Saiba mais", url: n?.cta?.url || "#" }
-  }));
-
-  if (queue.length === 0) return;
-
-  // Helpers UI
-  const open = () => {
-    overlay.hidden = false;
-    modal.hidden = false;
-    void modal.offsetWidth;
-    modal.setAttribute("data-open", "true");
-    close?.focus?.();
-    document.documentElement.style.overflow = "hidden";
-  };
-  const hide = () => {
-    modal.removeAttribute("data-open");
-    setTimeout(() => {
-      overlay.hidden = true;
-      modal.hidden = true;
-      document.documentElement.style.overflow = "";
-    }, 200);
-  };
-
-  // Exibe um aviso, grava "visto" ao fechar, e chama o próximo
-  const showNext = async () => {
-    const n = queue.shift();
-    if (!n) return;
-
-    // Preenche conteúdo do modal
-    if (n.title) titleEl.textContent = n.title;
-    if (n.desc)  descEl.textContent  = n.desc;
-    if (n.image) imgEl.src           = n.image;
-    if (n.cta?.label) ctaEl.textContent = n.cta.label;
-    if (n.cta?.url)   ctaEl.href        = n.cta.url;
-
-    const dismiss = async () => {
-      hide();
+    const initNoticesPerUser = async (u) => {
+      // --- Remote Config ---
+      const rc = getRemoteConfig();
+      rc.settings = { minimumFetchIntervalMillis: 60_000 };
+      let arr = [];
       try {
-        // merge incremental do map seenVersions
-        await setDoc(seenRef, { seenVersions: { [n.id]: serverTimestamp() } }, { merge: true });
-        seen[n.id] = true;
+        await fetchAndActivate(rc);
+        const raw = getValue(rc, "notices").asString();
+        try { arr = JSON.parse(raw); } catch { arr = []; }
+      } catch { arr = []; }
+
+      // Fallback: se não houver RC, usa 1 aviso fixo com seu conteúdo atual do HTML
+      const modal    = document.getElementById("notice-modal");
+      const overlay = document.getElementById("notice-overlay");
+      const close   = modal?.querySelector(".notice-close");
+      const imgEl   = modal?.querySelector(".notice-media img");
+      const titleEl = modal?.querySelector("#notice-title");
+      const descEl  = modal?.querySelector("#notice-desc");
+      const ctaEl   = modal?.querySelector(".notice-cta");
+
+      if (!modal || !overlay || !close || !imgEl || !titleEl || !descEl || !ctaEl) return;
+
+      if (!Array.isArray(arr) || arr.length === 0) {
+        arr = [{
+          id: "default-v1",
+          title: titleEl.textContent || "Aviso",
+          desc:  descEl.textContent  || "",
+          image: imgEl.getAttribute("src") || "",
+          cta:   { label: ctaEl.textContent || "OK", url: ctaEl.getAttribute("href") || "#" }
+        }];
+      }
+
+      // Forçar abertura para testes
+      const force = new URL(location.href).searchParams.get("showNotice") === "1";
+
+      // --- Firestore: doc onde marcamos o que já foi visto ---
+      const seenRef = doc(db, "users", u.uid, "meta", "notice");
+      let seen = {};
+      try {
+        const snap = await getDoc(seenRef);
+        seen = snap.exists() ? (snap.data()?.seenVersions || {}) : {};
       } catch {}
-      // Próximo aviso (se houver)
-      if (queue.length) {
-        // pequena pausa para animação/UX
-        setTimeout(showNext, 150);
-      }
+
+      // Fila de avisos ainda não vistos
+      const queue = arr.filter(n => force || !seen[n.id]).map(n => ({
+        id: String(n.id || "").trim(),
+        title: n.title || "",
+        desc: n.desc || "",
+        image: n.image || "",
+        cta: { label: n?.cta?.label || "Saiba mais", url: n?.cta?.url || "#" }
+      }));
+
+      if (queue.length === 0) return;
+
+      // Helpers UI
+      const open = () => {
+        overlay.hidden = false;
+        modal.hidden = false;
+        void modal.offsetWidth;
+        modal.setAttribute("data-open", "true");
+        close?.focus?.();
+        document.documentElement.style.overflow = "hidden";
+      };
+      const hide = () => {
+        modal.removeAttribute("data-open");
+        setTimeout(() => {
+          overlay.hidden = true;
+          modal.hidden = true;
+          document.documentElement.style.overflow = "";
+        }, 200);
+      };
+
+      // Exibe um aviso, grava "visto" ao fechar, e chama o próximo
+      const showNext = async () => {
+        const n = queue.shift();
+        if (!n) return;
+
+        // Preenche conteúdo do modal
+        if (n.title) titleEl.textContent = n.title;
+        if (n.desc)  descEl.textContent  = n.desc;
+        if (n.image) imgEl.src           = n.image;
+        if (n.cta?.label) ctaEl.textContent = n.cta.label;
+        if (n.cta?.url)   ctaEl.href        = n.cta.url;
+
+        const dismiss = async () => {
+          hide();
+          try {
+            // merge incremental do map seenVersions
+            await setDoc(seenRef, { seenVersions: { [n.id]: serverTimestamp() } }, { merge: true });
+            seen[n.id] = true;
+          } catch {}
+          // Próximo aviso (se houver)
+          if (queue.length) {
+            // pequena pausa para animação/UX
+            setTimeout(showNext, 150);
+          }
+        };
+
+        // Bind únicos por abertura
+        const onKey = (e) => {
+          if (!modal.hidden && (e.key === "Escape" || e.key === "Esc")) {
+            e.preventDefault();
+            cleanup();
+            dismiss();
+          }
+        };
+        const onClose = () => { cleanup(); dismiss(); };
+        const onOverlay = () => { cleanup(); dismiss(); };
+
+        const cleanup = () => {
+          close.removeEventListener("click", onClose);
+          overlay.removeEventListener("click", onOverlay);
+          removeEventListener("keydown", onKey);
+        };
+
+        close.addEventListener("click", onClose, { once: true });
+        overlay.addEventListener("click", onOverlay, { once: true });
+        addEventListener("keydown", onKey);
+
+        open();
+      };
+
+      showNext();
     };
 
-    // Bind únicos por abertura
-    const onKey = (e) => {
-      if (!modal.hidden && (e.key === "Escape" || e.key === "Esc")) {
-        e.preventDefault();
-        cleanup();
-        dismiss();
-      }
+
+    // --- LÓGICA DE BUSCA COM GEMINI E PAGINAÇÃO ---
+    const initSearch = () => {
+        const mainSearchForm = document.getElementById('search-form');
+        const resultsSearchForm = document.getElementById('results-search-form');
+        const heroSection = document.querySelector('.google-hero');
+        const resultsContainer = document.getElementById('search-results-container');
+        const resultsList = document.getElementById('results-list');
+        const mainSearchInput = document.getElementById('q');
+        const resultsSearchInput = document.getElementById('q-results');
+        const homeButtons = document.querySelectorAll('[data-tab-target="home"]');
+        const paginationControls = document.getElementById('pagination-controls');
+
+        let allResults = [];
+        let currentPage = 1;
+        const resultsPerPage = 5;
+
+        const resetToHomeView = () => {
+            heroSection.hidden = false;
+            resultsContainer.hidden = true;
+            resultsList.innerHTML = '';
+            mainSearchInput.value = '';
+            resultsSearchInput.value = '';
+            allResults = [];
+            currentPage = 1;
+        };
+        
+        homeButtons.forEach(btn => btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            resetToHomeView();
+        }));
+
+        const renderPaginationControls = () => {
+            paginationControls.innerHTML = '';
+            const totalPages = Math.ceil(allResults.length / resultsPerPage);
+
+            if (totalPages <= 1) return;
+
+            const prevButton = document.createElement('button');
+            prevButton.textContent = 'Anterior';
+            prevButton.className = 'pagination-btn';
+            prevButton.disabled = currentPage === 1;
+            prevButton.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderPaginatedResults();
+                }
+            });
+
+            const pageInfo = document.createElement('span');
+            pageInfo.textContent = `Página ${currentPage} de ${totalPages}`;
+            
+            const nextButton = document.createElement('button');
+            nextButton.textContent = 'Próxima';
+            nextButton.className = 'pagination-btn';
+            nextButton.disabled = currentPage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderPaginatedResults();
+                }
+            });
+
+            paginationControls.append(prevButton, pageInfo, nextButton);
+        }
+
+        const renderPaginatedResults = () => {
+            resultsList.innerHTML = ''; // Limpa resultados antigos
+            if (!allResults || allResults.length === 0) {
+                resultsList.innerHTML = '<p class="text-gray-400">Nenhum resultado encontrado.</p>';
+                paginationControls.innerHTML = '';
+                return;
+            }
+            
+            const startIndex = (currentPage - 1) * resultsPerPage;
+            const endIndex = startIndex + resultsPerPage;
+            const pageResults = allResults.slice(startIndex, endIndex);
+
+            pageResults.forEach(result => {
+                const resultEl = document.createElement('div');
+                resultEl.className = 'search-result';
+                
+                const link = document.createElement('a');
+                link.href = result.link;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+
+                const url = document.createElement('div');
+                url.className = 'result-url';
+                url.textContent = result.link;
+
+                const title = document.createElement('h3');
+                title.className = 'result-title';
+                title.textContent = result.title;
+                
+                link.append(url, title);
+
+                const snippet = document.createElement('p');
+                snippet.className = 'result-snippet';
+                snippet.textContent = result.snippet;
+
+                resultEl.append(link, snippet);
+                resultsList.appendChild(resultEl);
+            });
+            renderPaginationControls();
+            window.scrollTo(0, 0);
+        };
+        
+        const showLoadingState = (query) => {
+            heroSection.hidden = true;
+            resultsContainer.hidden = false;
+            mainSearchInput.value = query;
+            resultsSearchInput.value = query;
+            resultsList.innerHTML = `
+                <div class="search-loader">
+                    <div class="spinner"></div>
+                    <p>Buscando...</p>
+                </div>`;
+            paginationControls.innerHTML = '';
+        };
+        
+        const showErrorState = (message) => {
+             resultsList.innerHTML = `<p class="text-red-400">Ocorreu um erro: ${message}</p>`;
+        };
+
+        const performSearch = async (query) => {
+            if (!query) return;
+            showLoadingState(query);
+
+            try {
+                const results = await callGeminiForSearch(query);
+                allResults = results;
+                currentPage = 1;
+                renderPaginatedResults();
+            } catch (error) {
+                console.error("Search Error:", error);
+                showErrorState(error.message || "Não foi possível conectar à API.");
+            }
+        };
+
+        mainSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            performSearch(mainSearchInput.value.trim());
+        });
+        
+        resultsSearchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            performSearch(resultsSearchInput.value.trim());
+        });
     };
-    const onClose = () => { cleanup(); dismiss(); };
-    const onOverlay = () => { cleanup(); dismiss(); };
+    
+    async function callGeminiForSearch(prompt) {
+        const apiKey = "AIzaSyAp_S0yKJCsz4Fu1ce02rIw1X01OzfeZzo";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
 
-    const cleanup = () => {
-      close.removeEventListener("click", onClose);
-      overlay.removeEventListener("click", onOverlay);
-      removeEventListener("keydown", onKey);
-    };
+        const systemPrompt = "Você é um assistente de busca. Dada a consulta do usuário, retorne uma lista de até 20 resultados de pesquisa relevantes da web. Para cada resultado, forneça um título, o link (URL completo) e um breve resumo (snippet) descritivo. Responda APENAS com um JSON válido que corresponda ao esquema fornecido.";
 
-    close.addEventListener("click", onClose, { once: true });
-    overlay.addEventListener("click", onOverlay, { once: true });
-    addEventListener("keydown", onKey);
+        const payload = {
+            contents: [{ parts: [{ text: prompt }] }],
+            systemInstruction: {
+                parts: [{ text: systemPrompt }]
+            },
+            generationConfig: {
+                responseMimeType: "application/json",
+                responseSchema: {
+                    type: "OBJECT",
+                    properties: {
+                        "results": {
+                            type: "ARRAY",
+                            items: {
+                                type: "OBJECT",
+                                properties: {
+                                    "title": { "type": "STRING" },
+                                    "link": { "type": "STRING" },
+                                    "snippet": { "type": "STRING" }
+                                },
+                                required: ["title", "link", "snippet"]
+                            }
+                        }
+                    },
+                    required: ["results"]
+                }
+            }
+        };
 
-    open();
-  };
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-  showNext();
-};
+            if (!response.ok) {
+                const errorBody = await response.json();
+                console.error("API Error:", errorBody);
+                throw new Error(`Erro na API: ${errorBody.error?.message || response.status}`);
+            }
 
+            const data = await response.json();
+            const jsonText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (jsonText) {
+                const parsedJson = JSON.parse(jsonText);
+                return parsedJson.results; 
+            } else {
+                 throw new Error("Resposta da API vazia ou em formato inesperado.");
+            }
+        } catch (error) {
+            console.error("Erro ao chamar API de busca do Gemini:", error);
+            throw error;
+        }
+    }
 
 
     onAuthStateChanged(auth,async u=>{
       try{
         if(!u||!okEmail(u.email)) return block();
         allow(); await ready; await wait(".site-search");
-        await renderWelcome(u); initFavorites(u);
+        await renderWelcome(u); 
+        initFavorites(u);
+        initSearch(); // Inicia a nova funcionalidade de busca
         await Promise.all([wait("#notice-modal"),wait("#notice-overlay")]);
         await initNoticesPerUser(u)
       }catch(e){ console.error("[auth state]",e); block(); }
@@ -1020,7 +1380,8 @@ const initNoticesPerUser = async (u) => {
         else if(e.key==="Tab"){ if(i.selectionStart!==i.selectionEnd&&cur.length){e.preventDefault(); i.setSelectionRange(i.value.length,i.value.length); hide()} }
         else if(e.key==="Enter"||e.key==="Escape") hide();
       };
-      const submit=e=>{const i=$(INPUT),q=(i?.value||"").trim(); if(!q){e.preventDefault();return} save(q); if(looks(q)){e.preventDefault(); location.assign(/^https?:\/\//i.test(q)?q:"https://"+q)}};
+      // Removido o submit original que redirecionava
+      // const submit=e=>{const i=$(INPUT),q=(i?.value||"").trim(); if(!q){e.preventDefault();return} save(q); if(looks(q)){e.preventDefault(); location.assign(/^https?:\/\//i.test(q)?q:"https://"+q)}};
       const focus=()=>{const i=$(INPUT); if(!i)return; if(document.visibilityState!=="visible"){document.addEventListener("visibilitychange",focus,{once:true}); return} i.focus({preventScroll:true}); try{i.select()}catch{}};
       const retries=(r=24,d=50)=>{focus(); let c=1; const id=setInterval(()=>{const ok=document.activeElement?.matches?.(INPUT); if(ok||c++>=r)clearInterval(id); else focus()},d)};
       addEventListener("keydown",e=>{if(/input|textarea|select/i.test(e.target.tagName))return; if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){e.preventDefault();retries(1,0)} else if(!e.ctrlKey&&!e.metaKey&&!e.altKey&&e.key==="/"){e.preventDefault();retries(1,0)}});
@@ -1029,7 +1390,8 @@ const initNoticesPerUser = async (u) => {
       document.addEventListener("DOMContentLoaded",()=>{const i=$(INPUT),y=p(),f=$(FORM); if(!i||!y||!f)return; retries();
         let allow=false; i.addEventListener("pointerdown",()=>allow=true);
         i.addEventListener("focus",()=>{ if(!allow||i.value.trim())return; const r=rec().map(s=>item(s,"recente")); if(!r.length)return; y.innerHTML=""; r.slice(0,LIM).forEach((x,j)=>y.appendChild(el(x,j,true))); y.hidden=false; });
-        i.addEventListener("input",ev=>debounced(false,ev)); i.addEventListener("keydown",keys); i.addEventListener("blur",()=>setTimeout(hide,100)); f.addEventListener("submit",submit);
+        i.addEventListener("input",ev=>debounced(false,ev)); i.addEventListener("keydown",keys); i.addEventListener("blur",()=>setTimeout(hide,100)); 
+        // f.addEventListener("submit",submit); // O submit agora é tratado no script type="module"
       });
     })();
   })();
@@ -1077,7 +1439,7 @@ const initNoticesPerUser = async (u) => {
             const messageElement = document.createElement('div');
             messageElement.classList.add('chat-message', `${sender}-message`);
             messageElement.textContent = text;
-            messagesContainer.appeWndChild(messageElement);
+            messagesContainer.appendChild(messageElement);
             scrollToBottom();
             return messageElement;
         };
@@ -1164,3 +1526,4 @@ const initNoticesPerUser = async (u) => {
 </body>
 
 </html>
+
